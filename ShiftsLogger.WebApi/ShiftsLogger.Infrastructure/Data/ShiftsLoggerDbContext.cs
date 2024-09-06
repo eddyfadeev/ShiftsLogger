@@ -3,14 +3,14 @@ using ShiftsLogger.Domain.Models;
 
 namespace ShiftsLogger.Infrastructure.Data;
 
-public class ShiftsLoggerContext : DbContext
+public class ShiftsLoggerDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Shift> Shifts { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<ShiftType> ShiftTypes { get; set; }
 
-    public ShiftsLoggerContext(DbContextOptions<ShiftsLoggerContext> options)
+    public ShiftsLoggerDbContext(DbContextOptions<ShiftsLoggerDbContext> options)
         : base(options)
     {
     }

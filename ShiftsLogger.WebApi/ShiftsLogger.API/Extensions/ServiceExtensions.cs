@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.Application.Interfaces.Data.Repositories;
 using ShiftsLogger.Application.Services;
 using ShiftsLogger.Infrastructure.Data;
 using ShiftsLogger.Infrastructure.Data.Repositories;
@@ -26,7 +27,7 @@ public static class ServiceExtensions
         });
 
     public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration) =>
-        services.AddDbContext<ShiftsLoggerContext>(options => 
+        services.AddDbContext<ShiftsLoggerDbContext>(options => 
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
     public static void ConfigureSwagger(this IServiceCollection services) =>
