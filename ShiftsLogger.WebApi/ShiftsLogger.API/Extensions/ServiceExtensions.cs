@@ -43,7 +43,11 @@ public static class ServiceExtensions
     
     public static void ConfigureAppServices(this IServiceCollection services)
     {
-        services.AddScoped<IShiftsLoggerRepository, ShiftsLoggerRepository>();
+        services.AddScoped<IShiftsRepository, ShiftsRepository>();
+        services.AddScoped<ILocationsRepository, LocationsRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IShiftTypesRepository, ShiftTypesRepository>();
+        
         services.AddScoped<IShiftsLoggerService, ShiftLoggerService>();
     }
 }

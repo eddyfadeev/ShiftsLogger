@@ -3,9 +3,11 @@ using ShiftsLogger.Domain.Models;
 
 namespace ShiftsLogger.Application.Interfaces.Data.Repositories;
 
-public interface IShiftsLoggerRepository :
+public interface IShiftsRepository :
     IAddToRepository<Shift>,
     IGetFromRepository<Shift>,
     IUpdateInRepository<Shift>,
-    IRemoveFromRepository<Shift>,
-    IGetAllFromRepository<Shift>;
+    IRemoveFromRepository<Shift>
+{
+    List<Shift> GetAllShifts();
+}

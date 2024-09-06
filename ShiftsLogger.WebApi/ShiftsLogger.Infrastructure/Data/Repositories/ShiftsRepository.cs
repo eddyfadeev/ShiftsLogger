@@ -3,11 +3,11 @@ using ShiftsLogger.Domain.Models;
 
 namespace ShiftsLogger.Infrastructure.Data.Repositories;
 
-public class ShiftsLoggerRepository : IShiftsLoggerRepository
+public class ShiftsRepository : IShiftsRepository
 {
     private readonly ShiftsLoggerDbContext _context;
 
-    public ShiftsLoggerRepository(ShiftsLoggerDbContext context)
+    public ShiftsRepository(ShiftsLoggerDbContext context)
     {
         _context = context;
     }
@@ -33,6 +33,6 @@ public class ShiftsLoggerRepository : IShiftsLoggerRepository
         return _context.SaveChanges();
     }
 
-    public List<Shift> GetAll() =>
+    public List<Shift> GetAllShifts() =>
         _context.Shifts.ToList();
 }
