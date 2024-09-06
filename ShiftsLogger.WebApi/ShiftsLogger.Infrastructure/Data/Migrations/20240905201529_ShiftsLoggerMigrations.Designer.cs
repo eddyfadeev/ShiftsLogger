@@ -11,7 +11,7 @@ using ShiftsLogger.Infrastructure.Data;
 
 namespace ShiftsLogger.Infrastructure.Data.Migrations
 {
-    [DbContext(typeof(ShiftsLoggerContext))]
+    [DbContext(typeof(ShiftsLoggerDbContext))]
     [Migration("20240905201529_ShiftsLoggerMigrations")]
     partial class ShiftsLoggerMigrations
     {
