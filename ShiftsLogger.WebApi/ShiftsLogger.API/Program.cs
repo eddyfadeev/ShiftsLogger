@@ -1,29 +1,45 @@
-using Microsoft.EntityFrameworkCore;
-using ShiftsLogger.Application.Interfaces;
-using ShiftsLogger.Application.Services;
-using ShiftsLogger.Infrastructure.Data;
-using ShiftsLogger.Infrastructure.Data.Repositories;
+using Microsoft.AspNetCore.HttpOverrides;
+using ShiftsLogger.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ShiftsLoggerContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.ConfigureCors();
+builder.Services.ConfigureIisIntegration();
+
+builder.Services.ConfigureDbContext(builder.Configuration);
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwagger();
 
-builder.Services.AddScoped<IShiftsLoggerRepository, ShiftsLoggerRepository>();
-builder.Services.AddScoped<IShiftsLoggerService, ShiftLoggerService>();
+builder.Services.ConfigureAppServices();
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.All
+});
+
+app.UseCors();
+
 app.UseAuthorization();
+
 app.MapControllers();
+
+app.MapGet("/", () => "Hello World!");
 
 app.Run();

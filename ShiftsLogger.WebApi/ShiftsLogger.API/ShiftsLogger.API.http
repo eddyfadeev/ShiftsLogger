@@ -1,6 +1,6 @@
-@ShiftsLogger.API_HostAddress = http://localhost:5239
+@ShiftsLogger.API_HostAddress = https://localhost:5239
 
-GET {{ShiftsLogger.API_HostAddress}}/weatherforecast/
+GET https://localhost:44317/weatherforecast/
 Accept: application/json
 
 ###
