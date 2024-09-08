@@ -28,8 +28,14 @@ public class LocationsController : ControllerBase
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(Location), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult GetLocationById(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var location = _locationService.GetLocation(id);
         if (location is not null)
         {
@@ -91,6 +97,11 @@ public class LocationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult DeleteLocation(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var location = _locationService.GetLocation(id);
         if (location is null)
         {

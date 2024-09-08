@@ -28,8 +28,14 @@ public class ShiftsController : ControllerBase
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(Shift), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult GetShiftById(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var shift = _shiftsLoggerService.GetShift(id);
         if (shift is not null)
         {
@@ -91,6 +97,11 @@ public class ShiftsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult DeleteShift(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var shift = _shiftsLoggerService.GetShift(id);
         if (shift is null)
         {
