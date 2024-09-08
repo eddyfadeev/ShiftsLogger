@@ -50,5 +50,8 @@ public static class ServiceExtensions
         services.AddScoped<IShiftTypesRepository, ShiftTypesRepository>();
         
         services.AddScoped<IShiftsLoggerService, ShiftsLoggerService>();
+        services.AddScoped<ILocationService, LocationService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IShiftTypeService, ShiftTypeService>();
     }
 }
