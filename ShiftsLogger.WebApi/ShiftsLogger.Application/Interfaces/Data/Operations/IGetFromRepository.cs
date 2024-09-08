@@ -1,6 +1,6 @@
 ﻿namespace ShiftsLogger.Application.Interfaces.Data.Operations;
 
-public interface IGetFromRepository<T>
+public interface IGetFromRepository<out T>
 {
     T? Get(int entityId);
 }
