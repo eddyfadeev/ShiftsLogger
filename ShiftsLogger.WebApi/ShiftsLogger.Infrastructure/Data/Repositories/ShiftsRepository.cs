@@ -18,8 +18,8 @@ public class ShiftsRepository : IShiftsRepository
         return _context.SaveChanges();
     }
 
-    public Shift? Get(Shift entity) => 
-        _context.Shifts.SingleOrDefault(s => s.Id == entity.Id);
+    public Shift? Get(int entityId) => 
+        _context.Shifts.SingleOrDefault(s => s.Id == entityId);
 
     public int Update(Shift entity)
     {

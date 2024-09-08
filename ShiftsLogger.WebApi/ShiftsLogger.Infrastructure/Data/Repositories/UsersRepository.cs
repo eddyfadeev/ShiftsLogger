@@ -17,8 +17,8 @@ public class UsersRepository : IUsersRepository
         return _context.SaveChanges();
     }
 
-    public User? Get(User entity) => 
-        _context.Users.FirstOrDefault(u => u.Id == entity.Id);
+    public User? Get(int entityId) => 
+        _context.Users.FirstOrDefault(u => u.Id == entityId);
 
     public int Update(User entity)
     {

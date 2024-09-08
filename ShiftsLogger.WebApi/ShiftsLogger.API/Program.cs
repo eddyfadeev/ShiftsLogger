@@ -16,7 +16,15 @@ builder.Services.ConfigureSwagger();
 builder.Services.ConfigureAppServices();
 
 
+
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    c.RoutePrefix = string.Empty;
+});
 
 if (app.Environment.IsDevelopment())
 {
@@ -39,7 +47,5 @@ app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.MapGet("/", () => "Hello World!");
 
 app.Run();
