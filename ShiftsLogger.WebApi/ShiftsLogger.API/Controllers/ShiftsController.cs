@@ -4,6 +4,9 @@ using ShiftsLogger.Domain.Models;
 
 namespace ShiftsLogger.API.Controllers;
 
+/// <summary>
+/// Handles operations related to work shifts, such as fetching, adding, updating, and deleting shifts.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class ShiftsController : ControllerBase
@@ -15,7 +18,12 @@ public class ShiftsController : ControllerBase
         _shiftsLoggerService = shiftsLoggerService;
     }
 
+    /// <summary>
+    /// Fetches all shifts from the system.
+    /// </summary>
+    /// <returns>A list of all shifts, or NoContent if no shifts are found.</returns>
     [HttpGet]
+    [Produces("application/json")]
     [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult GetAllShifts()
@@ -25,7 +33,14 @@ public class ShiftsController : ControllerBase
         return shifts.Count == 0 ? NoContent() : Ok(shifts);
     }
 
+    /// <summary>
+    /// Fetches a specific shift by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the shift to retrieve.</param>
+    /// <returns>The shift with the specified ID if found,
+    /// or an error response if not found or if the request is invalid.</returns>
     [HttpGet("{id:int}")]
+    [Produces("application/json")]
     [ProducesResponseType(typeof(Shift), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,7 +60,15 @@ public class ShiftsController : ControllerBase
         return NotFound($"Shift with ID: {id} not found");
     }
 
+    /// <summary>
+    /// Adds a new shift to the system.
+    /// </summary>
+    /// <param name="shift">The shift object containing details about the shift to be added.</param>
+    /// <returns>An action result indicating the outcome of the operation,
+    /// including the created shift on success or an error response on failure.</returns>
     [HttpPost]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     [ProducesResponseType(typeof(Shift), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult AddShift([FromBody] Shift shift)
@@ -68,7 +91,16 @@ public class ShiftsController : ControllerBase
         return BadRequest("Failed to add shift");
     }
 
+    /// <summary>
+    /// Updates an existing shift.
+    /// </summary>
+    /// <param name="id">The ID of the shift to update.</param>
+    /// <param name="shift">The shift object with updated details.</param>
+    /// <returns>Returns OK if the update is successful;
+    /// BadRequest if the ID does not match or the update fails.</returns>
     [HttpPut("{id:int}")]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult UpdateShift(int id, [FromBody] Shift shift)
@@ -92,7 +124,13 @@ public class ShiftsController : ControllerBase
         return BadRequest("Failed to update shift");
     }
 
+    /// <summary>
+    /// Deletes a shift by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the shift to delete.</param>
+    /// <returns>A status indicating the result of the operation.</returns>
     [HttpDelete("{id:int}")]
+    [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult DeleteShift(int id)

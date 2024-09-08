@@ -1,4 +1,6 @@
-﻿namespace ShiftsLogger.API.Extensions;
+﻿using System.Reflection;
+
+namespace ShiftsLogger.API.Extensions;
 
 public static class SwaggerExtensions
 {
@@ -11,5 +13,9 @@ public static class SwaggerExtensions
                 Title = "ShiftsLogger API",
                 Description = "A simple API to log worked shifts using ASP.NET Core Web API",
             });
+
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
         });
 }

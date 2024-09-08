@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.HttpOverrides;
+﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.HttpOverrides;
 using ShiftsLogger.API.Extensions;
 using ShiftsLogger.Application.Extensions;
 using ShiftsLogger.Infrastructure.Extensions;
@@ -20,7 +21,13 @@ public class Startup
         services.ConfigureIisIntegration();
         services.ConfigureDbContext(_configuration);
         services.ConfigureRepositories();
-        services.AddControllers();
+        
+        services.AddControllers()
+            .AddJsonOptions(options => 
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
+        
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
         services.ConfigureAppServices();
@@ -28,6 +35,13 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShiftsLogger API");
+            c.RoutePrefix = string.Empty;
+        });
+        
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -38,18 +52,6 @@ public class Startup
         }
         
         app.UseHttpsRedirection();
-        app.UseStaticFiles();
-        app.UseForwardedHeaders(new ForwardedHeadersOptions
-        {
-            ForwardedHeaders = ForwardedHeaders.All
-        });
-
-        app.UseSwagger();
-        app.UseSwaggerUI(c =>
-        {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShiftsLogger API");
-            c.RoutePrefix = string.Empty;
-        });
         
         app.UseRouting();
 

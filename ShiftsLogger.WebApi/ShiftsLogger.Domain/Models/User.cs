@@ -9,5 +9,5 @@ public class User
     public string Role { get; set; }
     
     //Navigation property
-    public ICollection<Shift> Shifts { get; set; }
+    public virtual ICollection<Shift> Shifts { get; set; }
 }
