@@ -8,7 +8,6 @@ public static class ServiceExtensions
 {
     public static void ConfigureAppServices(this IServiceCollection services)
     {
-        services.AddScoped<IShiftsLoggerService, ShiftsLoggerService>();
         services.AddScoped<ILocationService, LocationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IShiftTypeService, ShiftTypeService>();

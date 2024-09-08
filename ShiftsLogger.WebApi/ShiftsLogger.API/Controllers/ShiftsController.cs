@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShiftsLogger.Application.Interfaces.Services;
+﻿using System.Data;
+using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Infrastructure.Services;
 
 namespace ShiftsLogger.API.Controllers;
 
@@ -11,12 +12,9 @@ namespace ShiftsLogger.API.Controllers;
 [Route("[controller]")]
 public class ShiftsController : ControllerBase
 {
-    private readonly IShiftsLoggerService _shiftsLoggerService;
+    private readonly UnitOfWork<Shift> _unitOfWork;
 
-    public ShiftsController(IShiftsLoggerService shiftsLoggerService)
-    {
-        _shiftsLoggerService = shiftsLoggerService;
-    }
+    public ShiftsController(UnitOfWork<Shift> unitOfWork) => _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Fetches all shifts from the system.
@@ -28,9 +26,11 @@ public class ShiftsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult GetAllShifts()
     {
-        var shifts = _shiftsLoggerService.GetAllShifts();
+        var shifts = from shift in _unitOfWork.Repository.Get() 
+            select shift; 
+                
 
-        return shifts.Count == 0 ? NoContent() : Ok(shifts);
+        return shifts.Any() ? Ok(shifts) : NoContent();
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class ShiftsController : ControllerBase
             return BadRequest(ModelState);
         }
         
-        var shift = _shiftsLoggerService.GetShift(id);
+        var shift = _unitOfWork.Repository.GetById(id);
         if (shift is not null)
         {
             return Ok(shift);
@@ -73,22 +73,27 @@ public class ShiftsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult AddShift([FromBody] Shift shift)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _unitOfWork.Repository.Insert(shift);
+            _unitOfWork.Save();
+        }
+        catch (DataException dex)
+        {
+            ModelState.AddModelError("", dex.Message);
+            return BadRequest("Failed to add shift");
         }
         
-        var result = _shiftsLoggerService.AddShift(shift);
-        if (result > 0)
-        {
-            return CreatedAtAction(
-                nameof(GetShiftById), 
-                new { id = shift.Id }, 
-                shift
-                );
-        }
-        
-        return BadRequest("Failed to add shift");
+        return CreatedAtAction(
+            nameof(GetShiftById), 
+            new { id = shift.Id }, 
+            shift
+        );
     }
 
     /// <summary>
@@ -105,23 +110,27 @@ public class ShiftsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult UpdateShift(int id, [FromBody] Shift shift)
     {
-        if (id != shift.Id)
+        try
         {
-            return BadRequest("Shift ID does not match");
-        }
+            if (id != shift.Id)
+            {
+                return BadRequest("Shift ID does not match");
+            }
 
-        if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _unitOfWork.Repository.Update(shift);
+        }
+        catch (DataException dex)
         {
-            return BadRequest(ModelState);
+            ModelState.AddModelError("", dex.Message);
+            return BadRequest("Failed to update shift");
         }
         
-        var result = _shiftsLoggerService.UpdateShift(shift);
-        if (result > 0)
-        {
-            return Ok();
-        }
-        
-        return BadRequest("Failed to update shift");
+        return Ok();
     }
 
     /// <summary>
@@ -135,23 +144,29 @@ public class ShiftsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult DeleteShift(int id)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var shift = _unitOfWork.Repository.GetById(id);
+            if (shift is null)
+            {
+                return NotFound($"Shift with ID: {id} not found");
+            }
+            
+            _unitOfWork.Repository.Delete(id);
+            _unitOfWork.Save();
+
+        }
+        catch (DataException dex)
+        {
+            ModelState.AddModelError("", dex.Message);
+            return BadRequest("Failed to remove shift");
         }
         
-        var shift = _shiftsLoggerService.GetShift(id);
-        if (shift is null)
-        {
-            return NotFound($"Shift with ID: {id} not found");
-        }
-        
-        var result = _shiftsLoggerService.RemoveShift(shift);
-        if (result > 0)
-        {
-            return Ok();
-        }
-        
-        return BadRequest("Failed to remove shift");
+        return Ok();
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using ShiftsLogger.Domain.Validators;
 
 namespace ShiftsLogger.Domain.Models;
 
+[ShiftDateValidator]
 public class Shift
 {
     public int Id { get; set; }
@@ -10,7 +12,7 @@ public class Shift
     public int ShiftTypeId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
     
     public decimal HoursWorked => (decimal)(EndTime - StartTime).TotalHours;
     

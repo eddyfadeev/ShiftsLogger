@@ -28,9 +28,9 @@ public class LocationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult GetAllLocations()
     {
-        var locations = _locationService.GetAllLocations();
+        var locations = from l in _locationService.GetAllLocations() select l;
 
-        return locations.Count == 0 ? NoContent() : Ok(locations);
+        return !locations.Any() ? NoContent() : Ok(locations);
     }
 
     /// <summary>
