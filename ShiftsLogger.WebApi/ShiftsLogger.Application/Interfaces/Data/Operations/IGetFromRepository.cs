@@ -2,5 +2,5 @@
 
 public interface IGetFromRepository<T>
 {
-    T? Get(T entity);
+    T? Get(int entityId);
 }

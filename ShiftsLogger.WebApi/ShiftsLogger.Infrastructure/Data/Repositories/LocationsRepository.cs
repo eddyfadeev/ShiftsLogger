@@ -17,8 +17,8 @@ public class LocationsRepository : ILocationsRepository
         return _context.SaveChanges();
     }
 
-    public Location? Get(Location entity) =>
-        _context.Locations.FirstOrDefault(l => l.Id == entity.Id);
+    public Location? Get(int entityId) =>
+        _context.Locations.FirstOrDefault(l => l.Id == entityId);
 
     public int Update(Location entity)
     {

@@ -6,5 +6,5 @@ public class ShiftType
     public string Name { get; set; } // e.g., "Day Shift", "Night Shift", "Overtime"
     
     // Navigation property
-    public ICollection<Shift> Shifts { get; set; }
+    public virtual ICollection<Shift> Shifts { get; set; }
 }

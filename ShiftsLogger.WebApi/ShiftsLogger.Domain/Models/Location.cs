@@ -7,5 +7,5 @@ public class Location
     public string Address { get; set; }
     
     // Navigation property
-    public ICollection<Shift> Shifts { get; set; }
+    public virtual ICollection<Shift> Shifts { get; set; }
 }

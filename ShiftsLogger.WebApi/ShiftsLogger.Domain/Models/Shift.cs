@@ -1,4 +1,6 @@
-﻿namespace ShiftsLogger.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ShiftsLogger.Domain.Models;
 
 public class Shift
 {
@@ -13,7 +15,12 @@ public class Shift
     public decimal HoursWorked => (decimal)(EndTime - StartTime).TotalHours;
     
     // Navigation properties
-    public User User { get; set; }
-    public ShiftType ShiftType { get; set; }
-    public Location Location { get; set; }
+    [ForeignKey(nameof(UserId))]
+    public virtual User? User { get; set; }
+    
+    [ForeignKey(nameof(ShiftTypeId))]
+    public virtual ShiftType? ShiftType { get; set; }
+    
+    [ForeignKey(nameof(LocationId))]
+    public virtual Location? Location { get; set; }
 }

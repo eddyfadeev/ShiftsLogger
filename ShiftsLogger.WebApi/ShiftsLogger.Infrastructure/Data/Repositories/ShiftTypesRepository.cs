@@ -17,8 +17,8 @@ public class ShiftTypesRepository : IShiftTypesRepository
         return _context.SaveChanges();
     }
 
-    public ShiftType? Get(ShiftType entity) => 
-        _context.ShiftTypes.FirstOrDefault(t => t.Id == entity.Id);
+    public ShiftType? Get(int entityId) => 
+        _context.ShiftTypes.FirstOrDefault(t => t.Id == entityId);
 
     public int Update(ShiftType entity)
     {
