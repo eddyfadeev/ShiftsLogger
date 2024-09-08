@@ -1,6 +1,6 @@
 ﻿using ShiftsLogger.Domain.Models;
 
-namespace ShiftsLogger.Application.Interfaces;
+namespace ShiftsLogger.Application.Interfaces.Services;
 
 public interface IShiftsLoggerService
 {

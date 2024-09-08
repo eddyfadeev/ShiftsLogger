@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Application.Interfaces.Data.Repositories;
+using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Application.Services;
 using ShiftsLogger.Infrastructure.Data;
 using ShiftsLogger.Infrastructure.Data.Repositories;

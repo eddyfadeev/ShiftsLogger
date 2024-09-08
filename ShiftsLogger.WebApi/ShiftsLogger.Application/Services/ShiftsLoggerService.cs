@@ -1,5 +1,5 @@
-﻿using ShiftsLogger.Application.Interfaces;
-using ShiftsLogger.Application.Interfaces.Data.Repositories;
+﻿using ShiftsLogger.Application.Interfaces.Data.Repositories;
+using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Models;
 
 namespace ShiftsLogger.Application.Services;
