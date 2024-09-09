@@ -21,6 +21,7 @@ public class Startup
         services.ConfigureDbContext(_configuration);
         services.ConfigureRepositories();
         services.ConfigureUnitOfWork();
+        services.ConfigureEvents();
         
         services.AddControllers()
             .AddJsonOptions(options => 

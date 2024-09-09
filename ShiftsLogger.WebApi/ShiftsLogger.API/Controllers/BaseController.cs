@@ -36,7 +36,7 @@ public abstract class BaseController<TEntity> : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public abstract IActionResult GetAllEntities();
+    public abstract Task<IActionResult> GetAllEntities();
 
     /// <summary>
     /// Adds a new entity to the system.
@@ -49,7 +49,7 @@ public abstract class BaseController<TEntity> : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult AddEntity([FromBody] TEntity entity)
+    public async Task<IActionResult> AddEntity([FromBody] TEntity entity)
     {
         if (!ModelState.IsValid)
         {
@@ -58,8 +58,8 @@ public abstract class BaseController<TEntity> : ControllerBase
         
         try
         {
-            _unitOfWork.Repository.Insert(entity);
-            _unitOfWork.Save();
+            await _unitOfWork.Repository.InsertAsync(entity);
+            await _unitOfWork.SaveAsync();
             
             int entityId = GetEntityId(entity);
             return CreatedAtAction(
@@ -86,7 +86,7 @@ public abstract class BaseController<TEntity> : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(typeof(Shift), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult UpdateEntity(int id, [FromBody] TEntity entity)
+    public async Task<IActionResult> UpdateEntity(int id, [FromBody] TEntity entity)
     {
         if (!ModelState.IsValid)
         {
@@ -101,8 +101,8 @@ public abstract class BaseController<TEntity> : ControllerBase
         
         try
         {
-            _unitOfWork.Repository.Update(entity);
-            _unitOfWork.Save();
+            await _unitOfWork.Repository.UpdateAsync(entity);
+            await _unitOfWork.SaveAsync();
             return Ok(entity);
         }
         catch (DataException dex)
@@ -121,7 +121,7 @@ public abstract class BaseController<TEntity> : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult DeleteEntity(int id)
+    public async Task<IActionResult> DeleteEntity(int id)
     {
         if (!ModelState.IsValid)
         {
@@ -130,14 +130,14 @@ public abstract class BaseController<TEntity> : ControllerBase
         
         try
         {
-            var entity = _unitOfWork.Repository.GetById(id);
+            var entity = await _unitOfWork.Repository.GetByIdAsync(id);
             if (entity is null)
             {
                 return NotFound($"Entity {nameof(TEntity)} with ID: {id} not found");
             }
             
-            _unitOfWork.Repository.Delete(id);
-            _unitOfWork.Save();
+            await _unitOfWork.Repository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
             return Ok($"Entity {nameof(TEntity)} with ID: {id} was deleted.");
 
         }

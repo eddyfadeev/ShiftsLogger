@@ -28,9 +28,9 @@ public class ShiftTypesController : BaseController<ShiftType>
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<ShiftType>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public override IActionResult GetAllEntities()
+    public override async Task<IActionResult> GetAllEntities()
     {
-        var shiftsTypes = _unitOfWork.Repository.Get(); 
+        var shiftsTypes = await _unitOfWork.Repository.GetAsync(); 
 
         return shiftsTypes.Count > 0 ? Ok(shiftsTypes) : NoContent();
     }

@@ -28,9 +28,9 @@ public class UsersController : BaseController<User>
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<User>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public override IActionResult GetAllEntities()
+    public override async Task<IActionResult> GetAllEntities()
     {
-        var users = _unitOfWork.Repository.Get();
+        var users = await _unitOfWork.Repository.GetAsync();
 
         return users.Count > 0 ? Ok(users) : NoContent();
     }

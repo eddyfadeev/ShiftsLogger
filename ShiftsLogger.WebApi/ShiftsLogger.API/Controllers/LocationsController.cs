@@ -28,9 +28,9 @@ public class LocationsController : BaseController<Location>
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<Location>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public override IActionResult GetAllEntities()
+    public override async Task<IActionResult> GetAllEntities()
     {
-        var locations = _unitOfWork.Repository.Get(); 
+        var locations = await _unitOfWork.Repository.GetAsync(); 
                 
 
         return locations.Count > 0 ? Ok(locations) : NoContent();

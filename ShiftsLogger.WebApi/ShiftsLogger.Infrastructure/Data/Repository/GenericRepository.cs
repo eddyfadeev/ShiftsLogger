@@ -1,19 +1,24 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.Application.Interfaces.Data.Repository;
+using ShiftsLogger.Application.Interfaces.Events;
+using ShiftsLogger.Domain.Events;
+using ShiftsLogger.Domain.Interfaces;
 
 namespace ShiftsLogger.Infrastructure.Data.Repository;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity>
-    where TEntity : class
+    where TEntity : class, IDbModel
 {
     private readonly ShiftsLoggerDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
+    private readonly IEventPublisher _eventPublisher;
 
-    public GenericRepository(ShiftsLoggerDbContext context)
+    public GenericRepository(ShiftsLoggerDbContext context, IEventPublisher eventPublisher)
     {
         _context = context;
         _dbSet = _context.Set<TEntity>();
+        _eventPublisher = eventPublisher;
     }
 
     public virtual List<TEntity> Get(
@@ -46,6 +51,8 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     {
         ArgumentNullException.ThrowIfNull(entityToInsert);
         _dbSet.Add(entityToInsert);
+        
+        _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToInsert));
     }
 
     public virtual void Delete(object idToDelete)
@@ -63,6 +70,8 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
             _dbSet.Attach(entityToDelete);
         }
         _dbSet.Remove(entityToDelete);
+        
+        _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToDelete));
     }
     
     public virtual void Update(TEntity entityToUpdate)
@@ -70,7 +79,12 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         ArgumentNullException.ThrowIfNull(entityToUpdate);
         _dbSet.Attach(entityToUpdate);
         _context.Entry(entityToUpdate).State = EntityState.Modified;
+        
+        _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToUpdate));
     }
+    
+    public virtual bool Exists(int id) => 
+        _context.Find<TEntity>(id) is not null;
     
     public virtual async Task<List<TEntity>> GetAsync(
         Expression<Func<TEntity, bool>>? filter = null,
@@ -108,6 +122,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     {
         ArgumentNullException.ThrowIfNull(entityToInsert);
         await _dbSet.AddAsync(entityToInsert);
+        await _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToInsert));
     }
 
     public virtual async Task DeleteAsync(object idToDelete)
@@ -115,6 +130,23 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         TEntity? entityToDelete = await _dbSet.FindAsync(idToDelete);
         ArgumentNullException.ThrowIfNull(entityToDelete);
         
+        await _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToDelete));
+        
         Delete(entityToDelete);
     }
+
+    public virtual async Task UpdateAsync(TEntity entityToUpdate)
+    {
+        ArgumentNullException.ThrowIfNull(entityToUpdate);
+        
+        _dbSet.Attach(entityToUpdate);
+        _context.Entry(entityToUpdate).State = EntityState.Modified;
+        
+        await _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToUpdate));
+        
+        await _context.SaveChangesAsync();
+    }
+    
+    public virtual async Task<bool> ExistsAsync(int id) =>
+        await _context.FindAsync<TEntity>(id) is not null;
 }

@@ -15,6 +15,7 @@ public interface IGenericRepository<TEntity>
     void Delete(object idToDelete);
     void Delete(TEntity? entityToDelete);
     void Update(TEntity entityToUpdate);
+    bool Exists(int id);
     
     Task<List<TEntity>> GetAsync(
         Expression<Func<TEntity, bool>>? filter = null,
@@ -23,4 +24,6 @@ public interface IGenericRepository<TEntity>
     Task<TEntity?> GetByIdAsync(object idToFind);
     Task InsertAsync(TEntity entityToInsert);
     Task DeleteAsync(object idToDelete);
+    Task UpdateAsync(TEntity entityToUpdate);
+    Task<bool> ExistsAsync(int id);
 }

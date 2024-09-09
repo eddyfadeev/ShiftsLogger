@@ -1,12 +1,14 @@
 ﻿using ShiftsLogger.Application.Interfaces.Data.Repository;
+using ShiftsLogger.Application.Interfaces.Events;
 using ShiftsLogger.Application.Interfaces.Services;
+using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Infrastructure.Data;
 using ShiftsLogger.Infrastructure.Data.Repository;
 
 namespace ShiftsLogger.Infrastructure.Services;
 
 public sealed class UnitOfWork<TEntity> : IDisposable, IAsyncDisposable, IUnitOfWork<TEntity>
-    where TEntity : class
+    where TEntity : class, IDbModel
 {
     private readonly ShiftsLoggerDbContext _context;
     private readonly Lazy<IGenericRepository<TEntity>> _repository;
@@ -15,11 +17,11 @@ public sealed class UnitOfWork<TEntity> : IDisposable, IAsyncDisposable, IUnitOf
     public IGenericRepository<TEntity> Repository =>
         _repository.Value;
     
-    public UnitOfWork(ShiftsLoggerDbContext context)
+    public UnitOfWork(ShiftsLoggerDbContext context, IEventPublisher eventPublisher)
     {
         _context = context;
         _repository = new Lazy<IGenericRepository<TEntity>>(
-            () => new GenericRepository<TEntity>(context));
+            () => new GenericRepository<TEntity>(context, eventPublisher));
     }
     
     public void Save() => _context.SaveChanges();

@@ -67,6 +67,8 @@ public class ExceptionHandlerMiddleware
         {
             BadHttpRequestException badHttpRequestEx => 
                 ((int)HttpStatusCode.BadRequest, "Bad HTTP request.", badHttpRequestEx.Message),
+            ValidationException valEx =>
+                ((int)HttpStatusCode.BadRequest, "Validation failed.", valEx.Message),
             ArgumentNullException nullEx => 
                 ((int)HttpStatusCode.BadRequest, "Null is forbidden.", nullEx.Message),
             ArgumentException argEx => 
@@ -79,8 +81,6 @@ public class ExceptionHandlerMiddleware
                 ((int)HttpStatusCode.BadRequest, "Operation error.", dex.Message),
             InvalidOperationException invOpEx => 
                 ((int)HttpStatusCode.BadRequest, "Invalid operation", invOpEx.Message),
-            ValidationException valEx =>
-                ((int)HttpStatusCode.BadRequest, "Validation failed.", valEx.Message),
             _ => 
                 ((int)HttpStatusCode.InternalServerError, "Internal Server Error", exception.Message)
         };

@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using ShiftsLogger.Domain.Interfaces;
 
 namespace ShiftsLogger.Domain.Models;
 
-public class Location
+public class Location : IDbModel
 {
     public int Id { get; set; }
     public string Name { get; set; }

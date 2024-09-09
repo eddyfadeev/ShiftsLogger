@@ -3,7 +3,8 @@ using ShiftsLogger.Domain.Models;
 
 namespace ShiftsLogger.Domain.Validators;
 
-public class ShiftDateValidator : ValidationAttribute
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class ShiftDateValidatorAttribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
