@@ -12,7 +12,7 @@ public sealed class UnitOfWork<TEntity> : IDisposable, IAsyncDisposable, IUnitOf
 {
     private readonly ShiftsLoggerDbContext _context;
     private readonly Lazy<IGenericRepository<TEntity>> _repository;
-    private bool _disposed = false;
+    private bool _disposed;
 
     public IGenericRepository<TEntity> Repository =>
         _repository.Value;

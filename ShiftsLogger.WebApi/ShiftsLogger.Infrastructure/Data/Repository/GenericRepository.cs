@@ -34,7 +34,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         }
 
         foreach (string includeProperty in includeProperties.Split
-                     (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                     ([','], StringSplitOptions.RemoveEmptyEntries))
         {
             query = query.Include(includeProperty);
         }
@@ -98,7 +98,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
             query = query.Where(filter);
         }
 
-        foreach (string includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        foreach (string includeProperty in includeProperties.Split([','], StringSplitOptions.RemoveEmptyEntries))
         {
             query = query.Include(includeProperty);
         }
