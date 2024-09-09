@@ -1,6 +1,9 @@
-﻿namespace ShiftsLogger.Domain.Models;
+﻿using System.Text.Json.Serialization;
+using ShiftsLogger.Domain.Interfaces;
 
-public class User
+namespace ShiftsLogger.Domain.Models;
+
+public class User : IDbModel
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
@@ -9,5 +12,6 @@ public class User
     public string Role { get; set; }
     
     //Navigation property
-    public virtual ICollection<Shift> Shifts { get; set; }
+    [JsonIgnore]
+    public virtual ICollection<Shift>? Shifts { get; set; }
 }
