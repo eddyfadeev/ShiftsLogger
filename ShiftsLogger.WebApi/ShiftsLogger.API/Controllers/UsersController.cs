@@ -26,13 +26,11 @@ public class UsersController : BaseController<User>
     /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
     [HttpGet]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(List<ShiftType>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<User>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public override IActionResult GetAllEntities()
     {
-        var users = from user in _unitOfWork.Repository.Get() 
-            select user; 
-                
+        var users = _unitOfWork.Repository.Get();
 
         return users.Any() ? Ok(users) : NoContent();
     }

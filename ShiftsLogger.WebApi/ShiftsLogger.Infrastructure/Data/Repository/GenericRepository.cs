@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using ShiftsLogger.Application.Interfaces.Data.Repositories;
+using ShiftsLogger.Application.Interfaces.Data.Repository;
 
-namespace ShiftsLogger.Infrastructure.Data.Repositories;
+namespace ShiftsLogger.Infrastructure.Data.Repository;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     where TEntity : class

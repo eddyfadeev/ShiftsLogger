@@ -1,7 +1,7 @@
-﻿using ShiftsLogger.Application.Interfaces.Data.Repositories;
+﻿using ShiftsLogger.Application.Interfaces.Data.Repository;
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Infrastructure.Data;
-using ShiftsLogger.Infrastructure.Data.Repositories;
+using ShiftsLogger.Infrastructure.Data.Repository;
 
 namespace ShiftsLogger.Infrastructure.Services;
 

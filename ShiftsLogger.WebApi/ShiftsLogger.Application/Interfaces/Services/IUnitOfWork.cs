@@ -1,4 +1,4 @@
-﻿using ShiftsLogger.Application.Interfaces.Data.Repositories;
+﻿using ShiftsLogger.Application.Interfaces.Data.Repository;
 
 namespace ShiftsLogger.Application.Interfaces.Services;
 

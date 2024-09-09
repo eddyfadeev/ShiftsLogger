@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace ShiftsLogger.Application.Interfaces.Data.Repositories;
+namespace ShiftsLogger.Application.Interfaces.Data.Repository;
 
 public interface IGenericRepository<TEntity>
     where TEntity : class
