@@ -16,12 +16,12 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         _dbSet = _context.Set<TEntity>();
     }
 
-    public virtual IEnumerable<TEntity> Get(
+    public virtual List<TEntity> Get(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         string includeProperties = "")
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
 
         if (filter is not null)
         {
@@ -39,9 +39,14 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
             query.ToList();
     }
     
-    public virtual TEntity? GetById(object idToFind) => _dbSet.Find(idToFind);
+    public virtual TEntity? GetById(object idToFind) => 
+        _dbSet.Find(idToFind);
     
-    public virtual void Insert(TEntity entityToInsert) => _dbSet.Add(entityToInsert);
+    public virtual void Insert(TEntity entityToInsert)
+    {
+        ArgumentNullException.ThrowIfNull(entityToInsert);
+        _dbSet.Add(entityToInsert);
+    }
 
     public virtual void Delete(object idToDelete)
     {
@@ -59,10 +64,57 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         }
         _dbSet.Remove(entityToDelete);
     }
-
+    
     public virtual void Update(TEntity entityToUpdate)
     {
+        ArgumentNullException.ThrowIfNull(entityToUpdate);
         _dbSet.Attach(entityToUpdate);
         _context.Entry(entityToUpdate).State = EntityState.Modified;
+    }
+    
+    public virtual async Task<List<TEntity>> GetAsync(
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        string includeProperties = "")
+    {
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
+
+        if (filter is not null)
+        {
+            query = query.Where(filter);
+        }
+
+        foreach (string includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            query = query.Include(includeProperty);
+        }
+
+        return orderBy is not null ? 
+            await orderBy(query).ToListAsync() : 
+            await query.ToListAsync();
+    }
+    
+    public virtual async Task<TEntity?> GetByIdAsync(object idToFind)
+    {
+        var entity = await _dbSet.FindAsync(idToFind);
+        if (entity is not null)
+        {
+            _context.Entry(entity).State = EntityState.Detached;
+        }
+        return entity;
+    }
+
+    public virtual async Task InsertAsync(TEntity entityToInsert)
+    {
+        ArgumentNullException.ThrowIfNull(entityToInsert);
+        await _dbSet.AddAsync(entityToInsert);
+    }
+
+    public virtual async Task DeleteAsync(object idToDelete)
+    {
+        TEntity? entityToDelete = await _dbSet.FindAsync(idToDelete);
+        ArgumentNullException.ThrowIfNull(entityToDelete);
+        
+        Delete(entityToDelete);
     }
 }

@@ -1,7 +1,6 @@
-﻿using System.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Models;
-using ShiftsLogger.Infrastructure.Services;
 
 namespace ShiftsLogger.API.Controllers;
 
@@ -10,21 +9,26 @@ namespace ShiftsLogger.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class ShiftsController : ControllerBase
+public class ShiftsController : BaseController<Shift>
 {
-    private readonly UnitOfWork<Shift> _unitOfWork;
+    private readonly IUnitOfWork<Shift> _unitOfWork;
 
-    public ShiftsController(UnitOfWork<Shift> unitOfWork) => _unitOfWork = unitOfWork;
+    public ShiftsController(IUnitOfWork<Shift> unitOfWork) : base(unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    private protected override int GetEntityId(Shift entity) => entity.Id;
 
     /// <summary>
-    /// Fetches all shifts from the system.
+    /// Fetches all entities from the system.
     /// </summary>
-    /// <returns>A list of all shifts, or NoContent if no shifts are found.</returns>
+    /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
     [HttpGet]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult GetAllShifts()
+    public override IActionResult GetAllEntities()
     {
         var shifts = from shift in _unitOfWork.Repository.Get() 
             select shift; 
@@ -32,141 +36,31 @@ public class ShiftsController : ControllerBase
 
         return shifts.Any() ? Ok(shifts) : NoContent();
     }
-
+    
     /// <summary>
-    /// Fetches a specific shift by its ID.
+    /// Fetches a specific entity by its ID.
     /// </summary>
-    /// <param name="id">The ID of the shift to retrieve.</param>
-    /// <returns>The shift with the specified ID if found,
+    /// <param name="id">The ID of the entity to retrieve.</param>
+    /// <returns>The entity with the specified ID if found,
     /// or an error response if not found or if the request is invalid.</returns>
     [HttpGet("{id:int}")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(Shift), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult GetShiftById(int id)
+    public override IActionResult GetEntryById(int id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
         
-        var shift = _unitOfWork.Repository.GetById(id);
-        if (shift is not null)
+        var entity = _unitOfWork.Repository.GetById(id);
+        if (entity is not null)
         {
-            return Ok(shift);
+            return Ok(entity);
         }
         
         return NotFound($"Shift with ID: {id} not found");
-    }
-
-    /// <summary>
-    /// Adds a new shift to the system.
-    /// </summary>
-    /// <param name="shift">The shift object containing details about the shift to be added.</param>
-    /// <returns>An action result indicating the outcome of the operation,
-    /// including the created shift on success or an error response on failure.</returns>
-    [HttpPost]
-    [Consumes("application/json")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(Shift), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult AddShift([FromBody] Shift shift)
-    {
-        try
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _unitOfWork.Repository.Insert(shift);
-            _unitOfWork.Save();
-        }
-        catch (DataException dex)
-        {
-            ModelState.AddModelError("", dex.Message);
-            return BadRequest("Failed to add shift");
-        }
-        
-        return CreatedAtAction(
-            nameof(GetShiftById), 
-            new { id = shift.Id }, 
-            shift
-        );
-    }
-
-    /// <summary>
-    /// Updates an existing shift.
-    /// </summary>
-    /// <param name="id">The ID of the shift to update.</param>
-    /// <param name="shift">The shift object with updated details.</param>
-    /// <returns>Returns OK if the update is successful;
-    /// BadRequest if the ID does not match or the update fails.</returns>
-    [HttpPut("{id:int}")]
-    [Consumes("application/json")]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult UpdateShift(int id, [FromBody] Shift shift)
-    {
-        try
-        {
-            if (id != shift.Id)
-            {
-                return BadRequest("Shift ID does not match");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _unitOfWork.Repository.Update(shift);
-        }
-        catch (DataException dex)
-        {
-            ModelState.AddModelError("", dex.Message);
-            return BadRequest("Failed to update shift");
-        }
-        
-        return Ok();
-    }
-
-    /// <summary>
-    /// Deletes a shift by its ID.
-    /// </summary>
-    /// <param name="id">The ID of the shift to delete.</param>
-    /// <returns>A status indicating the result of the operation.</returns>
-    [HttpDelete("{id:int}")]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult DeleteShift(int id)
-    {
-        try
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var shift = _unitOfWork.Repository.GetById(id);
-            if (shift is null)
-            {
-                return NotFound($"Shift with ID: {id} not found");
-            }
-            
-            _unitOfWork.Repository.Delete(id);
-            _unitOfWork.Save();
-
-        }
-        catch (DataException dex)
-        {
-            ModelState.AddModelError("", dex.Message);
-            return BadRequest("Failed to remove shift");
-        }
-        
-        return Ok();
     }
 }

@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="Interfaces\Data\Database\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

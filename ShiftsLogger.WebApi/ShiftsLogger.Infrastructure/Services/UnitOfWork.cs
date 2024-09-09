@@ -9,31 +9,30 @@ public sealed class UnitOfWork<TEntity> : IDisposable, IUnitOfWork<TEntity>
     where TEntity : class
 {
     private readonly ShiftsLoggerDbContext _context;
-    private IGenericRepository<TEntity>? _repository;
-    
-    private bool disposed = false;
+    private readonly Lazy<IGenericRepository<TEntity>> _repository;
+    private bool _disposed = false;
 
-    public IGenericRepository<TEntity> Repository => 
-        _repository ??= 
-            new GenericRepository<TEntity>(_context);
+    public IGenericRepository<TEntity> Repository =>
+        _repository.Value;
     
     public UnitOfWork(ShiftsLoggerDbContext context)
     {
         _context = context;
+        _repository = new Lazy<IGenericRepository<TEntity>>(
+            () => new GenericRepository<TEntity>(context));
     }
     
     public void Save() => _context.SaveChanges();
+    
+    public async Task SaveAsync() => await _context.SaveChangesAsync();
 
     private void Dispose(bool disposing)
     {
-        if (!this.disposed)
+        if (!_disposed && disposing)
         {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
+            _context.Dispose();
         }
-        this.disposed = true;
+        _disposed = true;
     }
     
     public void Dispose()

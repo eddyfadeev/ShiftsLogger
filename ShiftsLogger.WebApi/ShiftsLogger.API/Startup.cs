@@ -1,7 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.HttpOverrides;
 using ShiftsLogger.API.Extensions;
-using ShiftsLogger.Application.Extensions;
 using ShiftsLogger.Infrastructure.Extensions;
 
 namespace ShiftsLogger.API;
@@ -21,6 +19,7 @@ public class Startup
         services.ConfigureIisIntegration();
         services.ConfigureDbContext(_configuration);
         services.ConfigureRepositories();
+        services.ConfigureUnitOfWork();
         
         services.AddControllers()
             .AddJsonOptions(options => 
@@ -30,7 +29,6 @@ public class Startup
         
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
-        services.ConfigureAppServices();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

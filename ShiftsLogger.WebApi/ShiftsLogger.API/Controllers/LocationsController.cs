@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Data;
+using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Models;
 
@@ -9,30 +10,34 @@ namespace ShiftsLogger.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class LocationsController : ControllerBase
+public class LocationsController : BaseController<Location>
 {
-    private readonly ILocationService _locationService;
-
-    public LocationsController(ILocationService locationService)
+    private readonly IUnitOfWork<Location> _unitOfWork;
+    
+    public LocationsController(IUnitOfWork<Location> unitOfWork) : base(unitOfWork)
     {
-        _locationService = locationService;
+        _unitOfWork = unitOfWork;
     }
 
+    private protected override int GetEntityId(Location entity) => entity.Id;
+
     /// <summary>
-    /// Retrieves all work locations.
+    /// Fetches all entities from the system.
     /// </summary>
-    /// <returns>A list of all locations or a NoContent status if no locations are found.</returns>
+    /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
     [HttpGet]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<Location>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult GetAllLocations()
+    public override IActionResult GetAllEntities()
     {
-        var locations = from l in _locationService.GetAllLocations() select l;
+        var locations = from loc in _unitOfWork.Repository.Get() 
+            select loc; 
+                
 
-        return !locations.Any() ? NoContent() : Ok(locations);
+        return locations.Any() ? Ok(locations) : NoContent();
     }
-
+    
     /// <summary>
     /// Retrieves a work location specified by its unique identifier.
     /// </summary>
@@ -43,112 +48,19 @@ public class LocationsController : ControllerBase
     [ProducesResponseType(typeof(Location), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult GetLocationById(int id)
+    public override IActionResult GetEntryById(int id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
         
-        var location = _locationService.GetLocation(id);
+        var location = _unitOfWork.Repository.GetById(id);
         if (location is not null)
         {
             return Ok(location);
         }
         
         return NotFound($"Location with ID: {id} not found");
-    }
-
-    /// <summary>
-    /// Adds a new location.
-    /// </summary>
-    /// <param name="location">A work location to be added.</param>
-    /// <returns>A status indicating the result of the operation.</returns>
-    [HttpPost]
-    [Consumes("application/json")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(Location), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult AddLocation([FromBody] Location location)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var result = _locationService.AddLocation(location);
-        if (result > 0)
-        {
-            return CreatedAtAction(
-                nameof(GetLocationById), 
-                new { id = location.Id }, 
-                location
-                );
-        }
-        
-        return BadRequest("Failed to add location");
-    }
-
-    /// <summary>
-    /// Updates the specified work location with the provided new details.
-    /// </summary>
-    /// <param name="id">The ID of the location to be updated.</param>
-    /// <param name="location">The updated location details.</param>
-    /// <returns>Returns a status indicating whether the update was successful or not.</returns>
-    [HttpPut("{id:int}")]
-    [Consumes("application/json")]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult UpdateLocation(int id, [FromBody] Location location)
-    {
-        if (id != location.Id)
-        {
-            return BadRequest("Location ID does not match");
-        }
-
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var result = _locationService.UpdateLocation(location);
-        if (result > 0)
-        {
-            return Ok();
-        }
-        
-        return BadRequest("Failed to update location");
-    }
-
-    /// <summary>
-    /// Deletes a work location by its identifier.
-    /// </summary>
-    /// <param name="id">The identifier of the location to be deleted.</param>
-    /// <returns>Returns an OK status if the location is successfully deleted, a NotFound status if the location is not found, or a BadRequest status if the request is invalid.</returns>
-    [HttpDelete("{id:int}")]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult DeleteLocation(int id)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var location = _locationService.GetLocation(id);
-        if (location is null)
-        {
-            return NotFound($"Location with ID: {id} not found");
-        }
-        
-        var result = _locationService.RemoveLocation(location);
-        if (result > 0)
-        {
-            return Ok();
-        }
-        
-        return BadRequest("Failed to remove location");
     }
 }
