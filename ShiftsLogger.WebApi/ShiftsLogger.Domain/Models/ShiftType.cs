@@ -9,5 +9,5 @@ public class ShiftType
     
     // Navigation property
     [JsonIgnore]
-    public virtual ICollection<Shift> Shifts { get; set; }
+    public virtual ICollection<Shift>? Shifts { get; set; }
 }

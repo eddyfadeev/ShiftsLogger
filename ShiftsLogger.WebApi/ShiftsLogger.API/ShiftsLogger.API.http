@@ -1,6 +1,0 @@
-@ShiftsLogger.API_HostAddress = https://localhost:5239
-
-GET https://localhost:44317/weatherforecast/
-Accept: application/json
-
-###

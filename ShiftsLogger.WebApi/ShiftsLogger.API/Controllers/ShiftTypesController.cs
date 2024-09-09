@@ -30,11 +30,9 @@ public class ShiftTypesController : BaseController<ShiftType>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public override IActionResult GetAllEntities()
     {
-        var shiftsTypes = from st in _unitOfWork.Repository.Get() 
-            select st; 
-                
+        var shiftsTypes = _unitOfWork.Repository.Get(); 
 
-        return shiftsTypes.Any() ? Ok(shiftsTypes) : NoContent();
+        return shiftsTypes.Count > 0 ? Ok(shiftsTypes) : NoContent();
     }
     
     /// <summary>

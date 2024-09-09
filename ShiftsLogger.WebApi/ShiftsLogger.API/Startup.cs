@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using ShiftsLogger.API.Extensions;
+using ShiftsLogger.API.Middleware;
 using ShiftsLogger.Infrastructure.Extensions;
 
 namespace ShiftsLogger.API;
@@ -48,6 +49,8 @@ public class Startup
         {
             app.UseHsts();
         }
+
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
         
         app.UseHttpsRedirection();
         

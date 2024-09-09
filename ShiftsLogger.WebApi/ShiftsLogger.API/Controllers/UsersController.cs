@@ -32,7 +32,7 @@ public class UsersController : BaseController<User>
     {
         var users = _unitOfWork.Repository.Get();
 
-        return users.Any() ? Ok(users) : NoContent();
+        return users.Count > 0 ? Ok(users) : NoContent();
     }
     
     /// <summary>

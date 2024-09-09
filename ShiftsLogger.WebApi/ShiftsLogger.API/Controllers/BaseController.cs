@@ -51,18 +51,17 @@ public abstract class BaseController<TEntity> : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult AddEntity([FromBody] TEntity entity)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         try
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             _unitOfWork.Repository.Insert(entity);
             _unitOfWork.Save();
             
-            var entityId = GetEntityId(entity);
-
+            int entityId = GetEntityId(entity);
             return CreatedAtAction(
                 nameof(GetEntryById),
                 new { id = entityId },
@@ -71,7 +70,7 @@ public abstract class BaseController<TEntity> : ControllerBase
         catch (DataException dex)
         {
             ModelState.AddModelError("", dex.Message);
-            return BadRequest("Failed to add shift");
+            return BadRequest($"Failed to add entity {nameof(TEntity)}");
         }
     }
 
@@ -89,29 +88,28 @@ public abstract class BaseController<TEntity> : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult UpdateEntity(int id, [FromBody] TEntity entity)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        int entityId = GetEntityId(entity);
+        if (id != entityId)
+        {
+            return BadRequest($"Entity {nameof(TEntity)} ID does not match");
+        }
+        
         try
         {
-            int entityId = GetEntityId(entity);
-            
-            if (id != entityId)
-            {
-                return BadRequest($"Entity {nameof(TEntity)} ID does not match");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             _unitOfWork.Repository.Update(entity);
+            _unitOfWork.Save();
+            return Ok(entity);
         }
         catch (DataException dex)
         {
             ModelState.AddModelError("", dex.Message);
             return BadRequest($"Failed to update entity {nameof(TEntity)}");
         }
-        
-        return Ok(entity);
     }
 
     /// <summary>
@@ -125,13 +123,13 @@ public abstract class BaseController<TEntity> : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult DeleteEntity(int id)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         try
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var entity = _unitOfWork.Repository.GetById(id);
             if (entity is null)
             {
@@ -140,6 +138,7 @@ public abstract class BaseController<TEntity> : ControllerBase
             
             _unitOfWork.Repository.Delete(id);
             _unitOfWork.Save();
+            return Ok($"Entity {nameof(TEntity)} with ID: {id} was deleted.");
 
         }
         catch (DataException dex)
@@ -147,7 +146,5 @@ public abstract class BaseController<TEntity> : ControllerBase
             ModelState.AddModelError("", dex.Message);
             return BadRequest($"Failed to remove entity {nameof(TEntity)}");
         }
-        
-        return Ok();
     }
 }

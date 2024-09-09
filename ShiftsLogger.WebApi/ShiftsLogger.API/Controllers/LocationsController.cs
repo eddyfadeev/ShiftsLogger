@@ -30,11 +30,10 @@ public class LocationsController : BaseController<Location>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public override IActionResult GetAllEntities()
     {
-        var locations = from loc in _unitOfWork.Repository.Get() 
-            select loc; 
+        var locations = _unitOfWork.Repository.Get(); 
                 
 
-        return locations.Any() ? Ok(locations) : NoContent();
+        return locations.Count > 0 ? Ok(locations) : NoContent();
     }
     
     /// <summary>

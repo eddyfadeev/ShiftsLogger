@@ -5,7 +5,7 @@ using ShiftsLogger.Infrastructure.Data.Repository;
 
 namespace ShiftsLogger.Infrastructure.Services;
 
-public sealed class UnitOfWork<TEntity> : IDisposable, IUnitOfWork<TEntity>
+public sealed class UnitOfWork<TEntity> : IDisposable, IAsyncDisposable, IUnitOfWork<TEntity>
     where TEntity : class
 {
     private readonly ShiftsLoggerDbContext _context;
@@ -38,6 +38,16 @@ public sealed class UnitOfWork<TEntity> : IDisposable, IUnitOfWork<TEntity>
     public void Dispose()
     {
         Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (!_disposed)
+        {
+            await _context.DisposeAsync();
+            _disposed = true;
+        }
         GC.SuppressFinalize(this);
     }
 }
