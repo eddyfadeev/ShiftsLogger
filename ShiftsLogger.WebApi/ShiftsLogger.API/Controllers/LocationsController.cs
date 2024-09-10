@@ -8,7 +8,7 @@ namespace ShiftsLogger.API.Controllers;
 /// LocationsController handles all HTTP requests related to working location management.
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/[controller]")]
 public class LocationsController : BaseController<Location>
 {
     private readonly IUnitOfWork<Location> _unitOfWork;

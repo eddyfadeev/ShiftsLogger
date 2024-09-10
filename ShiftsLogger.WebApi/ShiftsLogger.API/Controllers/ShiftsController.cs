@@ -8,7 +8,7 @@ namespace ShiftsLogger.API.Controllers;
 /// Handles operations related to work shifts, such as fetching, adding, updating, and deleting shifts.
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/[controller]")]
 public class ShiftsController : BaseController<Shift>
 {
     private readonly IUnitOfWork<Shift> _unitOfWork;
@@ -17,8 +17,6 @@ public class ShiftsController : BaseController<Shift>
     {
         _unitOfWork = unitOfWork;
     }
-
-    private protected override int GetEntityId(Shift entity) => entity.Id;
 
     /// <summary>
     /// Fetches all entities from the system.
@@ -34,6 +32,97 @@ public class ShiftsController : BaseController<Shift>
         
         return shifts.Count > 0 ? Ok(shifts) : NoContent();
         }
+    
+    [HttpGet("user/{userId:int}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(Shift), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetShiftsByUser(int userId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var isUserFound = await _unitOfWork.Repository.ExistsAsync(
+            userId, s =>
+                s.UserId == userId
+            );
+        
+        if (!isUserFound)
+        {
+            return NotFound($"User with ID: {userId} not found");
+        }
+        
+        var shiftsByUser = await _unitOfWork.Repository.GetAsync(
+            s => 
+                s.UserId == userId
+        );
+        
+        return shiftsByUser.Count > 0? Ok(shiftsByUser) : NoContent();
+    }
+    
+    [HttpGet("location/{locationId:int}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetShiftsByLocation(int locationId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var isLocationFound = await _unitOfWork.Repository.ExistsAsync(
+            locationId, s => 
+                s.LocationId == locationId
+        );
+        
+        if (!isLocationFound)
+        {
+            return NotFound($"Location with ID: {locationId} not found");
+        }
+
+        var shiftsByLocation = await _unitOfWork.Repository.GetAsync(
+            s => 
+                s.LocationId == locationId
+        );
+        
+        return shiftsByLocation.Count > 0? Ok(shiftsByLocation) : NoContent();
+    }
+
+    [HttpGet("shiftType/{shiftTypeId:int}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetShiftsByShiftType(int shiftTypeId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var isShiftTypeFound = await _unitOfWork.Repository.ExistsAsync(
+            shiftTypeId, s => 
+                s.ShiftTypeId == shiftTypeId
+            );
+        
+        if (!isShiftTypeFound)
+        {
+            return NotFound($"Shift type with ID: {shiftTypeId} not found");
+        }
+        
+        var shiftsByShiftType = await _unitOfWork.Repository.GetAsync(
+            s => 
+                s.ShiftTypeId == shiftTypeId
+        );
+        
+        return shiftsByShiftType.Count > 0? Ok(shiftsByShiftType) : NoContent();
+    }
     
     /// <summary>
     /// Fetches a specific entity by its ID.
@@ -61,4 +150,6 @@ public class ShiftsController : BaseController<Shift>
         
         return NotFound($"Shift with ID: {id} not found");
     }
+    
+    private protected override int GetEntityId(Shift entity) => entity.Id;
 }

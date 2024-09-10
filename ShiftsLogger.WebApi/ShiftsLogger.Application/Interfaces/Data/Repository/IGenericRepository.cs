@@ -25,5 +25,5 @@ public interface IGenericRepository<TEntity>
     Task InsertAsync(TEntity entityToInsert);
     Task DeleteAsync(object idToDelete);
     Task UpdateAsync(TEntity entityToUpdate);
-    Task<bool> ExistsAsync(int id);
+    Task<bool> ExistsAsync(int id, Expression<Func<TEntity, bool>>? filter = null);
 }

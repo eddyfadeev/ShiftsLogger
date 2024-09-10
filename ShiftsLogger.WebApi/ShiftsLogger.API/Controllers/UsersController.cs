@@ -8,7 +8,7 @@ namespace ShiftsLogger.API.Controllers;
 /// Handles operations related to Users.
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/[controller]")]
 public class UsersController : BaseController<User>
 {
     private readonly IUnitOfWork<User> _unitOfWork;

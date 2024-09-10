@@ -147,6 +147,20 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         await _context.SaveChangesAsync();
     }
     
-    public virtual async Task<bool> ExistsAsync(int id) =>
-        await _context.FindAsync<TEntity>(id) is not null;
+    public virtual async Task<bool> ExistsAsync(int id, Expression<Func<TEntity, bool>>? filter = null)
+    {
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
+
+        if (filter is not null)
+        {
+            query = query.Where(filter);
+        }
+        else
+        {
+            var entity = await _dbSet.FindAsync(id);
+            return entity is not null;
+        }
+        
+        return await query.AnyAsync();
+    }
 }

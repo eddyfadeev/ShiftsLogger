@@ -8,7 +8,7 @@ namespace ShiftsLogger.API.Controllers;
 /// Controller to manage operations related to shift types.
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/[controller]")]
 public class ShiftTypesController : BaseController<ShiftType>
 {
     private readonly IUnitOfWork<ShiftType> _unitOfWork;
