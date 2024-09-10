@@ -26,7 +26,7 @@ public abstract class BaseController<TEntity> : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public abstract IActionResult GetEntryById(int id);
+    public abstract Task<IActionResult> GetEntryById(int id);
 
     /// <summary>
     /// Fetches all entities from the system.

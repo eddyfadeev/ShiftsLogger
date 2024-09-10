@@ -45,14 +45,14 @@ public class UsersController : BaseController<User>
     [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override IActionResult GetEntryById(int id)
+    public override async Task<IActionResult> GetEntryById(int id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
         
-        var user = _unitOfWork.Repository.GetById(id);
+        var user = await _unitOfWork.Repository.GetByIdAsync(id);
         if (user is not null)
         {
             return Ok(user);

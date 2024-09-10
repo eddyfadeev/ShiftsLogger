@@ -46,14 +46,14 @@ public class LocationsController : BaseController<Location>
     [ProducesResponseType(typeof(Location), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override IActionResult GetEntryById(int id)
+    public override async Task<IActionResult> GetEntryById(int id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
         
-        var location = _unitOfWork.Repository.GetById(id);
+        var location = await _unitOfWork.Repository.GetByIdAsync(id);
         if (location is not null)
         {
             return Ok(location);

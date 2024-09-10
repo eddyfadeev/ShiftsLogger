@@ -46,14 +46,14 @@ public class ShiftsController : BaseController<Shift>
     [ProducesResponseType(typeof(Shift), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override IActionResult GetEntryById(int id)
+    public override async Task<IActionResult> GetEntryById(int id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
         
-        var entity = _unitOfWork.Repository.GetById(id);
+        var entity = await _unitOfWork.Repository.GetByIdAsync(id);
         if (entity is not null)
         {
             return Ok(entity);
