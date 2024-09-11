@@ -1,3 +1,6 @@
 ﻿namespace ShiftsLogger.Domain.Interfaces;
 
-public interface IDbModel;
+public interface IDbModel
+{
+    int Id { get; init; }
+}

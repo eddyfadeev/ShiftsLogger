@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.Infrastructure.Data;
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShiftsLogger.Application.Interfaces.Data.Repository;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Entity;
 using ShiftsLogger.Infrastructure.Data.Repository;
 
 namespace ShiftsLogger.Infrastructure.Extensions;

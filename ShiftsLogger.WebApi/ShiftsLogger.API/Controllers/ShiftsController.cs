@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.API.Controllers;
 
@@ -8,7 +9,7 @@ namespace ShiftsLogger.API.Controllers;
 /// Handles operations related to work shifts, such as fetching, adding, updating, and deleting shifts.
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/[controller]")]
 public class ShiftsController : BaseController<Shift>
 {
     private readonly IUnitOfWork<Shift> _unitOfWork;
@@ -17,8 +18,6 @@ public class ShiftsController : BaseController<Shift>
     {
         _unitOfWork = unitOfWork;
     }
-
-    private protected override int GetEntityId(Shift entity) => entity.Id;
 
     /// <summary>
     /// Fetches all entities from the system.
@@ -46,14 +45,14 @@ public class ShiftsController : BaseController<Shift>
     [ProducesResponseType(typeof(Shift), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override IActionResult GetEntryById(int id)
+    public override async Task<IActionResult> GetEntryById(int id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
         
-        var entity = _unitOfWork.Repository.GetById(id);
+        var entity = await _unitOfWork.Repository.GetByIdAsync(id);
         if (entity is not null)
         {
             return Ok(entity);
@@ -61,4 +60,6 @@ public class ShiftsController : BaseController<Shift>
         
         return NotFound($"Shift with ID: {id} not found");
     }
+    
+    private protected override int GetEntityId(Shift entity) => entity.Id;
 }
