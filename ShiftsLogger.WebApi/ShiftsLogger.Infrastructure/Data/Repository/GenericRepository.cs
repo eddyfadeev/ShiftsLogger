@@ -43,7 +43,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     
     public virtual async Task<TEntity?> GetByIdAsync(int idToFind, string includeProperties)
     {
-        var query = BuildQuery(null, includeProperties);
+        var query = BuildQuery(includeProperties: includeProperties);
         var entity = await query.FirstOrDefaultAsync(e => e.Id == idToFind);
         DetachIfTracked(entity);
         return entity;
