@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.Domain.Validators;
 

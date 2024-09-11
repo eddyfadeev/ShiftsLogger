@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.API.Controllers;
 

@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ShiftsLogger.API.Extensions;
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Dto;
+using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.API.Controllers;
 
@@ -24,7 +28,7 @@ public class LocationsController : BaseController<Location>
     /// Fetches all entities from the system.
     /// </summary>
     /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
-    [HttpGet]
+    [HttpGet("all")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<Location>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -54,11 +58,39 @@ public class LocationsController : BaseController<Location>
         }
         
         var location = await _unitOfWork.Repository.GetByIdAsync(id);
-        if (location is not null)
+        if (location is null)
         {
-            return Ok(location);
+            return NotFound($"Location with ID: {id} not found");
         }
         
-        return NotFound($"Location with ID: {id} not found");
+        return Ok(location);
+    }
+
+    [HttpGet("shifts/{locationId:int}")]
+    public async Task<IActionResult> GetShiftsByLocation(int locationId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        var location = await _unitOfWork.Repository.GetByIdAsync(
+            locationId,
+            includeProperties: "Shifts"
+                );
+
+        if (location is null)
+        {
+            return NotFound($"Location with ID: {locationId} not found");
+        }
+        
+        if (location.Shifts.Count == 0)
+        {
+            return NotFound("No shifts found for this location");
+        }
+
+        var locationDto = location.MapLocationToDto();
+        
+        return Ok(locationDto);
     }
 }

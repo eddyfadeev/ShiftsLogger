@@ -1,4 +1,4 @@
-﻿namespace ShiftsLogger.Domain.Models;
+﻿namespace ShiftsLogger.Domain.Models.Entity;
 
 public class ShiftLog
 {

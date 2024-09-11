@@ -3,6 +3,7 @@ using ShiftsLogger.Application.Interfaces.Data.Repository;
 using ShiftsLogger.Application.Interfaces.Events;
 using ShiftsLogger.Domain.Events;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.Application.Events.Handlers;
 
