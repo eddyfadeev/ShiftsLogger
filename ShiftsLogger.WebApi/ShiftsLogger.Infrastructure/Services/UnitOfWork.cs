@@ -7,26 +7,32 @@ using ShiftsLogger.Infrastructure.Data.Repository;
 
 namespace ShiftsLogger.Infrastructure.Services;
 
-public sealed class UnitOfWork<TEntity> : IDisposable, IAsyncDisposable, IUnitOfWork<TEntity>
-    where TEntity : class, IDbModel
+public sealed class UnitOfWork : IDisposable, IAsyncDisposable, IUnitOfWork
 {
     private readonly ShiftsLoggerDbContext _context;
-    private readonly Lazy<IGenericRepository<TEntity>> _repository;
+    private readonly Dictionary<Type, object> _repositories = new();
+    private readonly IEventPublisher _eventPublisher;
     private bool _disposed;
-
-    public IGenericRepository<TEntity> Repository =>
-        _repository.Value;
     
     public UnitOfWork(ShiftsLoggerDbContext context, IEventPublisher eventPublisher)
     {
         _context = context;
-        _repository = new Lazy<IGenericRepository<TEntity>>(
-            () => new GenericRepository<TEntity>(context, eventPublisher));
+        _eventPublisher = eventPublisher;
     }
     
-    public void Save() => _context.SaveChanges();
+    public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class, IDbModel
+    {
+        if (_repositories.ContainsKey(typeof(TEntity)))
+        {
+            return (IGenericRepository<TEntity>) _repositories[typeof(TEntity)];
+        }
+        
+        var repository = new GenericRepository<TEntity>(_context, _eventPublisher);
+        _repositories.Add(typeof(TEntity), repository);
+        return repository;
+    }
     
-    public async Task SaveAsync() => await _context.SaveChangesAsync();
+    public async Task CompleteAsync() => await _context.SaveChangesAsync();
 
     private void Dispose(bool disposing)
     {

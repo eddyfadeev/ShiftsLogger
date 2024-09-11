@@ -13,9 +13,9 @@ namespace ShiftsLogger.API.Controllers;
 [Route("api/v1/[controller]")]
 public class UsersController : BaseController<User>
 {
-    private readonly IUnitOfWork<User> _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UsersController(IUnitOfWork<User> unitOfWork) : base(unitOfWork)
+    public UsersController(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -32,7 +32,7 @@ public class UsersController : BaseController<User>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public override async Task<IActionResult> GetAllEntities()
     {
-        var users = await _unitOfWork.Repository.GetAsync();
+        var users = await _unitOfWork.Repository<User>().GetAsync();
 
         return users.Count > 0 ? Ok(users) : NoContent();
     }
@@ -54,7 +54,7 @@ public class UsersController : BaseController<User>
             return BadRequest(ModelState);
         }
         
-        var user = await _unitOfWork.Repository.GetByIdAsync(id);
+        var user = await _unitOfWork.Repository<User>().GetByIdAsync(id);
         if (user is not null)
         {
             return Ok(user);
@@ -81,7 +81,7 @@ public class UsersController : BaseController<User>
             return BadRequest(ModelState);
         }
 
-        var user = await _unitOfWork.Repository.GetByIdAsync(
+        var user = await _unitOfWork.Repository<User>().GetByIdAsync(
             userId,
             includeProperties: "Shifts"
         );

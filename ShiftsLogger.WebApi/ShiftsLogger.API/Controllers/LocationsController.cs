@@ -17,9 +17,9 @@ namespace ShiftsLogger.API.Controllers;
 [Route("api/v1/[controller]")]
 public class LocationsController : BaseController<Location>
 {
-    private readonly IUnitOfWork<Location> _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     
-    public LocationsController(IUnitOfWork<Location> unitOfWork) : base(unitOfWork)
+    public LocationsController(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -36,7 +36,7 @@ public class LocationsController : BaseController<Location>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public override async Task<IActionResult> GetAllEntities()
     {
-        var locations = await _unitOfWork.Repository.GetAsync(); 
+        var locations = await _unitOfWork.Repository<Location>().GetAsync(); 
                 
 
         return locations.Count > 0 ? Ok(locations) : NoContent();
@@ -59,7 +59,7 @@ public class LocationsController : BaseController<Location>
             return BadRequest(ModelState);
         }
         
-        var location = await _unitOfWork.Repository.GetByIdAsync(id);
+        var location = await _unitOfWork.Repository<Location>().GetByIdAsync(id);
         if (location is null)
         {
             return NotFound($"Location with ID: {id} not found");
@@ -86,7 +86,7 @@ public class LocationsController : BaseController<Location>
             return BadRequest(ModelState);
         }
         
-        var location = await _unitOfWork.Repository.GetByIdAsync(
+        var location = await _unitOfWork.Repository<Location>().GetByIdAsync(
             locationId,
             includeProperties: "Shifts"
                 );

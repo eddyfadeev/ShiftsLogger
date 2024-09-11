@@ -10,9 +10,6 @@ public static class UnitOfWorkExtensions
 {
     public static void ConfigureUnitOfWork(this IServiceCollection services)
     {
-        services.AddScoped<IUnitOfWork<Shift>, UnitOfWork<Shift>>();
-        services.AddScoped<IUnitOfWork<ShiftType>, UnitOfWork<ShiftType>>();
-        services.AddScoped<IUnitOfWork<Location>, UnitOfWork<Location>>();
-        services.AddScoped<IUnitOfWork<User>, UnitOfWork<User>>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

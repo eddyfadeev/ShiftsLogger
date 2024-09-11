@@ -1,16 +1,17 @@
 ﻿using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Application.Interfaces.Services;
+using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.API.Controllers;
 
 public abstract class BaseController<TEntity> : ControllerBase 
-    where TEntity : class
+    where TEntity : class, IDbModel
 {
-    private readonly IUnitOfWork<TEntity> _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     
-    protected BaseController(IUnitOfWork<TEntity> unitOfWork) => 
+    protected BaseController(IUnitOfWork unitOfWork) => 
         _unitOfWork = unitOfWork;
     
     private protected abstract int GetEntityId(TEntity entity);
@@ -58,8 +59,8 @@ public abstract class BaseController<TEntity> : ControllerBase
         
         try
         {
-            await _unitOfWork.Repository.InsertAsync(entity);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.Repository<TEntity>().InsertAsync(entity);
+            await _unitOfWork.CompleteAsync();
             
             int entityId = GetEntityId(entity);
             return CreatedAtAction(
@@ -101,8 +102,8 @@ public abstract class BaseController<TEntity> : ControllerBase
         
         try
         {
-            await _unitOfWork.Repository.UpdateAsync(entity);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.Repository<TEntity>().UpdateAsync(entity);
+            await _unitOfWork.CompleteAsync();
             return Ok(entity);
         }
         catch (DataException dex)
@@ -130,14 +131,14 @@ public abstract class BaseController<TEntity> : ControllerBase
         
         try
         {
-            var entity = await _unitOfWork.Repository.GetByIdAsync(id);
+            var entity = await _unitOfWork.Repository<TEntity>().GetByIdAsync(id);
             if (entity is null)
             {
                 return NotFound($"Entity {nameof(TEntity)} with ID: {id} not found");
             }
             
-            await _unitOfWork.Repository.DeleteAsync(id);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.Repository<TEntity>().DeleteAsync(id);
+            await _unitOfWork.CompleteAsync();
             return Ok($"Entity {nameof(TEntity)} with ID: {id} was deleted.");
 
         }

@@ -1,11 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using ShiftsLogger.Application.Interfaces.Data.Repository;
 using ShiftsLogger.Application.Interfaces.Events;
 using ShiftsLogger.Domain.Events;
 using ShiftsLogger.Domain.Interfaces;
-using ShiftsLogger.Domain.Models;
 
 namespace ShiftsLogger.Infrastructure.Data.Repository;
 

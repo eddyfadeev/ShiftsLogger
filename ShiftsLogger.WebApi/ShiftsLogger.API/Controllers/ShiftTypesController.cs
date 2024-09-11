@@ -13,9 +13,9 @@ namespace ShiftsLogger.API.Controllers;
 [Route("api/v1/[controller]")]
 public class ShiftTypesController : BaseController<ShiftType>
 {
-    private readonly IUnitOfWork<ShiftType> _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public ShiftTypesController(IUnitOfWork<ShiftType> unitOfWork) : base(unitOfWork)
+    public ShiftTypesController(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -32,7 +32,7 @@ public class ShiftTypesController : BaseController<ShiftType>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public override async Task<IActionResult> GetAllEntities()
     {
-        var shiftsTypes = await _unitOfWork.Repository.GetAsync(); 
+        var shiftsTypes = await _unitOfWork.Repository<ShiftType>().GetAsync(); 
 
         return shiftsTypes.Count > 0 ? Ok(shiftsTypes) : NoContent();
     }
@@ -58,7 +58,7 @@ public class ShiftTypesController : BaseController<ShiftType>
             return BadRequest(ModelState);
         }
         
-        var shiftType = await _unitOfWork.Repository.GetByIdAsync(id);
+        var shiftType = await _unitOfWork.Repository<ShiftType>().GetByIdAsync(id);
         if (shiftType is not null)
         {
             return Ok(shiftType);
@@ -85,7 +85,7 @@ public class ShiftTypesController : BaseController<ShiftType>
             return BadRequest(ModelState);
         }
         
-        var shiftType = await _unitOfWork.Repository.GetByIdAsync(
+        var shiftType = await _unitOfWork.Repository<ShiftType>().GetByIdAsync(
             shiftTypeId,
             includeProperties: "Shifts"
         );
