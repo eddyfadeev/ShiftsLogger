@@ -4,5 +4,6 @@ namespace ShiftsLogger.Application.Interfaces.Events;
 
 public interface IEventPublisher
 {
-    Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent;
+    Task PublishInteractionEvent<TEntity>(TEntity entity)
+        where TEntity : class, IDbModel;
 }

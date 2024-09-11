@@ -51,15 +51,20 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     {
         ArgumentNullException.ThrowIfNull(entityToInsert);
         await _dbSet.AddAsync(entityToInsert);
-        await _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToInsert));
+        await _eventPublisher.PublishInteractionEvent(entityToInsert);
     }
 
     public virtual async Task DeleteAsync(object idToDelete)
     {
         var entityToDelete = await _dbSet.FindAsync(idToDelete);
         ArgumentNullException.ThrowIfNull(entityToDelete);
-        Delete(entityToDelete);
-        await _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToDelete));
+        
+        if (_context.Entry(entityToDelete).State == EntityState.Detached)
+        {
+            _dbSet.Attach(entityToDelete);
+        }
+        _dbSet.Remove(entityToDelete);
+        await _eventPublisher.PublishInteractionEvent(entityToDelete);
     }
 
     public virtual async Task UpdateAsync(TEntity entityToUpdate)
@@ -68,25 +73,13 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         _dbSet.Attach(entityToUpdate);
         _context.Entry(entityToUpdate).State = EntityState.Modified;
         await _context.SaveChangesAsync();
-        await _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToUpdate));
+        await _eventPublisher.PublishInteractionEvent(entityToUpdate);
     }
     
     public virtual async Task<bool> ExistsAsync(int id, Expression<Func<TEntity, bool>>? filter = null)
     {
         var query = BuildQuery(filter);
         return await query.AnyAsync(e => e.Id == id);
-    }
-    
-    private void Delete(TEntity? entityToDelete)
-    {
-        ArgumentNullException.ThrowIfNull(entityToDelete);
-        
-        if (_context.Entry(entityToDelete).State == EntityState.Detached)
-        {
-            _dbSet.Attach(entityToDelete);
-        }
-        _dbSet.Remove(entityToDelete);
-        _eventPublisher.PublishAsync(new DatabaseInteractionEvent<TEntity>(entityToDelete));
     }
     
     private IQueryable<TEntity> BuildQuery(

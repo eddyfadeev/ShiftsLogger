@@ -1,4 +1,5 @@
-﻿using ShiftsLogger.Application.Interfaces.Data.Repository;
+﻿using System.Collections.Concurrent;
+using ShiftsLogger.Application.Interfaces.Data.Repository;
 using ShiftsLogger.Application.Interfaces.Events;
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Interfaces;
@@ -10,7 +11,7 @@ namespace ShiftsLogger.Infrastructure.Services;
 public sealed class UnitOfWork : IDisposable, IAsyncDisposable, IUnitOfWork
 {
     private readonly ShiftsLoggerDbContext _context;
-    private readonly Dictionary<Type, object> _repositories = new();
+    private readonly ConcurrentDictionary<Type, object> _repositories = new();
     private readonly IEventPublisher _eventPublisher;
     private bool _disposed;
     
@@ -28,7 +29,8 @@ public sealed class UnitOfWork : IDisposable, IAsyncDisposable, IUnitOfWork
         }
         
         var repository = new GenericRepository<TEntity>(_context, _eventPublisher);
-        _repositories.Add(typeof(TEntity), repository);
+        _repositories.TryAdd(typeof(TEntity), repository);
+        
         return repository;
     }
     
@@ -53,9 +55,18 @@ public sealed class UnitOfWork : IDisposable, IAsyncDisposable, IUnitOfWork
     {
         if (!_disposed)
         {
+            await DisposeAsyncCore();
+            Dispose(false);
+            GC.SuppressFinalize(this);
+        }
+    }
+
+    private async ValueTask DisposeAsyncCore()
+    {
+        if (!_disposed)
+        {
             await _context.DisposeAsync();
             _disposed = true;
         }
-        GC.SuppressFinalize(this);
     }
 }
