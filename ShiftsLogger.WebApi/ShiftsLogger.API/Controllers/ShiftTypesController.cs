@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Application.Interfaces.Services;
+using ShiftsLogger.Domain.Extensions;
 using ShiftsLogger.Domain.Models;
 using ShiftsLogger.Domain.Models.Entity;
 
@@ -64,5 +65,46 @@ public class ShiftTypesController : BaseController<ShiftType>
         }
         
         return NotFound($"Shift type with ID: {id} not found");
+    }
+
+    /// <summary>
+    /// Retrieves all shifts associated with a specific shift type by their unique identifier.
+    /// </summary>
+    /// <param name="shiftTypeId">The unique identifier of the shift type whose shifts are to be retrieved.</param>
+    /// <returns>An IActionResult containing a list of shifts if found;
+    /// otherwise, returns a NotFound or BadRequest result.</returns>
+    [HttpGet("shifts/{shiftTypeId:int}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetShiftsByShiftTypeId(int shiftTypeId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        var shiftType = await _unitOfWork.Repository.GetByIdAsync(
+            shiftTypeId,
+            includeProperties: "Shifts"
+        );
+        
+        if (shiftType is null)
+        {
+            return NotFound($"Shift type with ID: {shiftTypeId} not found");
+        }
+        
+        if (shiftType.Shifts?.Count == 0 || shiftType.Shifts is null)
+        {
+            return NotFound("No shifts found for this shift type");
+        }
+
+        var shiftTypeDto = shiftType.MapShiftTypeToDto() with
+        {
+            Shifts = shiftType.Shifts.Select(s => s.MapShiftToDto()).ToList()
+        };
+        
+        return Ok(shiftTypeDto);
     }
 }
