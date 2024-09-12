@@ -1,7 +1,10 @@
-﻿using Shared.Interfaces;
+﻿using System.Text.Json.Serialization;
+using Shared.Interfaces;
+using Shared.Mappers;
 
 namespace Shared.Models.Entities;
 
+[JsonConverter(typeof(ShiftMapper))]
 public class Shift : IReportModel
 {
     public int Id { get; init; }
