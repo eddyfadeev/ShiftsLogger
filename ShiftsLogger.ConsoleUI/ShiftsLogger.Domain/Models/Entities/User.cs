@@ -1,6 +1,6 @@
-﻿using Shared.Interfaces;
+﻿using ShiftsLogger.Domain.Interfaces;
 
-namespace Shared.Models.Entities;
+namespace ShiftsLogger.Domain.Models.Entities;
 
 public class User : IReportModel
 {

@@ -1,4 +1,4 @@
-﻿namespace Shared.Interfaces;
+﻿namespace ShiftsLogger.Domain.Interfaces;
 
 public interface IReportModel
 {

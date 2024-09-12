@@ -1,4 +1,4 @@
-﻿namespace Shared.Enums;
+﻿namespace ShiftsLogger.Domain.Enums;
 
 public static class ApiEndpoints
 {

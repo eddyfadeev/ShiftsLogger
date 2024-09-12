@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Shared.Interfaces;
-using Shared.Mappers;
+using ShiftsLogger.Domain.Interfaces;
+using ShiftsLogger.Domain.Mappers;
 
-namespace Shared.Models.Entities;
+namespace ShiftsLogger.Domain.Models.Entities;
 
 [JsonConverter(typeof(LocationMapper))]
 public class Location : IReportModel

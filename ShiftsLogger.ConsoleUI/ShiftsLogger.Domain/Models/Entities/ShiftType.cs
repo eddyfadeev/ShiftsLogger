@@ -1,7 +1,10 @@
-﻿using Shared.Interfaces;
+﻿using System.Text.Json.Serialization;
+using ShiftsLogger.Domain.Interfaces;
+using ShiftsLogger.Domain.Mappers;
 
-namespace Shared.Models.Entities;
+namespace ShiftsLogger.Domain.Models.Entities;
 
+[JsonConverter(typeof(ShiftTypeMapper))]
 public class ShiftType : IReportModel
 {
     public int Id { get; init; }

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Shared.Models.Entities;
+using ShiftsLogger.Domain.Models.Entities;
 
-namespace Shared.Mappers;
+namespace ShiftsLogger.Domain.Mappers;
 
 public class ShiftMapper : JsonConverter<Shift>
 {

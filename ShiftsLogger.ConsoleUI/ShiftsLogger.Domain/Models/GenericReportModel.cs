@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Shared.Interfaces;
-using Shared.Models.Entities;
+using ShiftsLogger.Domain.Interfaces;
+using ShiftsLogger.Domain.Models.Entities;
 
-namespace Shared.Models;
+namespace ShiftsLogger.Domain.Models;
 
 public class GenericReportModel<TEntity> where TEntity : class, IReportModel
 {

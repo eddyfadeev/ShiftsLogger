@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using Shared.Enums;
 using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.Infrastructure.Configurations;
 
 namespace ShiftsLogger.Infrastructure.Mappers;

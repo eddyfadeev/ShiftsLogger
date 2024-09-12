@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Shared.Models.Entities;
+using ShiftsLogger.Domain.Models.Entities;
 
-namespace Shared.Mappers;
+namespace ShiftsLogger.Domain.Mappers;
 
 public class LocationMapper : JsonConverter<Location>
 {
@@ -18,7 +18,7 @@ public class LocationMapper : JsonConverter<Location>
         var location = new Location
         {
             Id = jObject.Value<int>(LocationIdKey),
-            Name = jObject.Value<string>(NameKey) ?? string.Empty,
+            Name = jObject.Value<string>(NameKey) ?? "No location name provided",
             Address = jObject.Value<string>(AddressKey)
         };
         
@@ -27,7 +27,7 @@ public class LocationMapper : JsonConverter<Location>
     
     public override void WriteJson(JsonWriter writer, Location? value, JsonSerializer serializer)
     {
-        JObject jObject = new JObject()
+        JObject jObject = new JObject
         {
             { LocationIdKey, value?.Id },
             { NameKey, value?.Name },
