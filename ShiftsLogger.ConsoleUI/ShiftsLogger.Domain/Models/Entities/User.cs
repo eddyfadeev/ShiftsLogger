@@ -1,7 +1,10 @@
-﻿using ShiftsLogger.Domain.Interfaces;
+﻿using System.Text.Json.Serialization;
+using ShiftsLogger.Domain.Interfaces;
+using ShiftsLogger.Domain.Mappers;
 
 namespace ShiftsLogger.Domain.Models.Entities;
 
+[JsonConverter(typeof(UserMapper))]
 public class User : IReportModel
 {
     public int Id { get; init; }
