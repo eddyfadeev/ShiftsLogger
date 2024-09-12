@@ -19,21 +19,18 @@ public sealed class UnitOfWork : IDisposable, IAsyncDisposable, IUnitOfWork
     {
         _context = context;
         _eventPublisher = eventPublisher;
+        
+        InitializeDatabase();
     }
     
     public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class, IDbModel
     {
-        if (_repositories.ContainsKey(typeof(TEntity)))
-        {
-            return (IGenericRepository<TEntity>) _repositories[typeof(TEntity)];
-        }
+        return (IGenericRepository<TEntity>)_repositories.GetOrAdd(typeof(TEntity), CreateRepository);
         
-        var repository = new GenericRepository<TEntity>(_context, _eventPublisher);
-        _repositories.TryAdd(typeof(TEntity), repository);
-        
-        return repository;
+        object CreateRepository(Type type) => 
+            new GenericRepository<TEntity>(_context, _eventPublisher);
     }
-    
+
     public async Task CompleteAsync() => await _context.SaveChangesAsync();
 
     private void Dispose(bool disposing)
@@ -67,6 +64,14 @@ public sealed class UnitOfWork : IDisposable, IAsyncDisposable, IUnitOfWork
         {
             await _context.DisposeAsync();
             _disposed = true;
+        }
+    }
+
+    private void InitializeDatabase()
+    {
+        if (!_context.Database.CanConnect())
+        {
+            _context.Database.EnsureCreated();
         }
     }
 }

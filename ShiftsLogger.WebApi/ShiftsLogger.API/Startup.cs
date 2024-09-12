@@ -53,8 +53,6 @@ public class Startup
 
         app.UseMiddleware<ExceptionHandlerMiddleware>();
         
-        app.UseHttpsRedirection();
-        
         app.UseRouting();
 
         app.UseCors();
