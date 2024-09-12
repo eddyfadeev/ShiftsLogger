@@ -17,6 +17,16 @@ public abstract class BaseController<TEntity> : ControllerBase
     private protected abstract int GetEntityId(TEntity entity);
     
     /// <summary>
+    /// Fetches all entities from the system.
+    /// </summary>
+    /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
+    [HttpGet]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public abstract Task<IActionResult> GetAllEntities();
+    
+    /// <summary>
     /// Fetches a specific entity by its ID.
     /// </summary>
     /// <param name="id">The ID of the entity to retrieve.</param>
@@ -28,16 +38,6 @@ public abstract class BaseController<TEntity> : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public abstract Task<IActionResult> GetEntryById(int id);
-
-    /// <summary>
-    /// Fetches all entities from the system.
-    /// </summary>
-    /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
-    [HttpGet]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public abstract Task<IActionResult> GetAllEntities();
 
     /// <summary>
     /// Adds a new entity to the system.

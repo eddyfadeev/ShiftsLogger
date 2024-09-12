@@ -20,8 +20,6 @@ public class ShiftTypesController : BaseController<ShiftType>
         _unitOfWork = unitOfWork;
     }
     
-    private protected override int GetEntityId(ShiftType entity) => entity.Id;
-    
     /// <summary>
     /// Fetches all entities from the system.
     /// </summary>
@@ -38,42 +36,12 @@ public class ShiftTypesController : BaseController<ShiftType>
     }
     
     /// <summary>
-    /// Retrieves a shift type by its ID.
-    /// </summary>
-    /// <param name="id">The ID of the shift type to retrieve.</param>
-    /// <returns>
-    /// The shift type corresponding to the specified ID if found;
-    /// otherwise a response with status code 404 if not found or
-    /// status code 400 for a bad request.
-    /// </returns>
-    [HttpGet("{id:int}")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(ShiftType), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override async Task<IActionResult> GetEntryById(int id)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var shiftType = await _unitOfWork.Repository<ShiftType>().GetByIdAsync(id);
-        if (shiftType is not null)
-        {
-            return Ok(shiftType);
-        }
-        
-        return NotFound($"Shift type with ID: {id} not found");
-    }
-
-    /// <summary>
     /// Retrieves all shifts associated with a specific shift type by their unique identifier.
     /// </summary>
     /// <param name="shiftTypeId">The unique identifier of the shift type whose shifts are to be retrieved.</param>
     /// <returns>An IActionResult containing a list of shifts if found;
     /// otherwise, returns a NotFound or BadRequest result.</returns>
-    [HttpGet("shifts/{shiftTypeId:int}")]
+    [HttpGet("{shiftTypeId:int}/shifts")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -107,4 +75,36 @@ public class ShiftTypesController : BaseController<ShiftType>
         
         return Ok(shiftTypeDto);
     }
+    
+    /// <summary>
+    /// Retrieves a shift type by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the shift type to retrieve.</param>
+    /// <returns>
+    /// The shift type corresponding to the specified ID if found;
+    /// otherwise a response with status code 404 if not found or
+    /// status code 400 for a bad request.
+    /// </returns>
+    [HttpGet("{id:int}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(ShiftType), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public override async Task<IActionResult> GetEntryById(int id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        var shiftType = await _unitOfWork.Repository<ShiftType>().GetByIdAsync(id);
+        if (shiftType is not null)
+        {
+            return Ok(shiftType);
+        }
+        
+        return NotFound($"Shift type with ID: {id} not found");
+    }
+    
+    private protected override int GetEntityId(ShiftType entity) => entity.Id;
 }

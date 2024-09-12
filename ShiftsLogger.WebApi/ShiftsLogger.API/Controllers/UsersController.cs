@@ -19,8 +19,6 @@ public class UsersController : BaseController<User>
     {
         _unitOfWork = unitOfWork;
     }
-    
-    private protected override int GetEntityId(User entity) => entity.Id;
 
     /// <summary>
     /// Fetches all entities from the system.
@@ -38,38 +36,12 @@ public class UsersController : BaseController<User>
     }
     
     /// <summary>
-    /// Retrieves a user from the system by their unique identifier.
-    /// </summary>
-    /// <param name="id">The unique identifier of the user to be retrieved.</param>
-    /// <returns>An IActionResult containing the User object if found; otherwise, returns a NotFound or BadRequest result.</returns>
-    [HttpGet("{id:int}")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public override async Task<IActionResult> GetEntryById(int id)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var user = await _unitOfWork.Repository<User>().GetByIdAsync(id);
-        if (user is not null)
-        {
-            return Ok(user);
-        }
-        
-        return NotFound($"User with ID: {id} not found");
-    }
-
-    /// <summary>
     /// Retrieves all shifts associated with a specific user by their unique identifier.
     /// </summary>
     /// <param name="userId">The unique identifier of the user whose shifts are to be retrieved.</param>
     /// <returns>An IActionResult containing a list of shifts if found;
     /// otherwise, returns a NotFound or BadRequest result.</returns>
-    [HttpGet("shifts/{userId:int}")]
+    [HttpGet("{userId:int}/shifts")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -103,4 +75,32 @@ public class UsersController : BaseController<User>
     
         return Ok(userDto);
     }
+    
+    /// <summary>
+    /// Retrieves a user from the system by their unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the user to be retrieved.</param>
+    /// <returns>An IActionResult containing the User object if found; otherwise, returns a NotFound or BadRequest result.</returns>
+    [HttpGet("{id:int}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public override async Task<IActionResult> GetEntryById(int id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        var user = await _unitOfWork.Repository<User>().GetByIdAsync(id);
+        if (user is not null)
+        {
+            return Ok(user);
+        }
+        
+        return NotFound($"User with ID: {id} not found");
+    }
+    
+    private protected override int GetEntityId(User entity) => entity.Id;
 }
