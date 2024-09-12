@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShiftsLogger.Infrastructure.Data;
 
@@ -12,20 +11,21 @@ using ShiftsLogger.Infrastructure.Data;
 namespace ShiftsLogger.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ShiftsLoggerDbContext))]
-    [Migration("20240905201529_ShiftsLoggerMigrations")]
-    partial class ShiftsLoggerMigrations
+    partial class ShiftsLoggerDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ShiftsLogger.Domain.Models.Location", b =>
+            modelBuilder.Entity("ShiftsLogger.Domain.Models.Entity.Location", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,7 +34,6 @@ namespace ShiftsLogger.Infrastructure.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -46,7 +45,7 @@ namespace ShiftsLogger.Infrastructure.Data.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Domain.Models.Shift", b =>
+            modelBuilder.Entity("ShiftsLogger.Domain.Models.Entity.Shift", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +54,6 @@ namespace ShiftsLogger.Infrastructure.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndTime")
@@ -84,7 +82,7 @@ namespace ShiftsLogger.Infrastructure.Data.Migrations
                     b.ToTable("Shifts");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Domain.Models.ShiftType", b =>
+            modelBuilder.Entity("ShiftsLogger.Domain.Models.Entity.ShiftType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,7 +99,7 @@ namespace ShiftsLogger.Infrastructure.Data.Migrations
                     b.ToTable("ShiftTypes");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Domain.Models.User", b =>
+            modelBuilder.Entity("ShiftsLogger.Domain.Models.Entity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,11 +116,9 @@ namespace ShiftsLogger.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -130,21 +126,21 @@ namespace ShiftsLogger.Infrastructure.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Domain.Models.Shift", b =>
+            modelBuilder.Entity("ShiftsLogger.Domain.Models.Entity.Shift", b =>
                 {
-                    b.HasOne("ShiftsLogger.Domain.Models.Location", "Location")
+                    b.HasOne("ShiftsLogger.Domain.Models.Entity.Location", "Location")
                         .WithMany("Shifts")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShiftsLogger.Domain.Models.ShiftType", "ShiftType")
+                    b.HasOne("ShiftsLogger.Domain.Models.Entity.ShiftType", "ShiftType")
                         .WithMany("Shifts")
                         .HasForeignKey("ShiftTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShiftsLogger.Domain.Models.User", "User")
+                    b.HasOne("ShiftsLogger.Domain.Models.Entity.User", "User")
                         .WithMany("Shifts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -157,17 +153,17 @@ namespace ShiftsLogger.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Domain.Models.Location", b =>
+            modelBuilder.Entity("ShiftsLogger.Domain.Models.Entity.Location", b =>
                 {
                     b.Navigation("Shifts");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Domain.Models.ShiftType", b =>
+            modelBuilder.Entity("ShiftsLogger.Domain.Models.Entity.ShiftType", b =>
                 {
                     b.Navigation("Shifts");
                 });
 
-            modelBuilder.Entity("ShiftsLogger.Domain.Models.User", b =>
+            modelBuilder.Entity("ShiftsLogger.Domain.Models.Entity.User", b =>
                 {
                     b.Navigation("Shifts");
                 });

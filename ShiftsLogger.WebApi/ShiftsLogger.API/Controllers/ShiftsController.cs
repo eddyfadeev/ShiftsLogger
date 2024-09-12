@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Application.Interfaces.Services;
+using ShiftsLogger.Domain.Extensions;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Dto;
 using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.API.Controllers;
@@ -29,9 +31,10 @@ public class ShiftsController : BaseController<Shift>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public override async Task<IActionResult> GetAllEntities()
     {
-        var shifts = await _unitOfWork.Repository<Shift>().GetAsync(); 
+        var shifts = await _unitOfWork.Repository<Shift>().GetAsync();
+        var shiftsDto = shifts.Select(s => s.MapShiftToDto()).ToList();
         
-        return shifts.Count > 0 ? Ok(shifts) : NoContent();
+        return shifts.Count > 0 ? Ok(shiftsDto) : NoContent();
         }
     
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Domain.Validators;
 
@@ -11,10 +12,16 @@ public class Shift : IDbModel
     public int LocationId { get; init; }
     public int ShiftTypeId { get; init; }
     
+    [Required(ErrorMessage = "Shift start time is required")]
+    [DataType(DataType.DateTime)]
     [ShiftDateValidator]
     public DateTime StartTime { get; init; }
+    
+    [Required(ErrorMessage = "Shift end time is required")]
+    [DataType(DataType.DateTime)]
     [ShiftDateValidator]
     public DateTime EndTime { get; init; }
+    
     public string? Description { get; init; }
     
     public decimal HoursWorked => (decimal)(EndTime - StartTime).TotalHours;
