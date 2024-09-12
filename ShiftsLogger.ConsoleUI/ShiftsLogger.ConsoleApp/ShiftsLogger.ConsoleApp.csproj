@@ -8,7 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\ShiftsLogger.WebApi\ShiftsLogger.Domain\ShiftsLogger.Domain.csproj" />
       <ProjectReference Include="..\ShiftsLogger.Application\ShiftsLogger.Application.csproj" />
       <ProjectReference Include="..\ShiftsLogger.Infrastructure\ShiftsLogger.Infrastructure.csproj" />
     </ItemGroup>
