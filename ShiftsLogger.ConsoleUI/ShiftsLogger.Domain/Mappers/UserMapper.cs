@@ -31,13 +31,15 @@ public class UserMapper : JsonConverter<User>
     
     public override void WriteJson(JsonWriter writer, User? value, JsonSerializer serializer)
     {
+        ArgumentNullException.ThrowIfNull(value);
+        
         JObject jObject = new JObject
         {
-            { IdKey, value?.Id },
-            { FirstNameKey, value?.FirstName },
-            { LastNameKey, value?.LastName },
-            { EmailKey, value?.Email },
-            { RoleKey, value?.Role }
+            { IdKey, value.Id },
+            { FirstNameKey, value.FirstName },
+            { LastNameKey, value.LastName ?? string.Empty },
+            { EmailKey, value.Email },
+            { RoleKey, value.Role ?? string.Empty }
         };
         
         jObject.WriteTo(writer);
