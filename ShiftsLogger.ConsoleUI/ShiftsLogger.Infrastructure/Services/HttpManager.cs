@@ -27,6 +27,20 @@ public class HttpManager : IHttpManager
         return result;
     }
 
+    public async Task PostAsync<TEntity>(Uri url, TEntity data)
+    {
+        using var client = GetHttpClient();
+        
+        // TODO: Convert data to JSON prior to sending
+
+        var response = await client.PostAsJsonAsync(url, data);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException($"Failed to post data to {url}. Status code: {response.StatusCode}");
+        }
+    }
+
     private HttpClient GetHttpClient()
     {
         HttpClient client = new();
