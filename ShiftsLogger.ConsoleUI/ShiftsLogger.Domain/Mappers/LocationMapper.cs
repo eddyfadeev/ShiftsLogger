@@ -27,11 +27,13 @@ public class LocationMapper : JsonConverter<Location>
     
     public override void WriteJson(JsonWriter writer, Location? value, JsonSerializer serializer)
     {
+        ArgumentNullException.ThrowIfNull(value);
+        
         JObject jObject = new JObject
         {
-            { LocationIdKey, value?.Id },
-            { NameKey, value?.Name },
-            { AddressKey, value?.Address }
+            { LocationIdKey, value.Id },
+            { NameKey, value.Name },
+            { AddressKey, value.Address ?? string.Empty }
         };
         
         jObject.WriteTo(writer);

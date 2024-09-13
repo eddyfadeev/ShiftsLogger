@@ -25,10 +25,12 @@ public class ShiftTypeMapper : JsonConverter<ShiftType>
     
     public override void WriteJson(JsonWriter writer, ShiftType? value, JsonSerializer serializer)
     {
+        ArgumentNullException.ThrowIfNull(value);
+        
         JObject jObject = new JObject()
         {
-            { ShiftTypeIdKey, value?.Id },
-            { NameKey, value?.Name }
+            { ShiftTypeIdKey, value.Id },
+            { NameKey, value.Name }
         };
         
         jObject.WriteTo(writer);

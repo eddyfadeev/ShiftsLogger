@@ -45,20 +45,22 @@ public class ShiftMapper : JsonConverter<Shift>
 
     public override void WriteJson(JsonWriter writer, Shift? value, JsonSerializer serializer)
     {
+        ArgumentNullException.ThrowIfNull(value);
+        
         JObject jObject = new JObject
         {
-            { ShiftIdKey, value?.Id },
-            { UserIdKey, value?.UserId },
-            { UserNameKey, value?.UserName },
-            { UserRoleKey, value?.UserRole },
-            { LocationIdKey, value?.LocationId },
-            { LocationNameKey, value?.LocationName },
-            { ShiftTypeIdKey, value?.ShiftTypeId },
-            { ShiftTypeDescriptionKey, value?.ShiftTypeDescription },
-            { StartTimeKey, value?.StartTime },
-            { EndTimeKey, value?.EndTime },
-            { HoursWorkedKey, value?.HoursWorked },
-            { DescriptionKey, value?.Description }
+            { ShiftIdKey, value.Id },
+            { UserIdKey, value.UserId },
+            { UserNameKey, value.UserName ?? string.Empty },
+            { UserRoleKey, value.UserRole ?? string.Empty },
+            { LocationIdKey, value.LocationId },
+            { LocationNameKey, value.LocationName ?? string.Empty },
+            { ShiftTypeIdKey, value.ShiftTypeId },
+            { ShiftTypeDescriptionKey, value.ShiftTypeDescription ?? string.Empty },
+            { StartTimeKey, value.StartTime },
+            { EndTimeKey, value.EndTime },
+            { HoursWorkedKey, value.HoursWorked },
+            { DescriptionKey, value.Description ?? string.Empty }
         };
         
         jObject.WriteTo(writer);
