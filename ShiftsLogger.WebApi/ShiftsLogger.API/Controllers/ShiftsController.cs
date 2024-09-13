@@ -25,7 +25,7 @@ public class ShiftsController : BaseController<Shift>
     /// Fetches all entities from the system.
     /// </summary>
     /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
-    [HttpGet]
+    [HttpGet("all")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

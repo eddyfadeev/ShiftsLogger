@@ -24,7 +24,7 @@ public class UsersController : BaseController<User>
     /// Fetches all entities from the system.
     /// </summary>
     /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
-    [HttpGet]
+    [HttpGet("all")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<User>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
