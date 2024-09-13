@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Domain.Mappers;
 

@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.Domain.Mappers;
 using ShiftsLogger.Domain.Models;
 using ShiftsLogger.Domain.Models.Entities;
@@ -14,8 +16,9 @@ static class Program
         var services = new ServiceCollection();
     
         services.ConfigureServices();
-    
-        var uri = new Uri("http://localhost:5000/api/v1/users/1/shifts");
+        
+        var uri = services.BuildServiceProvider().GetRequiredService<IApiEndpointMapper>()
+           .GetRelativeUrl(ApiEndpoints.Users.GetAll);
     
         var httpClient = new HttpClient();
     
@@ -26,11 +29,26 @@ static class Program
     
         if (response.IsSuccessStatusCode)
         {
-            var content = JsonConvert.DeserializeObject<GenericReportModel<User>>(
-                jsonContent,
-                new GenericMapper<User>()
-                );
-            Console.WriteLine(content);
+            var settings = new JsonSerializerSettings
+            {
+                Converters = { new UserMapper(), new GenericReportMapper<User>() },
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            
+            var reportModel = JsonConvert.DeserializeObject<GenericReportModel<User>>(jsonContent, settings);
+                
+            if (reportModel != null)
+            {
+                Console.WriteLine($"Total Shifts: {reportModel.Entities.Count}");
+                foreach (var user in reportModel.Entities)
+                {
+                    Console.WriteLine($"{user.FirstName} {user.LastName} - {user.Email} - {user.Role}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Failed to deserialize the report model.");
+            }
         }
         else
         {

@@ -12,7 +12,7 @@ public class UserMapper : JsonConverter<User>
     private const string EmailKey = "email";
     private const string RoleKey = "role";
     
-    public override User? ReadJson(JsonReader reader, Type objectType, User? existingValue, bool hasExistingValue,
+    public override User ReadJson(JsonReader reader, Type objectType, User? existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
         JObject jObject = JObject.Load(reader);

@@ -6,31 +6,30 @@ using ShiftsLogger.Domain.Models.Entities;
 
 namespace ShiftsLogger.Domain.Mappers;
 
-public class GenericMapper<TEntity> : JsonConverter<GenericReportModel<TEntity>>
+public class ShiftsByEntityMapper<TEntity> : JsonConverter<ShiftsByEntityReportModel<TEntity>>
     where TEntity : class, IReportModel
 {
     
-    public override GenericReportModel<TEntity>? ReadJson(JsonReader reader, Type objectType, GenericReportModel<TEntity>? existingValue, bool hasExistingValue,
+    public override ShiftsByEntityReportModel<TEntity> ReadJson(JsonReader reader, Type objectType, ShiftsByEntityReportModel<TEntity>? existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
         JObject jObject = JObject.Load(reader);
         
-        var information = jObject.ToObject<TEntity>(serializer) 
-                          ?? throw new JsonSerializationException("Unable to deserialize object");
+        var information = jObject.ToObject<TEntity>(serializer);
         
         var shifts = jObject["shifts"]?.ToObject<List<Shift>>(serializer) 
                      ?? new List<Shift>();
 
-        var reportModel = new GenericReportModel<TEntity>
+        var reportModel = new ShiftsByEntityReportModel<TEntity>
         {
-            Information = information, 
+            Information = information ?? Activator.CreateInstance<TEntity>(), 
             Shifts = shifts
         };
         
         return reportModel;
     }
     
-    public override void WriteJson(JsonWriter writer, GenericReportModel<TEntity>? value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, ShiftsByEntityReportModel<TEntity>? value, JsonSerializer serializer)
     {
         ArgumentNullException.ThrowIfNull(value);
         

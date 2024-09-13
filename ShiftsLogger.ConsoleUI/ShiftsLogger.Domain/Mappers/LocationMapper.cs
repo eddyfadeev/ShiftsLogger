@@ -10,7 +10,7 @@ public class LocationMapper : JsonConverter<Location>
     private const string NameKey = "name";
     private const string AddressKey = "address";
 
-    public override Location? ReadJson(JsonReader reader, Type objectType, Location? existingValue, bool hasExistingValue,
+    public override Location ReadJson(JsonReader reader, Type objectType, Location? existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
         JObject jObject = JObject.Load(reader);

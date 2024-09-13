@@ -9,7 +9,7 @@ public class ShiftTypeMapper : JsonConverter<ShiftType>
     private const string ShiftTypeIdKey = "id";
     private const string NameKey = "name";
 
-    public override ShiftType? ReadJson(JsonReader reader, Type objectType, ShiftType? existingValue, bool hasExistingValue,
+    public override ShiftType ReadJson(JsonReader reader, Type objectType, ShiftType? existingValue, bool hasExistingValue,
         JsonSerializer serializer)
     {
         JObject jObject = JObject.Load(reader);
