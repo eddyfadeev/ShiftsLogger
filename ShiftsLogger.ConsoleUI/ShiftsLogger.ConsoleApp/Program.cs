@@ -16,43 +16,34 @@ static class Program
         var services = new ServiceCollection();
     
         services.ConfigureServices();
+        var serviceProvider = services.BuildServiceProvider();
         
-        var uri = services.BuildServiceProvider().GetRequiredService<IApiEndpointMapper>()
+        var uri = serviceProvider.GetRequiredService<IApiEndpointMapper>()
            .GetRelativeUrl(ApiEndpoints.Users.GetAll);
-    
-        var httpClient = new HttpClient();
-    
-        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-    
-        var response = httpClient.GetAsync(uri).Result;
-        var jsonContent = response.Content.ReadAsStringAsync().Result;
-    
-        if (response.IsSuccessStatusCode)
+        
+        var manager = serviceProvider.GetRequiredService<IHttpManager>();
+
+        var jsonContent = manager.GetAsync(uri).Result;
+
+        var settings = new JsonSerializerSettings
         {
-            var settings = new JsonSerializerSettings
-            {
-                Converters = { new UserMapper(), new GenericReportMapper<User>() },
-                NullValueHandling = NullValueHandling.Ignore
-            };
+            Converters = { new UserMapper(), new GenericReportMapper<User>() },
+            NullValueHandling = NullValueHandling.Ignore
+        };
             
-            var reportModel = JsonConvert.DeserializeObject<GenericReportModel<User>>(jsonContent, settings);
+        var reportModel = JsonConvert.DeserializeObject<GenericReportModel<User>>(jsonContent, settings);
                 
-            if (reportModel != null)
+        if (reportModel != null)
+        {
+            Console.WriteLine($"Total Shifts: {reportModel.Entities.Count}");
+            foreach (var user in reportModel.Entities)
             {
-                Console.WriteLine($"Total Shifts: {reportModel.Entities.Count}");
-                foreach (var user in reportModel.Entities)
-                {
-                    Console.WriteLine($"{user.FirstName} {user.LastName} - {user.Email} - {user.Role}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Failed to deserialize the report model.");
+                Console.WriteLine($"{user.FirstName} {user.LastName} - {user.Email} - {user.Role}");
             }
         }
         else
         {
-            Console.WriteLine($"Failed to get response. Status code: {response.StatusCode}");
+            Console.WriteLine("Failed to deserialize the report model.");
         }
     }
 }

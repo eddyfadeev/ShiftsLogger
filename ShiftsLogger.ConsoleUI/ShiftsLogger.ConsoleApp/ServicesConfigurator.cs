@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Infrastructure.Extensions;
-using ShiftsLogger.Infrastructure.Mappers;
 
 namespace ShiftsLogger.ConsoleApp;
 
@@ -15,7 +13,7 @@ public static class ServicesConfigurator
     {
         services.AddSingleton(Configuration);
         services.ConfigureApi(Configuration);
-        services.AddTransient<IApiEndpointMapper, ApiEndpointMapper>();
+        services.RegisterHttpClient();
     }
 
     private static IConfiguration GetConfigurationBuilder() =>

@@ -8,15 +8,12 @@ namespace ShiftsLogger.Infrastructure.Mappers;
 public class ApiEndpointMapper : IApiEndpointMapper
 {
     private readonly ApiConfig _apiConfig;
-    private readonly string _baseUrl;
     private readonly Dictionary<Type, Dictionary<string, string>> _endpointsMap;
 
     public ApiEndpointMapper(IOptions<ApiConfig> apiConfig)
     {
         _apiConfig = apiConfig.Value ??
                      throw new ArgumentNullException(nameof(apiConfig), "Api configuration is null.");
-        
-        _baseUrl = _apiConfig.BaseUrl?? throw new InvalidOperationException("Base URL is null.");
         
         _endpointsMap = GetEndpointsMap();
     }
@@ -28,8 +25,8 @@ public class ApiEndpointMapper : IApiEndpointMapper
         }
         
         string apiEndpoint = GetApiEndpointFromMap(endpointMap, endpoint.ToString());
-        
-        return new Uri(_baseUrl + apiEndpoint);
+
+        return new Uri(apiEndpoint, UriKind.Relative);
     }
 
     private Dictionary<Type, Dictionary<string, string>> GetEndpointsMap() =>

@@ -2,5 +2,5 @@
 
 public interface IHttpManager
 {
-    
+    Task<string?> GetAsync(Uri url);
 }
