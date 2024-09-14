@@ -2,5 +2,5 @@
 
 public interface IApiEndpointMapper
 {
-    Uri GetRelativeUrl<TApi>(TApi endpoint) where TApi : Enum;
+    Uri GetRelativeUrl<TApi>(TApi endpoint, int? id = null) where TApi : Enum;
 }

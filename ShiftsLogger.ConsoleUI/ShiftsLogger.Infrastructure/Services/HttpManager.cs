@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Options;
 using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Infrastructure.Configurations;
 using ShiftsLogger.Infrastructure.Extensions;
 
@@ -22,6 +23,9 @@ public class HttpManager : IHttpManager
         using var client = GetHttpClient();
         
         var response = await client.GetAsync(url);
+        
+        EnsureSuccessStatusCode(response, url);
+        
         var result = await response.Content.ReadAsStringAsync();
         
         return result;
@@ -30,15 +34,19 @@ public class HttpManager : IHttpManager
     public async Task PostAsync<TEntity>(Uri url, TEntity data)
     {
         using var client = GetHttpClient();
-        
-        // TODO: Convert data to JSON prior to sending
-
         var response = await client.PostAsJsonAsync(url, data);
 
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Failed to post data to {url}. Status code: {response.StatusCode}");
-        }
+        EnsureSuccessStatusCode(response, url);
+    }
+
+    public async Task<HttpResponseMessage?> DeleteAsync(Uri url, int id)
+    {
+        using var client = GetHttpClient();
+        
+        var response = await client.DeleteAsync($"{url}/{id}");
+        EnsureSuccessStatusCode(response, url);
+        
+        return response;
     }
 
     private HttpClient GetHttpClient()
@@ -46,7 +54,14 @@ public class HttpManager : IHttpManager
         HttpClient client = new();
         
         client.ConfigureHttpClient(_baseUrl, DefaultHeader);
-        
         return client;
+    }
+
+    private static void EnsureSuccessStatusCode(HttpResponseMessage response, Uri url)
+    {
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException($"Failed to post data to {url}. Status code: {response.StatusCode}");
+        }
     }
 }

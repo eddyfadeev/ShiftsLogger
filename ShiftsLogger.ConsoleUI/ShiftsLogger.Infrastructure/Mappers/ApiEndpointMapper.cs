@@ -17,7 +17,7 @@ public class ApiEndpointMapper : IApiEndpointMapper
         
         _endpointsMap = GetEndpointsMap();
     }
-    public Uri GetRelativeUrl<TApi>(TApi endpoint) where TApi : Enum
+    public Uri GetRelativeUrl<TApi>(TApi endpoint, int? id = null) where TApi : Enum
     {
         if(!_endpointsMap.TryGetValue(endpoint.GetType(), out var endpointMap))
         {
@@ -26,7 +26,31 @@ public class ApiEndpointMapper : IApiEndpointMapper
         
         string apiEndpoint = GetApiEndpointFromMap(endpointMap, endpoint.ToString());
 
+        if (id is null)
+        {
+            return new Uri(apiEndpoint, UriKind.Relative);
+        }
+        
+        apiEndpoint = ProcessIdSpecificRequest(apiEndpoint, id.Value);
         return new Uri(apiEndpoint, UriKind.Relative);
+
+    }
+
+    private static string ProcessIdSpecificRequest(string apiEndpoint, int id)
+    {
+        const string idKey = "id";
+        var array = apiEndpoint.Split('/');
+        int index = Array.FindIndex(
+            array, s => 
+                s.Contains(idKey, StringComparison.InvariantCultureIgnoreCase)
+        );
+
+        if (index != -1)
+        {
+            array[index] = id.ToString();
+        }
+
+        return string.Join("/", array);
     }
 
     private Dictionary<Type, Dictionary<string, string>> GetEndpointsMap() =>

@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using ShiftsLogger.Domain.Interfaces;
+﻿using ShiftsLogger.Domain.Interfaces;
 
 namespace ShiftsLogger.Domain.Models;
 
-public class GenericReportModel<TEntity> where TEntity : class, IReportModel
+public class GenericReportModel<TEntity> : IReportModel
+    where TEntity : class, IReportModel
 {
     public List<TEntity> Entities { get; init; } = new();
 
@@ -22,4 +22,6 @@ public class GenericReportModel<TEntity> where TEntity : class, IReportModel
             return Entities[index];
         }
     }
+
+    public int Id { get; init; }
 }
