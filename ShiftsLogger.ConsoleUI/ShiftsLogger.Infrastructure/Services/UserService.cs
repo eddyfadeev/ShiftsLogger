@@ -9,9 +9,9 @@ public class UserService
     private readonly IRequestHandler _handler;
     private readonly ISerializer _serializer;
 
-    public UserService(IRequestHandler handler, ISerializer serializer)
+    public UserService(IRequestHandler requestHandler, ISerializer serializer)
     {
-        _handler = handler;
+        _handler = requestHandler;
         _serializer = serializer;
     }
 
