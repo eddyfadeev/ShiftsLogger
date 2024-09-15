@@ -1,15 +1,16 @@
 ﻿using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Infrastructure.Interfaces;
 
 namespace ShiftsLogger.Infrastructure.Services;
 
-public class EntitiesGenericService
+public class GenericApiService
 {
     private readonly IRequestHandler _requestHandler;
     private readonly ISerializer _serializer;
 
-    public EntitiesGenericService(IRequestHandler requestHandler, ISerializer serializer)
+    public GenericApiService(IRequestHandler requestHandler, ISerializer serializer)
     {
         _requestHandler = requestHandler;
         _serializer = serializer;

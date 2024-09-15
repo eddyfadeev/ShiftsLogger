@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Domain.Interfaces;
+using ShiftsLogger.Infrastructure.Interfaces;
 using ShiftsLogger.Infrastructure.JsonConverter;
 
 namespace ShiftsLogger.Infrastructure.Services;

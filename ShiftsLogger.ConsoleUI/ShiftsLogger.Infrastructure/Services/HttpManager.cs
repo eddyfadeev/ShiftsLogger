@@ -2,6 +2,7 @@
 using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Infrastructure.Configurations;
 using ShiftsLogger.Infrastructure.Extensions;
+using ShiftsLogger.Infrastructure.Interfaces;
 
 namespace ShiftsLogger.Infrastructure.Services;
 

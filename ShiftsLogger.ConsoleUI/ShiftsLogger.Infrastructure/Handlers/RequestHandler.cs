@@ -1,4 +1,5 @@
 ﻿using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.Infrastructure.Interfaces;
 
 namespace ShiftsLogger.Infrastructure.Handlers;
 
