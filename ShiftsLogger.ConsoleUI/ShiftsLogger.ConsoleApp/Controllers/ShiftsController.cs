@@ -7,10 +7,10 @@ namespace ShiftsLogger.ConsoleApp.Controllers;
 
 public class ShiftsController
 {
-    private readonly ShiftsService _shiftsService;
+    private readonly EntitiesGenericService _shiftsService;
     private readonly IApiEndpointMapper _endpointMapper;
 
-    public ShiftsController(ShiftsService shiftsService, IApiEndpointMapper endpointMapper)
+    public ShiftsController(EntitiesGenericService shiftsService, IApiEndpointMapper endpointMapper)
     {
         _shiftsService = shiftsService;
         _endpointMapper = endpointMapper;
@@ -19,7 +19,7 @@ public class ShiftsController
     internal async Task<Shift> GetShiftById(int id)
     {
         var url = _endpointMapper.GetRelativeUrl(ApiEndpoints.Shifts.ActionById, id);
-        var result = await _shiftsService.GetShiftsAsync(url);
+        var result = await _shiftsService.GetEntityAsync<Shift>(url);
 
         return result;
     }
@@ -27,7 +27,7 @@ public class ShiftsController
     internal async Task<List<Shift>> GetAllShifts()
     {
         var url = _endpointMapper.GetRelativeUrl(ApiEndpoints.Shifts.GetAll);
-        var result = await _shiftsService.GetAllShiftsAsync(url);
+        var result = await _shiftsService.GetAllAsync<Shift>(url);
 
         return result;
     }

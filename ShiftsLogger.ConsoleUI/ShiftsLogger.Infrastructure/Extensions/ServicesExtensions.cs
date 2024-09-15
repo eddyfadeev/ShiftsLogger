@@ -7,7 +7,6 @@ public static class ServicesExtensions
 {
     public static void RegisterServices(this IServiceCollection services)
     {
-        services.AddScoped<UserService>();
-        services.AddScoped<ShiftsService>();
+        services.AddScoped<EntitiesGenericService>();
     }
 }

@@ -8,10 +8,10 @@ namespace ShiftsLogger.ConsoleApp.Controllers;
 
 public class UserController
 {
-    private readonly UserService _userService;
+    private readonly EntitiesGenericService _userService;
     private readonly IApiEndpointMapper _endpointMapper;
 
-    public UserController(UserService userService, IApiEndpointMapper endpointMapper)
+    public UserController(EntitiesGenericService userService, IApiEndpointMapper endpointMapper)
     {
         _userService = userService;
         _endpointMapper = endpointMapper;
@@ -20,7 +20,7 @@ public class UserController
     internal async Task<User> GetUserById(int id)
     {
         var url = _endpointMapper.GetRelativeUrl(ApiEndpoints.Users.ActionById, id);
-        var result = await _userService.GetUserAsync(url);
+        var result = await _userService.GetEntityAsync<User>(url);
 
         return result;
     }
@@ -28,7 +28,7 @@ public class UserController
     internal async Task<List<User>> GetAllUsers()
     {
         var url = _endpointMapper.GetRelativeUrl(ApiEndpoints.Users.GetAll);
-        var result = await _userService.GetAllUsersAsync(url);
+        var result = await _userService.GetAllAsync<User>(url);
 
         return result;
     }
@@ -36,7 +36,7 @@ public class UserController
     internal async Task<ShiftsByEntityReportModel<User>> GetShiftsByUserId(int id)
     {
         var url = _endpointMapper.GetRelativeUrl(ApiEndpoints.Users.GetShiftsByUserId, id);
-        var result = await _userService.GetShiftsByUser(url);
+        var result = await _userService.GetAllShiftsByEntityTypeAsync<User>(url);
 
         return result;
     }

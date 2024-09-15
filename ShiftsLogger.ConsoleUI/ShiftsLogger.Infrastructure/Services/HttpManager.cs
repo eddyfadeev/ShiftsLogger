@@ -1,7 +1,5 @@
-﻿using System.Net.Http.Json;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using ShiftsLogger.Application.Interfaces;
-using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Infrastructure.Configurations;
 using ShiftsLogger.Infrastructure.Extensions;
 
