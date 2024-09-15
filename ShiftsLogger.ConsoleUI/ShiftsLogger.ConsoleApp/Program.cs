@@ -1,11 +1,7 @@
-﻿using System.Net.Http.Headers;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
+﻿using Microsoft.Extensions.DependencyInjection;
 using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Domain.Enums;
-using ShiftsLogger.Domain.Mappers;
-using ShiftsLogger.Domain.Models;
-using ShiftsLogger.Domain.Models.Entities;
+using ShiftsLogger.Infrastructure.Handlers;
 
 namespace ShiftsLogger.ConsoleApp;
 
@@ -18,32 +14,19 @@ static class Program
         services.ConfigureServices();
         var serviceProvider = services.BuildServiceProvider();
         
-        var uri = serviceProvider.GetRequiredService<IApiEndpointMapper>()
-           .GetRelativeUrl(ApiEndpoints.Users.GetAll);
+        var uriProvider = serviceProvider.GetRequiredService<IApiEndpointMapper>();
+        var getAllUsers = uriProvider.GetRelativeUrl(ApiEndpoints.Users.GetAll);
+        var getShiftsByUserId = uriProvider.GetRelativeUrl(ApiEndpoints.Users.GetShiftsByUserId, 1);
+        var getUserById = uriProvider.GetRelativeUrl(ApiEndpoints.Users.ActionById, 1);
         
         var manager = serviceProvider.GetRequiredService<IHttpManager>();
+        var userRequestHandler = new UserRequestHandler(manager); 
+        
+        var response1 = userRequestHandler.GetShiftsByEntityId(getShiftsByUserId).Result;
+        var response2 = userRequestHandler.GetAllAsync(getAllUsers).Result;
+        var response3 = userRequestHandler.GetAsync(getUserById).Result;
 
-        var jsonContent = manager.GetAsync(uri).Result;
-
-        var settings = new JsonSerializerSettings
-        {
-            Converters = { new UserMapper(), new GenericReportMapper<User>() },
-            NullValueHandling = NullValueHandling.Ignore
-        };
-            
-        var reportModel = JsonConvert.DeserializeObject<GenericReportModel<User>>(jsonContent, settings);
-                
-        if (reportModel != null)
-        {
-            Console.WriteLine($"Total Shifts: {reportModel.Entities.Count}");
-            foreach (var user in reportModel.Entities)
-            {
-                Console.WriteLine($"{user.FirstName} {user.LastName} - {user.Email} - {user.Role}");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Failed to deserialize the report model.");
-        }
+        
+        Console.ReadKey();
     }
 }

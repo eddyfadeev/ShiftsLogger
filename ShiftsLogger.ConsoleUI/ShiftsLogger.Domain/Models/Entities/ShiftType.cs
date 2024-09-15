@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json;
-using ShiftsLogger.Domain.Interfaces;
-using ShiftsLogger.Domain.Mappers;
+﻿using ShiftsLogger.Domain.Interfaces;
 
 namespace ShiftsLogger.Domain.Models.Entities;
 
-[JsonConverter(typeof(ShiftTypeMapper))]
-public class ShiftType : IReportModel
+public class ShiftType : IReportModelWithId
 {
     public int Id { get; init; }
     public string Name { get; init; }

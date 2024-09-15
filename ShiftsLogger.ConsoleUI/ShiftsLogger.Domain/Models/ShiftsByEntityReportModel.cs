@@ -1,15 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿
 using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Domain.Models.Entities;
 
 namespace ShiftsLogger.Domain.Models;
 
-public class ShiftsByEntityReportModel<TEntity> where TEntity : class, IReportModel
+public class ShiftsByEntityReportModel<TEntity> : IReportModel
+    where TEntity : class, IReportModel
 {
-    [JsonProperty]
     public TEntity Information { get; init; }
     
-    [JsonProperty("shifts")] public List<Shift> Shifts { get; init; } = new();
+    public List<Shift> Shifts { get; init; } = new();
 
     public Shift this[int index]
     {
