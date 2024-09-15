@@ -17,28 +17,7 @@ public class HttpManager : IHttpManager
         _baseUrl = new Uri(apiConfig.Value.BaseUrl
                            ?? throw new InvalidOperationException("Base URL is null."));
     }
-
-    public async Task<string> GetAsync(Uri url)
-    {
-        using var client = GetHttpClient();
-        
-        var response = await client.GetAsync(url);
-        
-        EnsureSuccessStatusCode(response, url);
-        
-        var result = await response.Content.ReadAsStringAsync();
-        
-        return result;
-    }
-
-    public async Task PostAsync<TEntity>(Uri url, TEntity data)
-    {
-        using var client = GetHttpClient();
-        var response = await client.PostAsJsonAsync(url, data);
-
-        EnsureSuccessStatusCode(response, url);
-    }
-
+    
     public async Task<HttpResponseMessage?> DeleteAsync(Uri url, int id)
     {
         using var client = GetHttpClient();
@@ -49,7 +28,7 @@ public class HttpManager : IHttpManager
         return response;
     }
 
-    private HttpClient GetHttpClient()
+    public HttpClient GetHttpClient()
     {
         HttpClient client = new();
         
@@ -57,7 +36,7 @@ public class HttpManager : IHttpManager
         return client;
     }
 
-    private static void EnsureSuccessStatusCode(HttpResponseMessage response, Uri url)
+    public void EnsureSuccessStatusCode(HttpResponseMessage response, Uri url)
     {
         if (!response.IsSuccessStatusCode)
         {

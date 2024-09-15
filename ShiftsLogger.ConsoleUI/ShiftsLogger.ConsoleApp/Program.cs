@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.ConsoleApp.Controllers;
 using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.Infrastructure.Handlers;
+using ShiftsLogger.Infrastructure.Services;
 
 namespace ShiftsLogger.ConsoleApp;
 
@@ -15,16 +17,13 @@ static class Program
         var serviceProvider = services.BuildServiceProvider();
         
         var uriProvider = serviceProvider.GetRequiredService<IApiEndpointMapper>();
-        var getAllUsers = uriProvider.GetRelativeUrl(ApiEndpoints.Users.GetAll);
-        var getShiftsByUserId = uriProvider.GetRelativeUrl(ApiEndpoints.Users.GetShiftsByUserId, 1);
-        var getUserById = uriProvider.GetRelativeUrl(ApiEndpoints.Users.ActionById, 1);
+        var userService = serviceProvider.GetRequiredService<UserService>();
+
+        var userController = new UserController(userService, uriProvider);
         
-        var manager = serviceProvider.GetRequiredService<IHttpManager>();
-        var userRequestHandler = new UserRequestHandler(manager); 
-        
-        var response1 = userRequestHandler.GetShiftsByEntityId(getShiftsByUserId).Result;
-        var response2 = userRequestHandler.GetAllAsync(getAllUsers).Result;
-        var response3 = userRequestHandler.GetAsync(getUserById).Result;
+        var response1 = userController.GetShiftsByUserId(1).Result;
+        var response2 = userController.GetAllUsers().Result;
+        var response3 = userController.GetUserById(1).Result;
 
         
         Console.ReadKey();

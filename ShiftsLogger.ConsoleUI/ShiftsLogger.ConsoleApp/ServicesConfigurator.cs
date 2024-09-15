@@ -13,7 +13,11 @@ public static class ServicesConfigurator
     {
         services.AddSingleton(Configuration);
         services.ConfigureApi(Configuration);
-        services.RegisterHttpClient();
+        services.RegisterHttpManager();
+        services.RegisterSerializers();
+        services.RegisterHandlers();
+        
+        services.RegisterServices();
     }
 
     private static IConfiguration GetConfigurationBuilder() =>

@@ -13,7 +13,7 @@ public static class HttpClientExtensions
         client.BaseAddress = baseUrl;
     }
 
-    public static void RegisterHttpClient(this IServiceCollection services)
+    public static void RegisterHttpManager(this IServiceCollection services)
     {
         services.AddScoped<IHttpManager, HttpManager>();
     }
