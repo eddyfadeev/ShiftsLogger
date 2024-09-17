@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.ConsoleApp.ConsoleUI;
 using ShiftsLogger.ConsoleApp.Controllers;
 using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.Infrastructure.Handlers;
 using ShiftsLogger.Infrastructure.Services;
+using Terminal.Gui;
 
 namespace ShiftsLogger.ConsoleApp;
 
@@ -16,16 +18,15 @@ static class Program
         services.ConfigureServices();
         var serviceProvider = services.BuildServiceProvider();
         
-        var uriProvider = serviceProvider.GetRequiredService<IApiEndpointMapper>();
-        var userService = serviceProvider.GetRequiredService<UserService>();
-
-        var userController = new UserController(userService, uriProvider);
+        Terminal.Gui.Application.Init();
+        var win = new MainMenuWindow();
         
-        var response1 = userController.GetShiftsByUserId(1).Result;
-        var response2 = userController.GetAllUsers().Result;
-        var response3 = userController.GetUserById(1).Result;
+        Terminal.Gui.Application.Run(win);
+        win.Display();
+        win.Dispose();
+        Terminal.Gui.Application.Shutdown();
 
         
-        Console.ReadKey();
+        //Console.ReadKey();
     }
 }
