@@ -10,7 +10,7 @@ public class Location : IReportModelWithId
 
     public override string ToString() =>
         $"""
-        {Name}
+        Name: {Name}
         Address: {Address ?? "Not specified"}
         """;
     
