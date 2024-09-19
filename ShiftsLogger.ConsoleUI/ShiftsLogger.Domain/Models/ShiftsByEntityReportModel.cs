@@ -26,4 +26,7 @@ public class ShiftsByEntityReportModel<TEntity> : IReportModel
             return Shifts[index];
         }
     }
+
+    public override string ToString() =>
+        Information.ToString();
 }

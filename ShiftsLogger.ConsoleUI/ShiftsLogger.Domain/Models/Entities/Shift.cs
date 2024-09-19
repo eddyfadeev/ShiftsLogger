@@ -21,4 +21,14 @@ public class Shift : IReportModelWithId
     public decimal HoursWorked { get; init; }
     
     public string? Description { get; init; }
+
+    public override string ToString() =>
+        $"""
+        {UserName ?? "UserName is null"}  
+        Worked as: {UserRole ?? string.Empty}
+        At: {LocationName ?? "location is null"}
+        Worked on: {ShiftTypeDescription ?? string.Empty}
+        Hours worked: {HoursWorked}
+        """;
+    
 }

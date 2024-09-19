@@ -6,4 +6,6 @@ public class ShiftType : IReportModelWithId
 {
     public int Id { get; init; }
     public string Name { get; init; }
+
+    public override string ToString() => Name;
 }
