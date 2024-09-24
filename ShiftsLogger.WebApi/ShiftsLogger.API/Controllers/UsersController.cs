@@ -2,6 +2,7 @@
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Extensions;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Dto;
 using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.API.Controllers;
@@ -60,20 +61,17 @@ public class UsersController : BaseController<User>
     
         if (user is null)
         {
-            return NotFound($"User with ID: {userId} not found");
+            return NotFound(new List<ShiftDto>());
         }
     
         if (user.Shifts?.Count == 0 || user.Shifts is null)
         {
-            return NotFound("No shifts found for this user");
+            return NotFound(new List<ShiftDto>());
         }
 
-        var userDto = user.MapUserToDto() with
-        {
-            Shifts = user.Shifts.Select(s => s.MapShiftToDto()).ToList()
-        };
+        var shiftsByUser = user.Shifts.Select(s => s.MapShiftToDto()).ToList();
     
-        return Ok(userDto);
+        return Ok(shiftsByUser);
     }
     
     /// <summary>

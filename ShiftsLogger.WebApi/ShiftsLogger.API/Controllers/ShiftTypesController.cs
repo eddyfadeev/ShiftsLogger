@@ -2,6 +2,7 @@
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Extensions;
 using ShiftsLogger.Domain.Models;
+using ShiftsLogger.Domain.Models.Dto;
 using ShiftsLogger.Domain.Models.Entity;
 
 namespace ShiftsLogger.API.Controllers;
@@ -60,20 +61,17 @@ public class ShiftTypesController : BaseController<ShiftType>
         
         if (shiftType is null)
         {
-            return NotFound($"Shift type with ID: {shiftTypeId} not found");
+            return NotFound(new List<ShiftDto>());
         }
         
         if (shiftType.Shifts?.Count == 0 || shiftType.Shifts is null)
         {
-            return NotFound("No shifts found for this shift type");
+            return NotFound(new List<ShiftDto>());
         }
 
-        var shiftTypeDto = shiftType.MapShiftTypeToDto() with
-        {
-            Shifts = shiftType.Shifts.Select(s => s.MapShiftToDto()).ToList()
-        };
+        var shiftsByShiftType = shiftType.Shifts.Select(s => s.MapShiftToDto()).ToList();
         
-        return Ok(shiftTypeDto);
+        return Ok(shiftsByShiftType);
     }
     
     /// <summary>
@@ -82,7 +80,7 @@ public class ShiftTypesController : BaseController<ShiftType>
     /// <param name="id">The ID of the shift type to retrieve.</param>
     /// <returns>
     /// The shift type corresponding to the specified ID if found;
-    /// otherwise a response with status code 404 if not found or
+    /// otherwise, a response with status code 404 if not found or
     /// status code 400 for a bad request.
     /// </returns>
     [HttpGet("{id:int}")]

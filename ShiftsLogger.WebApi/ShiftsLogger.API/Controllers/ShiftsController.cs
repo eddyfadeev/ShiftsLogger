@@ -24,17 +24,17 @@ public class ShiftsController : BaseController<Shift>
     /// <summary>
     /// Fetches all entities from the system.
     /// </summary>
-    /// <returns>A list of all entities, or NoContent if no entities are found.</returns>
+    /// <returns>A list of all entities, or NotFound if no entities are found.</returns>
     [HttpGet("all")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<Shift>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public override async Task<IActionResult> GetAllEntities()
     {
         var shifts = await _unitOfWork.Repository<Shift>().GetAsync();
         var shiftsDto = shifts.Select(s => s.MapShiftToDto()).ToList();
         
-        return shifts.Count > 0 ? Ok(shiftsDto) : NoContent();
+        return shifts.Count > 0 ? Ok(shiftsDto) : NotFound(new List<ShiftDto>());
         }
     
     /// <summary>

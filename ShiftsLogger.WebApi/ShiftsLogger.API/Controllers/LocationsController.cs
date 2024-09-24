@@ -34,8 +34,7 @@ public class LocationsController : BaseController<Location>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public override async Task<IActionResult> GetAllEntities()
     {
-        var locations = await _unitOfWork.Repository<Location>().GetAsync(); 
-                
+        var locations = await _unitOfWork.Repository<Location>().GetAsync();
 
         return locations.Count > 0 ? Ok(locations) : NoContent();
     }
@@ -53,6 +52,7 @@ public class LocationsController : BaseController<Location>
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetShiftsByLocation(int locationId)
     {
+        List<ShiftDto> emptyShiftsList = new (); 
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -65,20 +65,17 @@ public class LocationsController : BaseController<Location>
 
         if (location is null)
         {
-            return NotFound($"Location with ID: {locationId} not found");
+            return NotFound(emptyShiftsList);
         }
         
         if (location.Shifts?.Count == 0 || location.Shifts is null)
         {
-            return NotFound("No shifts found for this location");
+            return NotFound(emptyShiftsList);
         }
 
-        var locationDto = location.MapLocationToDto() with
-        {
-            Shifts = location.Shifts.Select(s => s.MapShiftToDto()).ToList()
-        };
+        var shiftsByLocationId = location.Shifts.Select(s => s.MapShiftToDto()).ToList();
         
-        return Ok(locationDto);
+        return Ok(shiftsByLocationId);
     }
     
     /// <summary>
