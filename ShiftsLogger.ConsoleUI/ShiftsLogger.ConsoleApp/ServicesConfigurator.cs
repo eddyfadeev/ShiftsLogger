@@ -16,6 +16,7 @@ public static class ServicesConfigurator
         services.RegisterHttpManager();
         services.RegisterSerializers();
         services.RegisterHandlers();
+        services.RegisterControllers();
         
         services.RegisterServices();
     }

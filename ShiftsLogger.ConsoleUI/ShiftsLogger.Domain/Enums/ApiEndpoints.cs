@@ -1,6 +1,6 @@
 ﻿namespace ShiftsLogger.Domain.Enums;
 
-public static class ApiEndpoints
+public class ApiEndpoints
 {
     public enum Shifts
     {

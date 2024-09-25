@@ -1,5 +1,6 @@
 ﻿using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Domain.Enums;
+using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Domain.Models.Entities;
 using ShiftsLogger.Infrastructure.Services;
 
@@ -31,6 +32,27 @@ public class ShiftsController
 
         return result;
     }
-    
-    
+
+    internal async Task<List<Shift>> GetShiftsByFilterId(Enum filter, int id)
+    {
+        var filterableEndpoints = GetFiltersEndpoints();
+
+        if (!filterableEndpoints.Contains(filter))
+        {
+            throw new ArgumentException("Incorrect filter", nameof(filter));
+        }
+
+        var uri = _endpointMapper.GetRelativeUrl(filter, id);
+        var result = await _shiftsApiService.GetAllShiftsByEntityFilterAsync(uri);
+
+        return result;
+    }
+
+    private Enum[] GetFiltersEndpoints() =>
+        new Enum[]
+        {
+            ApiEndpoints.Locations.GetShiftsByLocationId,
+            ApiEndpoints.ShiftTypes.GetShiftsByTypeId,
+            ApiEndpoints.Users.GetShiftsByUserId
+        };
 }

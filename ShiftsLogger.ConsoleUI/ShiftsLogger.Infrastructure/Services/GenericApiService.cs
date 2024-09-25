@@ -1,6 +1,5 @@
-﻿using ShiftsLogger.Application.Interfaces;
-using ShiftsLogger.Domain.Interfaces;
-using ShiftsLogger.Domain.Models;
+﻿using ShiftsLogger.Domain.Interfaces;
+using ShiftsLogger.Domain.Models.Entities;
 using ShiftsLogger.Infrastructure.Interfaces;
 
 namespace ShiftsLogger.Infrastructure.Services;
@@ -34,12 +33,24 @@ public class GenericApiService
         return entities;
     }
 
-    public async Task<ShiftsByEntityReportModel<TEntity>> GetAllShiftsByEntityTypeAsync<TEntity>(Uri uri)
-        where TEntity : class, IReportModel
+    public async Task<List<Shift>> GetAllShiftsByEntityFilterAsync(Uri uri)
     {
-        var response = await _requestHandler.GetAsync(uri);
-        var converter = _serializer.GetConverter<TEntity>();
-        var shiftsByEntity = _serializer.Deserialize<ShiftsByEntityReportModel<TEntity>>(response, converter);
+        var response = string.Empty;
+        
+        try
+        {
+            response = await _requestHandler.GetAsync(uri);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception caught in GenericApiService. Uri: {uri}");
+            Console.WriteLine($"{ex.Message}");
+            Console.WriteLine($"{ex.StackTrace}");
+            Console.ReadKey();
+            return new List<Shift>();
+        }
+        
+        var shiftsByEntity = _serializer.Deserialize<List<Shift>>(response);
 
         return shiftsByEntity;
     }

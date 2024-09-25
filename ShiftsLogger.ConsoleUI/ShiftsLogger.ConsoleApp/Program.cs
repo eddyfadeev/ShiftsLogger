@@ -1,32 +1,65 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.ConsoleApp.ConsoleUI;
 using ShiftsLogger.ConsoleApp.Controllers;
 using ShiftsLogger.Domain.Enums;
-using ShiftsLogger.Infrastructure.Handlers;
-using ShiftsLogger.Infrastructure.Services;
-using Terminal.Gui;
+using ShiftsLogger.Domain.Models.Entities;
 
 namespace ShiftsLogger.ConsoleApp;
 
-static class Program
+public static class Program
 {
     static void Main(string[] args)
     {
         var services = new ServiceCollection();
-    
         services.ConfigureServices();
         var serviceProvider = services.BuildServiceProvider();
-        
-        Terminal.Gui.Application.Init();
-        var win = new MainMenuWindow();
-        
-        Terminal.Gui.Application.Run(win);
-        win.Display();
-        win.Dispose();
-        Terminal.Gui.Application.Shutdown();
 
-        
-        //Console.ReadKey();
+        var locationsController = serviceProvider.GetRequiredService<LocationsController>();
+
+        var renderService = new RenderService();
+
+        var locations = locationsController.GetAllLocations().Result;
+        var shiftsByLocation = new Dictionary<Location, List<Shift>>();
+        foreach (var location in locations)
+        {
+            shiftsByLocation.Add(
+                location, locationsController.GetShiftsByLocationId(location.Id).Result);
+        }
+
+        var shiftsView = new ShiftsView<Location>(locations, shiftsByLocation);
+
+        renderService.RenderLayout(shiftsView);
+
+        while (true)
+        {
+            var key = Console.ReadKey(true).Key;
+
+            shiftsView = HandleUserInput(shiftsView, key);
+            renderService.RenderLayout(shiftsView);
+        }
+    }
+
+    private static ShiftsView<Location> HandleUserInput(ShiftsView<Location> shiftsView, ConsoleKey key)
+    {
+        switch (key)
+        {
+            case ConsoleKey.UpArrow:
+                shiftsView.ChangeSelection(Selection.MoveUp);
+                break;
+            case ConsoleKey.DownArrow:
+                shiftsView.ChangeSelection(Selection.MoveDown);
+                break;
+            case ConsoleKey.LeftArrow:
+                shiftsView.ChangeSelection(Selection.MoveLeft);
+                break;
+            case ConsoleKey.RightArrow:
+                shiftsView.ChangeSelection(Selection.MoveRight);
+                break;
+            case ConsoleKey.Enter:
+                shiftsView.ChangeSelection(Selection.Select);
+                break;
+        }
+
+        return shiftsView;
     }
 }

@@ -33,10 +33,10 @@ public class UserController
         return result;
     }
 
-    internal async Task<ShiftsByEntityReportModel<User>> GetShiftsByUserId(int id)
+    internal async Task<List<Shift>> GetShiftsByUserId(int id)
     {
         var url = _endpointMapper.GetRelativeUrl(ApiEndpoints.Users.GetShiftsByUserId, id);
-        var result = await _userApiService.GetAllShiftsByEntityTypeAsync<User>(url);
+        var result = await _userApiService.GetAllShiftsByEntityFilterAsync(url);
 
         return result;
     }

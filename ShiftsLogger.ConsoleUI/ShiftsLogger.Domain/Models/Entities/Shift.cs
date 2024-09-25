@@ -22,12 +22,13 @@ public class Shift : IReportModelWithId
     
     public string? Description { get; init; }
 
+    // TODO: Make it properly
     public override string ToString() =>
         $"""
-        {UserName ?? "UserName is null"}  
+        {Id}. {UserName ?? $"UserNameId is {UserId}"}  
         Worked as: {UserRole ?? string.Empty}
-        At: {LocationName ?? "location is null"}
-        Worked on: {ShiftTypeDescription ?? string.Empty}
+        At: {LocationName ?? $"locationId is {LocationId}"}
+        Worked on: {ShiftTypeDescription ?? $"ShiftTypeId is {ShiftTypeId}"}
         Hours worked: {HoursWorked}
         """;
     

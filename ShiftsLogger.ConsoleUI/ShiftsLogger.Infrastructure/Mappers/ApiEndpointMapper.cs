@@ -33,7 +33,6 @@ public class ApiEndpointMapper : IApiEndpointMapper
         
         apiEndpoint = ProcessIdSpecificRequest(apiEndpoint, id.Value);
         return new Uri(apiEndpoint, UriKind.Relative);
-
     }
 
     private static string ProcessIdSpecificRequest(string apiEndpoint, int id)
