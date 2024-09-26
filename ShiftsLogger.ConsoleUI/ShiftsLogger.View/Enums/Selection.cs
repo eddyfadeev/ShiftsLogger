@@ -1,4 +1,4 @@
-﻿namespace ShiftsLogger.Domain.Enums;
+﻿namespace ShiftsLogger.View.Enums;
 
 public enum Selection
 {

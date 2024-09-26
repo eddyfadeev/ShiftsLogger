@@ -7,15 +7,23 @@ public static class EnumExtensions
 {
     public static string GetDescription(this Enum value)
     {
-        var field = value.GetType().GetField(value.ToString());
+        var fieldName = value.ToString();
+        
+        var field = value.GetType().GetField(fieldName);
 
         if (field is null)
         {
-            return value.ToString();
+            return fieldName;
         }
         
         var attribute = field.GetCustomAttribute<DescriptionAttribute>();
         
-        return attribute is not null ? attribute.Description : value.ToString();
+        return attribute is not null ? attribute.Description : fieldName;
     }
+
+    public static IEnumerable<string> GetDescriptions<TEnum>() where TEnum : Enum =>
+        Enum
+            .GetValues(typeof(TEnum))
+            .Cast<TEnum>()
+            .Select(e => e.GetDescription());
 }

@@ -2,9 +2,10 @@
 
 namespace ShiftsLogger.Domain.Models.Entities;
 
-public class User : IReportModelWithId
+public class User : IReportModel
 {
     public int Id { get; init; }
+    public string EntityName => "User";
     public string FirstName { get; init; }
     public string? LastName { get; init; }
     public string Email { get; init; }
