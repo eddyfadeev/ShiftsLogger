@@ -1,4 +1,5 @@
-﻿using ShiftsLogger.Application.Interfaces.Data.Repository;
+﻿using System.Collections.Concurrent;
+using ShiftsLogger.Application.Interfaces.Data.Repository;
 using ShiftsLogger.Application.Interfaces.Events;
 using ShiftsLogger.Application.Interfaces.Services;
 using ShiftsLogger.Domain.Interfaces;
@@ -7,26 +8,30 @@ using ShiftsLogger.Infrastructure.Data.Repository;
 
 namespace ShiftsLogger.Infrastructure.Services;
 
-public sealed class UnitOfWork<TEntity> : IDisposable, IAsyncDisposable, IUnitOfWork<TEntity>
-    where TEntity : class, IDbModel
+public sealed class UnitOfWork : IDisposable, IAsyncDisposable, IUnitOfWork
 {
     private readonly ShiftsLoggerDbContext _context;
-    private readonly Lazy<IGenericRepository<TEntity>> _repository;
+    private readonly ConcurrentDictionary<Type, object> _repositories = new();
+    private readonly IEventPublisher _eventPublisher;
     private bool _disposed;
-
-    public IGenericRepository<TEntity> Repository =>
-        _repository.Value;
     
     public UnitOfWork(ShiftsLoggerDbContext context, IEventPublisher eventPublisher)
     {
         _context = context;
-        _repository = new Lazy<IGenericRepository<TEntity>>(
-            () => new GenericRepository<TEntity>(context, eventPublisher));
+        _eventPublisher = eventPublisher;
+        
+        InitializeDatabase();
     }
     
-    public void Save() => _context.SaveChanges();
-    
-    public async Task SaveAsync() => await _context.SaveChangesAsync();
+    public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class, IDbModel
+    {
+        return (IGenericRepository<TEntity>)_repositories.GetOrAdd(typeof(TEntity), CreateRepository);
+        
+        object CreateRepository(Type type) => 
+            new GenericRepository<TEntity>(_context, _eventPublisher);
+    }
+
+    public async Task CompleteAsync() => await _context.SaveChangesAsync();
 
     private void Dispose(bool disposing)
     {
@@ -47,9 +52,26 @@ public sealed class UnitOfWork<TEntity> : IDisposable, IAsyncDisposable, IUnitOf
     {
         if (!_disposed)
         {
+            await DisposeAsyncCore();
+            Dispose(false);
+            GC.SuppressFinalize(this);
+        }
+    }
+
+    private async ValueTask DisposeAsyncCore()
+    {
+        if (!_disposed)
+        {
             await _context.DisposeAsync();
             _disposed = true;
         }
-        GC.SuppressFinalize(this);
+    }
+
+    private void InitializeDatabase()
+    {
+        if (!_context.Database.CanConnect())
+        {
+            _context.Database.EnsureCreated();
+        }
     }
 }

@@ -5,30 +5,6 @@ namespace ShiftsLogger.Domain.Extensions;
 
 public static class EntityExtensions
 {
-    public static ShiftTypeDto MapShiftTypeToDto(this ShiftType shiftType) =>
-        new()
-        {
-            Id = shiftType.Id,
-            Name = shiftType.Name
-        };
-
-    public static UserDto MapUserToDto(this User user) =>
-        new()
-        {
-            Id = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email
-        };
-
-    public static LocationDto MapLocationToDto(this Location location) =>
-        new()
-        {
-            Id = location.Id,
-            Name = location.Name,
-            Address = location.Address
-        };
-    
     public static ShiftDto MapShiftToDto(this Shift shift) =>
         new()
         {
@@ -36,9 +12,9 @@ public static class EntityExtensions
             UserId = shift.UserId,
             LocationId = shift.LocationId,
             ShiftTypeId = shift.ShiftTypeId,
-            StartTime = shift.StartTime,
-            EndTime = shift.EndTime,
+            StartTime = Convert.ToDateTime(shift.StartTime.ToString("yyyy-MM-dd HH:mm:ss")),
+            EndTime = Convert.ToDateTime(shift.EndTime.ToString("yyyy-MM-dd HH:mm:ss")),
             HoursWorked = shift.HoursWorked,
-            Description = shift.Description ?? "No description provided"
+            Description = shift.Description,
         };
 }
