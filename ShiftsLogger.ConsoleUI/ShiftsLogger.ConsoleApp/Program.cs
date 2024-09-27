@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using ShiftsLogger.ConsoleApp.Commands.MainMenu;
 using ShiftsLogger.ConsoleApp.ConsoleUI;
 using ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
 using ShiftsLogger.ConsoleApp.Controllers;
@@ -39,56 +40,24 @@ public static class Program
         #endregion
 
         #region DoublePanel
-        
-        var locations = locationsController.GetAllLocations().Result;
-        var shiftsByLocation = new Dictionary<Location, List<Shift>>();
-        foreach (var location in locations)
-        {
-            shiftsByLocation.Add(
-                location, locationsController.GetShiftsByLocationId(location.Id).Result);
-        }
 
-        var shiftsView = new DoublePanelViewModel<Location, Shift>(locations, shiftsByLocation);
-        var selectionService = new SelectionService(new DoublePanelSelectionStrategy<Location, Shift>(shiftsView));
-        
+        var shiftsByLocationCommand = new ShiftsByLocationCommand(renderService, panelBuilder, locationsController);
         #endregion
         
+        shiftsByLocationCommand.Execute();
         
-        while (true)
-        {
-            //var panels = panelBuilder.PrepareRenderablePanels(shiftsView);
-            //panels.Deconstruct(out Panel leftPanel, out Panel rightPanel);
-
-            var panel = panelBuilder.PrepareRenderablePanel(mainMenuView, HorizontalAlignment.Center);
-            Align.Center(panel);
-            renderService.RenderSinglePanelLayout(panel);
-            
-            //renderService.RenderDoublePanelLayout(leftPanel, rightPanel);
-            var key = Console.ReadKey(true).Key;
-
-            HandleUserInput(singlePanelSelectionService, key);
-        }
-    }
-
-    private static void HandleUserInput(SelectionService selectionService, ConsoleKey key)
-    {
-        switch (key)
-        {
-            case ConsoleKey.UpArrow:
-                selectionService.ChangeSelection(Selection.MoveUp);
-                break;
-            case ConsoleKey.DownArrow:
-                selectionService.ChangeSelection(Selection.MoveDown);
-                break;
-            case ConsoleKey.LeftArrow:
-                selectionService.ChangeSelection(Selection.MoveLeft);
-                break;
-            case ConsoleKey.RightArrow:
-                selectionService.ChangeSelection(Selection.MoveRight);
-                break;
-            case ConsoleKey.Enter:
-                selectionService.ChangeSelection(Selection.Select);
-                break;
-        }
+        // while (true)
+        // {
+        //     //var panels = panelBuilder.PrepareRenderablePanels(shiftsView);
+        //     //panels.Deconstruct(out Panel leftPanel, out Panel rightPanel);
+        //
+        //     var panel = panelBuilder.PrepareRenderablePanel(mainMenuView, HorizontalAlignment.Center);
+        //     renderService.RenderSinglePanelLayout(panel);
+        //     
+        //     //renderService.RenderDoublePanelLayout(leftPanel, rightPanel);
+        //     var key = Console.ReadKey(true).Key;
+        //
+        //     HandleUserInput(singlePanelSelectionService, key);
+        // }
     }
 }

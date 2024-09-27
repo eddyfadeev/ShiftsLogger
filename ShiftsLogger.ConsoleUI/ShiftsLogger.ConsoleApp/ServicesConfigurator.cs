@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShiftsLogger.ConsoleApp.Extensions;
 using ShiftsLogger.Infrastructure.Extensions;
 using ShiftsLogger.View.Extensions;
 
@@ -19,6 +20,7 @@ public static class ServicesConfigurator
         services.RegisterHandlers();
         services.RegisterControllers();
         services.RegisterViewServices();
+        services.RegisterFactories();
         
         services.RegisterServices();
     }
