@@ -10,29 +10,18 @@ public class ShiftsByUserCommand : ShiftsCommandBase<User>
 
     public ShiftsByUserCommand(
         IRenderService renderService, 
-        IPanelBuilderService panelBuilderService, 
+        IPanelBuilder panelBuilder, 
         UserController userController
-    ) : base(renderService, panelBuilderService)
+    ) : base(renderService, panelBuilder)
     {
         _userController = userController;
         
         Entities = PopulateEntities();
-        ShiftsByEntity = PopulateShifts();
     }
     
     private protected sealed override List<User> PopulateEntities() =>
         _userController.GetAllUsers().Result;
 
-    private protected sealed override Dictionary<User, List<Shift>> PopulateShifts()
-    {
-        var result = new Dictionary<User, List<Shift>>();
-
-        foreach (var user in Entities)
-        {
-            result.Add(
-                user, _userController.GetShiftsByUserId(user.Id).Result);
-        }
-
-        return result;
-    }
+    private protected sealed override void PopulateShifts(int entityId) =>
+        ShiftsByEntity = _userController.GetShiftsByUserId(entityId).Result;
 }

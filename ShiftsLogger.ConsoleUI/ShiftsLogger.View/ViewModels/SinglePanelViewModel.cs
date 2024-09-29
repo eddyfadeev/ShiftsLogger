@@ -22,6 +22,8 @@ public class SinglePanelViewModel<TEntry>
         SelectedEntryIndex = newIndex;
     }
 
+    public TEntry GetCurrent() => PanelEntries.ElementAt(SelectedEntryIndex);
+
     private protected virtual bool EnsureCorrectIndex(int newIndex)
     {
         const int lowerBound = 0;

@@ -52,7 +52,7 @@ public class ShiftsController
         new Enum[]
         {
             ApiEndpoints.Locations.GetShiftsByLocationId,
-            ApiEndpoints.ShiftTypes.GetShiftsByTypeId,
+            ApiEndpoints.ShiftTypes.GetShiftsByShiftTypeId,
             ApiEndpoints.Users.GetShiftsByUserId
         };
 }

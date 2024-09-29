@@ -10,29 +10,18 @@ public class ShiftsByLocationCommand : ShiftsCommandBase<Location>
 
     public ShiftsByLocationCommand(
         IRenderService renderService,
-        IPanelBuilderService panelBuilderService,
+        IPanelBuilder panelBuilder,
         LocationsController locationsController
-    ) : base(renderService, panelBuilderService)
+    ) : base(renderService, panelBuilder)
     {
         _locationsController = locationsController;
         
         Entities = PopulateEntities();
-        ShiftsByEntity = PopulateShifts();
     }
 
     private protected sealed override List<Location> PopulateEntities() =>
         _locationsController.GetAllLocations().Result;
     
-    private protected sealed override Dictionary<Location, List<Shift>> PopulateShifts()
-    {
-        var result = new Dictionary<Location, List<Shift>>();
-        
-        foreach (var location in Entities)
-        {
-            result.Add(
-                location, _locationsController.GetShiftsByLocationId(location.Id).Result);
-        }
-
-        return result;
-    }
+    private protected sealed override void PopulateShifts(int entityId) =>
+        ShiftsByEntity = _locationsController.GetShiftsByLocationId(entityId).Result;
 }

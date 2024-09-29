@@ -20,19 +20,19 @@ public class DoublePanelSelectionStrategy<TLeftPanelEntries, TRightPanelEntries>
         {
             case Enums.Selection.MoveUp 
                 when _viewModel.IsSinglePanelMode:
-                _viewModel.UpdateLeftPanelIndex(_viewModel.SelectedEntryIndex - 1);
+                _viewModel.UpdateLeftPanelIndex(_viewModel.LeftPanelViewModel.SelectedEntryIndex - 1);
                 break;
             case Enums.Selection.MoveUp 
                 when !_viewModel.IsSinglePanelMode:
-                _viewModel.UpdateRightPanelIndex(_viewModel.RightPanelActiveIndex - 1);
+                _viewModel.UpdateRightPanelIndex(_viewModel.RightPanelViewModel.SelectedEntryIndex - 1);
                 break;
             case Enums.Selection.MoveDown 
                 when _viewModel.IsSinglePanelMode:
-                _viewModel.UpdateLeftPanelIndex(_viewModel.SelectedEntryIndex + 1);
+                _viewModel.UpdateLeftPanelIndex(_viewModel.LeftPanelViewModel.SelectedEntryIndex + 1);
                 break;
             case Enums.Selection.MoveDown 
                 when !_viewModel.IsSinglePanelMode:
-                _viewModel.UpdateRightPanelIndex(_viewModel.RightPanelActiveIndex + 1);
+                _viewModel.UpdateRightPanelIndex(_viewModel.RightPanelViewModel.SelectedEntryIndex + 1);
                 break;
             case Enums.Selection.MoveLeft 
                 when _viewModel.IsFilterSelected:
@@ -50,8 +50,8 @@ public class DoublePanelSelectionStrategy<TLeftPanelEntries, TRightPanelEntries>
                 break;
             case Enums.Selection.Select 
                 when !_viewModel.IsSinglePanelMode:
-                Console.WriteLine($"You selected: {_viewModel.PanelEntries[_viewModel.LastActiveSelectionIndex]}, " +
-                                  $"{_viewModel.RightPanelEntries[_viewModel.PanelEntries[_viewModel.LastActiveSelectionIndex]][_viewModel.RightPanelActiveIndex]}");
+                Console.WriteLine($"You selected: {_viewModel.LeftPanelViewModel.GetCurrent()}, " +
+                                  $"{_viewModel.RightPanelViewModel.GetCurrent()}");
                 Environment.Exit(0);
                 break;
         }

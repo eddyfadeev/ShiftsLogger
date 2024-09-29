@@ -14,7 +14,7 @@ namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
 public class ShowMainMenuCommand : ICommand
 {
     private readonly IRenderService _renderService;
-    private readonly IPanelBuilderService _panelBuilderService;
+    private readonly IPanelBuilder _panelBuilder;
     private readonly ICommandFactory<MainMenuOptions> _mainMenuCommandFactory;
     
     private bool _isMenuRunning;
@@ -23,12 +23,12 @@ public class ShowMainMenuCommand : ICommand
 
     public ShowMainMenuCommand(
         IRenderService renderService, 
-        IPanelBuilderService panelBuilderService, 
+        IPanelBuilder panelBuilder, 
         ICommandFactory<MainMenuOptions> mainMenuCommandFactory
         )
     {
         _renderService = renderService;
-        _panelBuilderService = panelBuilderService;
+        _panelBuilder = panelBuilder;
         _mainMenuCommandFactory = mainMenuCommandFactory;
 
         _menuEntries = PopulateMenuEntries();
@@ -43,7 +43,13 @@ public class ShowMainMenuCommand : ICommand
 
         while (_isMenuRunning)
         {
-            var panel = _panelBuilderService.PrepareRenderablePanel(viewModel, HorizontalAlignment.Center);
+            var panel = _panelBuilder.CreatePanel(
+                renderInfo: viewModel, 
+                textAlignment: HorizontalAlignment.Center,
+                color: Color.Green,
+                isSinglePanel: true,
+                textDecorations: [ TextDecorations.Underline, TextDecorations.Bold ]
+                );
             _renderService.RenderSinglePanelLayout(panel);
             
             ProcessUserInput(selectionService, viewModel);

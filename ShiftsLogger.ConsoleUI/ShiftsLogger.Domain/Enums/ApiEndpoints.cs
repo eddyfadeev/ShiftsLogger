@@ -30,6 +30,6 @@ public class ApiEndpoints
         CreateNew,
         GetAll,
         ActionById,
-        GetShiftsByTypeId
+        GetShiftsByShiftTypeId
     }
 }

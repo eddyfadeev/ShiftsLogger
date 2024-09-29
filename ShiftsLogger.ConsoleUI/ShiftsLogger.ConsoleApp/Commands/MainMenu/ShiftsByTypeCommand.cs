@@ -1,11 +1,25 @@
 ﻿using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.ConsoleApp.Controllers;
+using ShiftsLogger.Domain.Models.Entities;
+using ShiftsLogger.View.Interfaces;
 
 namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
 
-public class ShiftsByTypeCommand : ICommand
+public class ShiftsByTypeCommand : ShiftsCommandBase<ShiftType>
 {
-    public void Execute()
+    private readonly ShiftTypesController _shiftTypesController;
+    
+    public ShiftsByTypeCommand(IRenderService renderService, IPanelBuilder panelBuilder, ShiftTypesController shiftTypesController) 
+        : base(renderService, panelBuilder)
     {
-        throw new NotImplementedException();
+        _shiftTypesController = shiftTypesController;
+
+        Entities = PopulateEntities();
     }
+
+    private protected sealed override List<ShiftType> PopulateEntities() =>
+        _shiftTypesController.GetAllShiftTypes().Result;
+
+    private protected sealed override void PopulateShifts(int entityId) =>
+        ShiftsByEntity = _shiftTypesController.GetShiftsByShiftTypeId(entityId).Result;
 }
