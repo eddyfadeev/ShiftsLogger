@@ -13,37 +13,38 @@ namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
 public abstract class ShiftsCommandBase<TEntity> : ICommand
     where TEntity : class, IReportModel
 {
-    private protected readonly IRenderService RenderService;
-    private protected readonly IPanelBuilder PanelBuilder;
+    private readonly IRenderService _renderService;
+    private readonly IPanelBuilder _panelBuilder;
+    
+    private bool _isMenuRunning; 
 
     private protected List<TEntity> Entities;
     private protected List<Shift> ShiftsByEntity;
-    private protected bool IsMenuRunning; 
 
     protected ShiftsCommandBase(IRenderService renderService, IPanelBuilder panelBuilder)
     {
-        RenderService = renderService;
-        PanelBuilder = panelBuilder;
+        _renderService = renderService;
+        _panelBuilder = panelBuilder;
         
-        Entities = new List<TEntity>();
-        ShiftsByEntity = new List<Shift>();
+        Entities = [];
+        ShiftsByEntity = [];
     }
     
     public virtual void Execute()
     {
         var viewModel = CreateViewModel();
         var selectionService = GetSelectionService(viewModel);
-        IsMenuRunning = true;
+        _isMenuRunning = true;
         
         GetPanels(viewModel, out var leftPanel, out var rightPanel);
-        RenderService.RenderDoublePanelLayout(leftPanel, rightPanel);
+        _renderService.RenderDoublePanelLayout(leftPanel, rightPanel);
 
-        while (IsMenuRunning)
+        while (_isMenuRunning)
         {
             ProcessUserInput(selectionService, viewModel);
             
             GetPanels(viewModel, out leftPanel, out rightPanel);
-            RenderService.RenderDoublePanelLayout(leftPanel, rightPanel);
+            _renderService.RenderDoublePanelLayout(leftPanel, rightPanel);
         }
     }
 
@@ -51,15 +52,15 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
     
     private protected abstract void PopulateShifts(int entityId);
     
-    private protected DoublePanelViewModel<TEntity, Shift> CreateViewModel() => new(Entities);
+    private DoublePanelViewModel<TEntity, Shift> CreateViewModel() => new(Entities);
 
-    private protected SelectionService GetSelectionService(DoublePanelViewModel<TEntity, Shift> viewModel) =>
+    private SelectionService GetSelectionService(DoublePanelViewModel<TEntity, Shift> viewModel) =>
         new(new DoublePanelSelectionStrategy<TEntity, Shift>(viewModel));
 
-    private protected void GetPanels(DoublePanelViewModel<TEntity, Shift> viewModel, out Panel leftPanel, out Panel rightPanel)
+    private void GetPanels(DoublePanelViewModel<TEntity, Shift> viewModel, out Panel leftPanel, out Panel rightPanel)
     {
         leftPanel =
-            PanelBuilder.CreatePanel(
+            _panelBuilder.CreatePanel(
                 renderInfo: viewModel.LeftPanelViewModel, 
                 textAlignment: HorizontalAlignment.Left,
                 color: Color.Green,
@@ -67,29 +68,27 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
                 textDecorations: [ TextDecorations.Bold, TextDecorations.Underline]
             );
 
-        if (viewModel.SelectedFilterIndex < 0)
-        {
-            rightPanel = PanelBuilder.CreateDummyPanel("[grey]Choose a filter to see available shifts...[/]");
-            return;
-        }
+        rightPanel = GetRightPanel(viewModel);
+    }
 
-        if (viewModel.SelectedFilterIndex >= 0 && viewModel.RightPanelViewModel.PanelEntries.Count == 0)
+    private Panel GetRightPanel(DoublePanelViewModel<TEntity, Shift> viewModel) =>
+        viewModel switch
         {
-            rightPanel = PanelBuilder.CreateDummyPanel("[grey]No shifts available for this filter...[/]");
-            return;
-        }
-        
-        rightPanel = 
-            PanelBuilder.CreatePanel(
-                renderInfo: viewModel.RightPanelViewModel, 
-                textAlignment: HorizontalAlignment.Left,
-                color: Color.Blue,
+            { SelectedFilterIndex: < 0 } 
+                => _panelBuilder.CreateDummyPanel(
+                "[grey]Choose a filter to see available shifts...[/]"),
+            { SelectedFilterIndex: >= 0, RightPanelViewModel.PanelEntries.Count: 0 } 
+                => _panelBuilder.CreateDummyPanel(
+                "[grey]No shifts available for this filter...[/]"),
+            _ => _panelBuilder.CreatePanel(
+                renderInfo: viewModel.RightPanelViewModel,
+                textAlignment: HorizontalAlignment.Left, 
+                color: Color.Blue, 
                 isSinglePanel: !viewModel.IsSinglePanelMode,
-                textDecorations: [ TextDecorations.Bold, TextDecorations.Underline]
-            );
-    } 
+                textDecorations: [TextDecorations.Bold, TextDecorations.Underline])
+        };
 
-    private protected void ProcessUserInput(SelectionService selectionService, DoublePanelViewModel<TEntity,Shift> viewModel)
+    private void ProcessUserInput(SelectionService selectionService, DoublePanelViewModel<TEntity,Shift> viewModel)
     {
         var key = Console.ReadKey(true).Key;
         
@@ -113,7 +112,7 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
                 viewModel.UpdateRightPanelViewModel(ShiftsByEntity);
                 break;
             case ConsoleKey.Escape:
-                IsMenuRunning = false;
+                _isMenuRunning = false;
                 break;
         }
     }
