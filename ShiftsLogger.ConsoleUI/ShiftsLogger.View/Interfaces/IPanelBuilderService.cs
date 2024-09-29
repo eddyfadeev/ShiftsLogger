@@ -1,5 +1,4 @@
-﻿using ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
-using ShiftsLogger.View.ViewModels;
+﻿using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
 
 namespace ShiftsLogger.View.Interfaces;

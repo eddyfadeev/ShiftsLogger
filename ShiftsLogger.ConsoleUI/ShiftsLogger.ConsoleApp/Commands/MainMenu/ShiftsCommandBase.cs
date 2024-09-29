@@ -1,11 +1,11 @@
 ﻿using ShiftsLogger.Application.Interfaces;
-using ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
 using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Domain.Models.Entities;
 using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
 using ShiftsLogger.View.Services;
 using ShiftsLogger.View.Strategies.Selection;
+using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
@@ -24,10 +24,11 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
     {
         RenderService = renderService;
         PanelBuilderService = panelBuilderService;
-
+        
         Entities = new List<TEntity>();
         ShiftsByEntity = new Dictionary<TEntity, List<Shift>>();
     }
+    
     public virtual void Execute()
     {
         var viewModel = CreateViewModel();

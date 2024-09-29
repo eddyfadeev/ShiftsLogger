@@ -46,6 +46,8 @@ public class GenericApiService
             Console.WriteLine($"Exception caught in GenericApiService. Uri: {uri}");
             Console.WriteLine($"{ex.Message}");
             Console.WriteLine($"{ex.StackTrace}");
+
+            Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
             return new List<Shift>();
         }

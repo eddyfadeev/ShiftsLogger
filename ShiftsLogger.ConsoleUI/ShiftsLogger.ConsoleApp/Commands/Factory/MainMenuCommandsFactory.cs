@@ -14,11 +14,13 @@ public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
     private readonly IRenderService _renderService;
     private readonly IPanelBuilderService _panelBuilderService;
     private readonly LocationsController _locationsController;
+    private readonly UserController _userController;
 
     public MainMenuCommandsFactory(
         IRenderService renderService, 
         IPanelBuilderService panelBuilderService, 
-        LocationsController locationsController
+        LocationsController locationsController,
+        UserController userController
         )
     {
         _factory = InitializeFactory().ToFrozenDictionary();
@@ -26,6 +28,7 @@ public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
         _renderService = renderService;
         _panelBuilderService = panelBuilderService;
         _locationsController = locationsController;
+        _userController = userController;
     }
     
     public ICommand Create(MainMenuOptions commandToCreate) => 
@@ -35,7 +38,8 @@ public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
         new()
         {
             { MainMenuOptions.AllShifts, () => new AllShiftsCommand() },
-            { MainMenuOptions.ShiftsByUser, () => new ShiftsByUserCommand() },
+            { MainMenuOptions.ShiftsByUser, 
+                () => new ShiftsByUserCommand(_renderService, _panelBuilderService, _userController) },
             { MainMenuOptions.ShiftsByType, () => new ShiftsByTypeCommand() },
             { MainMenuOptions.ShiftsByLocation, 
                 () => new ShiftsByLocationCommand(_renderService, _panelBuilderService, _locationsController) },

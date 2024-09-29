@@ -1,6 +1,4 @@
-﻿using ShiftsLogger.View.ViewModels;
-
-namespace ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
+﻿namespace ShiftsLogger.View.ViewModels;
 
 public class DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> : SinglePanelViewModel<TLeftPanelEntries> 
     where TLeftPanelEntries : class

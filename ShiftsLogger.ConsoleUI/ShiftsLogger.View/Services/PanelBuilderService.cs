@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
 using ShiftsLogger.View.Interfaces;
 using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
@@ -42,7 +41,7 @@ public class PanelBuilderService : IPanelBuilderService
             || !renderInfo.RightPanelEntries.TryGetValue(renderInfo.PanelEntries[renderInfo.LastActiveSelectionIndex], 
                 out var shifts))
         {
-            rightPanelText = new Markup("[grey]Choose a location to see available shifts...[/]");
+            rightPanelText = new Markup("[grey]Choose a filter to see available shifts...[/]");
         }
         else
         {

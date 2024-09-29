@@ -1,5 +1,5 @@
-﻿using ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
-using ShiftsLogger.View.Interfaces;
+﻿using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.ViewModels;
 
 namespace ShiftsLogger.View.Strategies.Selection;
 
