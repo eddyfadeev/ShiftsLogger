@@ -16,7 +16,7 @@ public class ShiftsByUserCommand : ShiftsCommandBase<User>
     {
         _userController = userController;
         
-        Entities = PopulateEntities();
+        Entries = PopulateEntities();
     }
     
     private protected sealed override List<User> PopulateEntities() =>

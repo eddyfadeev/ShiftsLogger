@@ -18,7 +18,7 @@ public class PanelBuilder : IPanelBuilder
         where TPanelEntries : class
     {
         Markup panelText = GetPanelText(
-            entries: renderInfo.PanelEntries,
+            entries: renderInfo.PanelEntries.VisibleElements,
             selectedIndex: renderInfo.SelectedEntryIndex,
             color: color,
             textDecorations: textDecorations,
@@ -58,7 +58,7 @@ public class PanelBuilder : IPanelBuilder
     }
     
     private static Markup GetPanelText<TPanelEntry>(
-        List<TPanelEntry> entries, 
+        IEnumerable<TPanelEntry> entries, 
         Color color, 
         int selectedIndex, 
         bool isSinglePanel = true,
@@ -70,15 +70,15 @@ public class PanelBuilder : IPanelBuilder
         string decorations = GetTextDecorations(textDecorations);
         string textColor = color.ToString().ToLower();
         
-        for (int i = 0; i < entries.Count; i++)
+        for (int i = 0; i < entries.Count(); i++)
         {
             if (i == selectedIndex)
             {
-                sb.Append((isSinglePanel ? $"[{decorations} {textColor}]" : $"[{textColor}]") + entries[i] + "[/]\n");
+                sb.Append((isSinglePanel ? $"[{decorations} {textColor}]" : $"[{textColor}]") + entries.ElementAt(i) + "[/]\n");
             }
             else
             {
-                sb.Append(entries[i] + "\n");
+                sb.Append(entries.ElementAt(i) + "\n");
             }
         }
 

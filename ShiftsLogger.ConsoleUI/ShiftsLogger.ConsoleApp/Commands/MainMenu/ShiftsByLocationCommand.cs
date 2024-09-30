@@ -16,7 +16,7 @@ public class ShiftsByLocationCommand : ShiftsCommandBase<Location>
     {
         _locationsController = locationsController;
         
-        Entities = PopulateEntities();
+        Entries = PopulateEntities();
     }
 
     private protected sealed override List<Location> PopulateEntities() =>

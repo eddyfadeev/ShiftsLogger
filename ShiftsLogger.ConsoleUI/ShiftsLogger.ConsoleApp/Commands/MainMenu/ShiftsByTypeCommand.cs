@@ -14,7 +14,7 @@ public class ShiftsByTypeCommand : ShiftsCommandBase<ShiftType>
     {
         _shiftTypesController = shiftTypesController;
 
-        Entities = PopulateEntities();
+        Entries = PopulateEntities();
     }
 
     private protected sealed override List<ShiftType> PopulateEntities() =>

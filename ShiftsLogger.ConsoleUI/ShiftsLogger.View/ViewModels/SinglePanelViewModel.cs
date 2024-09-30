@@ -3,33 +3,17 @@
 public class SinglePanelViewModel<TEntry>
     where TEntry : class
 {
-    public int SelectedEntryIndex { get; private set; }
+    public int SelectedEntryIndex => PanelEntries.CurrentIndex;
 
-    public List<TEntry> PanelEntries { get; }
+    public OnScreenMenuList<TEntry> PanelEntries { get; }
 
     public SinglePanelViewModel(List<TEntry> entries)
     {
-        PanelEntries = entries;
-    }
-    
-    public void UpdateSelectionIndex(int newIndex)
-    {
-        if (!EnsureCorrectIndex(newIndex))
-        {
-            return;
-        }
-        
-        SelectedEntryIndex = newIndex;
+        PanelEntries = new OnScreenMenuList<TEntry>(entries);
     }
 
-    public TEntry GetCurrent() => PanelEntries.ElementAt(SelectedEntryIndex);
+    public void MoveUp() => PanelEntries.MoveUp();
+    public void MoveDown() => PanelEntries.MoveDown();
 
-    private protected virtual bool EnsureCorrectIndex(int newIndex)
-    {
-        const int lowerBound = 0;
-        int upperBound = PanelEntries.Count - 1;
-
-        return newIndex <= upperBound &&
-               newIndex >= lowerBound;
-    }
+    public TEntry GetCurrentChoice() => PanelEntries.GetCurrentElement();
 }

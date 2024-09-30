@@ -18,7 +18,7 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
     
     private bool _isMenuRunning; 
 
-    private protected List<TEntity> Entities;
+    private protected List<TEntity> Entries;
     private protected List<Shift> ShiftsByEntity;
 
     protected ShiftsCommandBase(IRenderService renderService, IPanelBuilder panelBuilder)
@@ -26,7 +26,7 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
         _renderService = renderService;
         _panelBuilder = panelBuilder;
         
-        Entities = [];
+        Entries = [];
         ShiftsByEntity = [];
     }
     
@@ -52,7 +52,7 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
     
     private protected abstract void PopulateShifts(int entityId);
     
-    private DoublePanelViewModel<TEntity, Shift> CreateViewModel() => new(Entities);
+    private DoublePanelViewModel<TEntity, Shift> CreateViewModel() => new(Entries);
 
     private SelectionService GetSelectionService(DoublePanelViewModel<TEntity, Shift> viewModel) =>
         new(new DoublePanelSelectionStrategy<TEntity, Shift>(viewModel));
@@ -77,7 +77,7 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
             { SelectedFilterIndex: < 0 } 
                 => _panelBuilder.CreateDummyPanel(
                 "[grey]Choose a filter to see available shifts...[/]"),
-            { SelectedFilterIndex: >= 0, RightPanelViewModel.PanelEntries.Count: 0 } 
+            { SelectedFilterIndex: >= 0, RightPanelViewModel.PanelEntries.VisibleElements.Count: 0 } 
                 => _panelBuilder.CreateDummyPanel(
                 "[grey]No shifts available for this filter...[/]"),
             _ => _panelBuilder.CreatePanel(

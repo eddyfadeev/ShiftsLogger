@@ -2,84 +2,39 @@
 using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.Infrastructure.Extensions;
-using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
-using ShiftsLogger.View.Services;
-using ShiftsLogger.View.Strategies.Selection;
 using ShiftsLogger.View.ViewModels;
-using Spectre.Console;
 
 namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
 
-public class ShowMainMenuCommand : ICommand
+public sealed class ShowMainMenuCommand : SinglePanelMenuCommand<string>
 {
-    private readonly IRenderService _renderService;
-    private readonly IPanelBuilder _panelBuilder;
     private readonly ICommandFactory<MainMenuOptions> _mainMenuCommandFactory;
-    
-    private bool _isMenuRunning;
-    private readonly List<string> _menuEntries;
-    private FrozenDictionary<string, MainMenuOptions> _mainMenuOptionsMap;
+    private readonly FrozenDictionary<string, MainMenuOptions> _mainMenuOptionsMap;
 
     public ShowMainMenuCommand(
         IRenderService renderService, 
         IPanelBuilder panelBuilder, 
         ICommandFactory<MainMenuOptions> mainMenuCommandFactory
-        )
+        ) : base(renderService, panelBuilder)
     {
-        _renderService = renderService;
-        _panelBuilder = panelBuilder;
         _mainMenuCommandFactory = mainMenuCommandFactory;
 
-        _menuEntries = PopulateMenuEntries();
+        MenuEntries = PopulateMenuEntries();
         _mainMenuOptionsMap = MapMenuOptions();
-        _isMenuRunning = true;
     }
     
-    public void Execute()
+    private protected override object GetChosenOption(SinglePanelViewModel<string> viewModel)
     {
-        var viewModel = new SinglePanelViewModel<string>(_menuEntries);
-        var selectionService = GetSelectionService(viewModel);
-
-        while (_isMenuRunning)
-        {
-            var panel = _panelBuilder.CreatePanel(
-                renderInfo: viewModel, 
-                textAlignment: HorizontalAlignment.Center,
-                color: Color.Green,
-                isSinglePanel: true,
-                textDecorations: [ TextDecorations.Underline, TextDecorations.Bold ]
-                );
-            _renderService.RenderSinglePanelLayout(panel);
-            
-            ProcessUserInput(selectionService, viewModel);
-        }
-    }
-    
-    private void ProcessUserInput(SelectionService selectionService, SinglePanelViewModel<string> viewModel)
-    {
-        var key = Console.ReadKey(true).Key;
+        string selectedEntry = viewModel.GetCurrentChoice();
         
-        switch (key)
-        {
-            case ConsoleKey.UpArrow:
-                selectionService.ChangeSelection(Selection.MoveUp);
-                break;
-            case ConsoleKey.DownArrow:
-                selectionService.ChangeSelection(Selection.MoveDown);
-                break;
-            case ConsoleKey.Enter:
-                var chosenOption = GetChosenOption(viewModel);
-                var submenu = GetCommand(chosenOption);
-                submenu.Execute();
-                break;
-            case ConsoleKey.Escape:
-                _isMenuRunning = false;
-                break;
-        }
+        return _mainMenuOptionsMap[selectedEntry];
     }
 
-    private static List<string> PopulateMenuEntries() =>
+    private protected override ICommand GetCommand(object chosenOption) => 
+        _mainMenuCommandFactory.Create((MainMenuOptions)chosenOption);
+
+    private protected override List<string> PopulateMenuEntries() =>
         EnumExtensions.GetDescriptions<MainMenuOptions>().ToList();
     
     private static FrozenDictionary<string, MainMenuOptions> MapMenuOptions()
@@ -93,16 +48,4 @@ public class ShowMainMenuCommand : ICommand
 
         return mainMenuOptionsMap.ToFrozenDictionary();
     }
-
-    private static SelectionService GetSelectionService(SinglePanelViewModel<string> viewModel) =>
-        new(new SinglePanelSelectionStrategy<string>(viewModel));
-
-    private MainMenuOptions GetChosenOption(SinglePanelViewModel<string> viewModel)
-    {
-        string selectedEntry = viewModel.PanelEntries[viewModel.SelectedEntryIndex];
-        
-        return _mainMenuOptionsMap[selectedEntry];
-    }
-
-    private ICommand GetCommand(MainMenuOptions chosenOption) => _mainMenuCommandFactory.Create(chosenOption);
 }

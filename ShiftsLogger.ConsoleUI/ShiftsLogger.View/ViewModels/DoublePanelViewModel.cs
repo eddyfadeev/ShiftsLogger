@@ -25,15 +25,9 @@ public class DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries>
     public void SelectLeftPanel() => IsSinglePanelMode = true;
     
     public void SelectRightPanel() => IsSinglePanelMode = false;
-    
-    public void UpdateRightPanelIndex(int newIndex) =>
-        RightPanelViewModel.UpdateSelectionIndex(newIndex);
 
-    public void UpdateLeftPanelIndex(int newIndex) =>
-        LeftPanelViewModel.UpdateSelectionIndex(newIndex);
-
-    public void ResetRightPanelSelection() => 
-        RightPanelViewModel.UpdateSelectionIndex(0);
+    public void ResetRightPanelSelection() =>
+        RightPanelViewModel.PanelEntries.ResetSelection();
     
     public void ActivateFilter()
     {
@@ -46,14 +40,4 @@ public class DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries>
 
     public void UpdateRightPanelViewModel(List<TRightPanelEntries> rightPanelEntriesList) =>
         RightPanelViewModel = new SinglePanelViewModel<TRightPanelEntries>(rightPanelEntriesList);
-
-    public List<TRightPanelEntries> GetRightPanelEntriesList()
-    {
-        if (SelectedFilterIndex < 0)
-        {
-            return [];
-        }
-
-        return RightPanelViewModel.PanelEntries;
-    }
 }

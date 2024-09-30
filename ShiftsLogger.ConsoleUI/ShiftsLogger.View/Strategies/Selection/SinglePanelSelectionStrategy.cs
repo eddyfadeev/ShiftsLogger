@@ -18,13 +18,13 @@ public class SinglePanelSelectionStrategy<TEntry> : ISelectionStrategy
         switch (move)
         {
             case Enums.Selection.MoveUp:
-                _viewModel.UpdateSelectionIndex(_viewModel.SelectedEntryIndex - 1);
+                _viewModel.MoveUp();
                 break;
             case Enums.Selection.MoveDown:
-                _viewModel.UpdateSelectionIndex(_viewModel.SelectedEntryIndex + 1);
+                _viewModel.MoveDown();
                 break;
             case Enums.Selection.Select:
-                Console.WriteLine($"You selected: {_viewModel.PanelEntries[_viewModel.SelectedEntryIndex]}");
+                Console.WriteLine($"You selected: {_viewModel.GetCurrentChoice()}");
                 Environment.Exit(0);
                 break;
         }
