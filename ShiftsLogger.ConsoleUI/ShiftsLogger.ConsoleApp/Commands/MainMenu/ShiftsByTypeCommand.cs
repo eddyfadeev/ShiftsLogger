@@ -5,7 +5,7 @@ using ShiftsLogger.View.Interfaces;
 
 namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
 
-public class ShiftsByTypeCommand : ShiftsCommandBase<ShiftType>
+public class ShiftsByTypeCommand : ShiftsCommandBase<ShiftType, Shift>
 {
     private readonly ShiftTypesController _shiftTypesController;
     
@@ -14,12 +14,12 @@ public class ShiftsByTypeCommand : ShiftsCommandBase<ShiftType>
     {
         _shiftTypesController = shiftTypesController;
 
-        Entries = PopulateEntities();
+        LeftPanelEntities = FetchLeftPanelData();
     }
 
-    private protected sealed override List<ShiftType> PopulateEntities() =>
+    private protected sealed override List<ShiftType> FetchLeftPanelData() =>
         _shiftTypesController.GetAllShiftTypes().Result;
 
-    private protected sealed override void PopulateShifts(int entityId) =>
-        ShiftsByEntity = _shiftTypesController.GetShiftsByShiftTypeId(entityId).Result;
+    private protected sealed override void FetchRightPanelData(int entityId) =>
+        RightPanelEntries = _shiftTypesController.GetShiftsByShiftTypeId(entityId).Result;
 }

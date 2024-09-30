@@ -16,8 +16,6 @@ public sealed class AllShiftsMenuCommand : SinglePanelMenuCommand<Shift>
         : base(renderService, panelBuilderService)
     {
         _shiftsController = shiftsController;
-
-        MenuEntries = PopulateMenuEntries();
     }
 
     private protected override object GetChosenOption(ISinglePanelViewModel<Shift> viewModel) =>

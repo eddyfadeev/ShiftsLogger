@@ -4,7 +4,7 @@ using ShiftsLogger.View.Interfaces;
 
 namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
 
-public class ShiftsByLocationCommand : ShiftsCommandBase<Location>
+public class ShiftsByLocationCommand : ShiftsCommandBase<Location, Shift>
 {
     private readonly LocationsController _locationsController;
 
@@ -16,12 +16,12 @@ public class ShiftsByLocationCommand : ShiftsCommandBase<Location>
     {
         _locationsController = locationsController;
         
-        Entries = PopulateEntities();
+        LeftPanelEntities = FetchLeftPanelData();
     }
 
-    private protected sealed override List<Location> PopulateEntities() =>
+    private protected sealed override List<Location> FetchLeftPanelData() =>
         _locationsController.GetAllLocations().Result;
     
-    private protected sealed override void PopulateShifts(int entityId) =>
-        ShiftsByEntity = _locationsController.GetShiftsByLocationId(entityId).Result;
+    private protected sealed override void FetchRightPanelData(int entityId) =>
+        RightPanelEntries = _locationsController.GetShiftsByLocationId(entityId).Result;
 }

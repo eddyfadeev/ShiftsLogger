@@ -29,6 +29,11 @@ public abstract class SinglePanelMenuCommand<TEntry> : ICommand
 
     public virtual void Execute()
     {
+        if (!MenuEntries.Any())
+        {
+            MenuEntries = PopulateMenuEntries();
+        }
+        
         IsMenuRunning = true;
         var viewModel = new SinglePanelViewModel<TEntry>(MenuEntries);
         var selectionService = GetSelectionService(viewModel);
