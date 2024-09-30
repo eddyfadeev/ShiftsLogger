@@ -14,17 +14,17 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
     where TEntity : class, IReportModel
 {
     private readonly IRenderService _renderService;
-    private readonly IPanelBuilder _panelBuilder;
+    private readonly IPanelBuilderService _panelBuilderService;
     
     private bool _isMenuRunning; 
 
     private protected List<TEntity> Entries;
     private protected List<Shift> ShiftsByEntity;
 
-    protected ShiftsCommandBase(IRenderService renderService, IPanelBuilder panelBuilder)
+    protected ShiftsCommandBase(IRenderService renderService, IPanelBuilderService panelBuilderService)
     {
         _renderService = renderService;
-        _panelBuilder = panelBuilder;
+        _panelBuilderService = panelBuilderService;
         
         Entries = [];
         ShiftsByEntity = [];
@@ -60,7 +60,7 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
     private void GetPanels(DoublePanelViewModel<TEntity, Shift> viewModel, out Panel leftPanel, out Panel rightPanel)
     {
         leftPanel =
-            _panelBuilder.CreatePanel(
+            _panelBuilderService.CreatePanel(
                 renderInfo: viewModel.LeftPanelViewModel, 
                 textAlignment: HorizontalAlignment.Left,
                 color: Color.Green,
@@ -75,12 +75,12 @@ public abstract class ShiftsCommandBase<TEntity> : ICommand
         viewModel switch
         {
             { SelectedFilterIndex: < 0 } 
-                => _panelBuilder.CreateDummyPanel(
+                => _panelBuilderService.CreateDummyPanel(
                 "[grey]Choose a filter to see available shifts...[/]"),
             { SelectedFilterIndex: >= 0, RightPanelViewModel.PanelEntries.VisibleElements.Count: 0 } 
-                => _panelBuilder.CreateDummyPanel(
+                => _panelBuilderService.CreateDummyPanel(
                 "[grey]No shifts available for this filter...[/]"),
-            _ => _panelBuilder.CreatePanel(
+            _ => _panelBuilderService.CreatePanel(
                 renderInfo: viewModel.RightPanelViewModel,
                 textAlignment: HorizontalAlignment.Left, 
                 color: Color.Blue, 

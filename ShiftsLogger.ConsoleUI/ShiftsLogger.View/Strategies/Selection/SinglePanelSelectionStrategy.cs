@@ -1,14 +1,14 @@
 ﻿using ShiftsLogger.View.Interfaces;
-using ShiftsLogger.View.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
 namespace ShiftsLogger.View.Strategies.Selection;
 
 public class SinglePanelSelectionStrategy<TEntry> : ISelectionStrategy
     where TEntry : class
 {
-    private readonly SinglePanelViewModel<TEntry> _viewModel;
+    private readonly ISinglePanelViewModel<TEntry> _viewModel;
 
-    public SinglePanelSelectionStrategy(SinglePanelViewModel<TEntry> viewModel)
+    public SinglePanelSelectionStrategy(ISinglePanelViewModel<TEntry> viewModel)
     {
         _viewModel = viewModel;
     }
@@ -24,7 +24,7 @@ public class SinglePanelSelectionStrategy<TEntry> : ISelectionStrategy
                 _viewModel.MoveDown();
                 break;
             case Enums.Selection.Select:
-                Console.WriteLine($"You selected: {_viewModel.GetCurrentChoice()}");
+                Console.WriteLine($"You selected: {_viewModel.GetCurrentElement()}");
                 Environment.Exit(0);
                 break;
         }

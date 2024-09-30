@@ -10,9 +10,9 @@ public class ShiftsByLocationCommand : ShiftsCommandBase<Location>
 
     public ShiftsByLocationCommand(
         IRenderService renderService,
-        IPanelBuilder panelBuilder,
+        IPanelBuilderService panelBuilderService,
         LocationsController locationsController
-    ) : base(renderService, panelBuilder)
+    ) : base(renderService, panelBuilderService)
     {
         _locationsController = locationsController;
         

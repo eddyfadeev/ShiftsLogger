@@ -9,8 +9,8 @@ public class ShiftsByTypeCommand : ShiftsCommandBase<ShiftType>
 {
     private readonly ShiftTypesController _shiftTypesController;
     
-    public ShiftsByTypeCommand(IRenderService renderService, IPanelBuilder panelBuilder, ShiftTypesController shiftTypesController) 
-        : base(renderService, panelBuilder)
+    public ShiftsByTypeCommand(IRenderService renderService, IPanelBuilderService panelBuilderService, ShiftTypesController shiftTypesController) 
+        : base(renderService, panelBuilderService)
     {
         _shiftTypesController = shiftTypesController;
 

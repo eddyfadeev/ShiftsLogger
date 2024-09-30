@@ -1,12 +1,10 @@
-﻿using ShiftsLogger.View.Services;
+﻿using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
+using ShiftsLogger.View.Services;
 
 namespace ShiftsLogger.View.ViewModels;
 
-public interface IReturnableEntries<out T>
-{
-    T GetCurrentElement();
-}
-public class OnScreenMenuList<T> : IReturnableEntries<T>, IDisposable
+public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
+    where T : notnull
 {
     private readonly List<T> _allElements;
     private readonly object _lock = new();

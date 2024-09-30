@@ -10,9 +10,9 @@ public class ShiftsByUserCommand : ShiftsCommandBase<User>
 
     public ShiftsByUserCommand(
         IRenderService renderService, 
-        IPanelBuilder panelBuilder, 
+        IPanelBuilderService panelBuilderService, 
         UserController userController
-    ) : base(renderService, panelBuilder)
+    ) : base(renderService, panelBuilderService)
     {
         _userController = userController;
         

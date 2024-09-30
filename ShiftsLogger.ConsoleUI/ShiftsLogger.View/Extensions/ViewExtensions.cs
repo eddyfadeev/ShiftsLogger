@@ -8,7 +8,7 @@ public static class ViewExtensions
 {
     public static void RegisterViewServices(this IServiceCollection services)
     {
-        services.AddTransient<IPanelBuilder, PanelBuilder>();
+        services.AddTransient<IPanelBuilderService, PanelBuilderService>();
         services.AddScoped<IRenderService, RenderService>();
     }
 }

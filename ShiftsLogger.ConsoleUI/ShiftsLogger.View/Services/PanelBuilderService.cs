@@ -6,7 +6,7 @@ using Spectre.Console;
 
 namespace ShiftsLogger.View.Services;
 
-public class PanelBuilder : IPanelBuilder
+public class PanelBuilderService : IPanelBuilderService
 {
     public Panel CreatePanel<TPanelEntries>(
         SinglePanelViewModel<TPanelEntries> renderInfo, 
@@ -19,7 +19,7 @@ public class PanelBuilder : IPanelBuilder
     {
         Markup panelText = GetPanelText(
             entries: renderInfo.PanelEntries.VisibleElements,
-            selectedIndex: renderInfo.SelectedEntryIndex,
+            selectedIndex: renderInfo.CurrentIndex,
             color: color,
             textDecorations: textDecorations,
             isSinglePanel: isSinglePanel

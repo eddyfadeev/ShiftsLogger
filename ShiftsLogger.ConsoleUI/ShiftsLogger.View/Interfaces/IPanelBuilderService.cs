@@ -4,7 +4,7 @@ using Spectre.Console;
 
 namespace ShiftsLogger.View.Interfaces;
 
-public interface IPanelBuilder
+public interface IPanelBuilderService
 {
     Panel CreatePanel<TPanelEntries>(
         SinglePanelViewModel<TPanelEntries> renderInfo,

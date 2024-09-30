@@ -1,6 +1,9 @@
-﻿namespace ShiftsLogger.View.ViewModels;
+﻿using ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
 
-public class DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries>
+namespace ShiftsLogger.View.ViewModels;
+
+public class DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> 
+    : IDoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries>
     where TLeftPanelEntries : class
     where TRightPanelEntries : class
 {
@@ -12,9 +15,9 @@ public class DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries>
     public SinglePanelViewModel<TLeftPanelEntries> LeftPanelViewModel { get; private set; }
     public SinglePanelViewModel<TRightPanelEntries> RightPanelViewModel { get; private set; }
 
-    public DoublePanelViewModel(List<TLeftPanelEntries> leftPanelEntriesList) : this(leftPanelEntriesList, []) {}
+    public DoublePanelViewModel(IEnumerable<TLeftPanelEntries> leftPanelEntriesList) : this(leftPanelEntriesList, []) {}
     
-    public DoublePanelViewModel(List<TLeftPanelEntries> leftPanelEntries, List<TRightPanelEntries> rightPanelEntries)
+    public DoublePanelViewModel(IEnumerable<TLeftPanelEntries> leftPanelEntries, IEnumerable<TRightPanelEntries> rightPanelEntries)
     {
         LeftPanelViewModel = new SinglePanelViewModel<TLeftPanelEntries>(leftPanelEntries);
         RightPanelViewModel = new SinglePanelViewModel<TRightPanelEntries>(rightPanelEntries);
@@ -26,18 +29,23 @@ public class DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries>
     
     public void SelectRightPanel() => IsSinglePanelMode = false;
 
+    public void ResetLeftPanelSelection() =>
+        LeftPanelViewModel.ResetSelection();
+    
     public void ResetRightPanelSelection() =>
-        RightPanelViewModel.PanelEntries.ResetSelection();
+        RightPanelViewModel.ResetSelection();
     
     public void ActivateFilter()
     {
-        SelectedFilterIndex = LeftPanelViewModel.SelectedEntryIndex + 1;
+        SelectedFilterIndex = LeftPanelViewModel.CurrentIndex + 1;
         IsFilterSelected = true;
     }
 
-    public void UpdateLeftPanelViewModel(List<TLeftPanelEntries> leftPanelEntriesList) =>
+    public void UpdateLeftPanelViewModel(IEnumerable<TLeftPanelEntries> leftPanelEntriesList) =>
         LeftPanelViewModel = new SinglePanelViewModel<TLeftPanelEntries>(leftPanelEntriesList);
 
-    public void UpdateRightPanelViewModel(List<TRightPanelEntries> rightPanelEntriesList) =>
+    public void UpdateRightPanelViewModel(IEnumerable<TRightPanelEntries> rightPanelEntriesList) =>
         RightPanelViewModel = new SinglePanelViewModel<TRightPanelEntries>(rightPanelEntriesList);
+
+    public TRightPanelEntries GetCurrentElement() => RightPanelViewModel.GetCurrentElement();
 }

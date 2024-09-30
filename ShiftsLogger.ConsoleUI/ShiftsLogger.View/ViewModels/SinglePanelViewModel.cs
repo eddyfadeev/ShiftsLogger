@@ -1,19 +1,22 @@
-﻿namespace ShiftsLogger.View.ViewModels;
+﻿using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
-public class SinglePanelViewModel<TEntry>
+namespace ShiftsLogger.View.ViewModels;
+
+public class SinglePanelViewModel<TEntry> : ISinglePanelViewModel<TEntry>
     where TEntry : class
 {
-    public int SelectedEntryIndex => PanelEntries.CurrentIndex;
+    public int CurrentIndex => PanelEntries.CurrentIndex;
 
     public OnScreenMenuList<TEntry> PanelEntries { get; }
 
-    public SinglePanelViewModel(List<TEntry> entries)
+    public SinglePanelViewModel(IEnumerable<TEntry> entries)
     {
         PanelEntries = new OnScreenMenuList<TEntry>(entries);
     }
 
     public void MoveUp() => PanelEntries.MoveUp();
     public void MoveDown() => PanelEntries.MoveDown();
+    public void ResetSelection() => PanelEntries.ResetSelection();
 
-    public TEntry GetCurrentChoice() => PanelEntries.GetCurrentElement();
+    public TEntry GetCurrentElement() => PanelEntries.GetCurrentElement();
 }

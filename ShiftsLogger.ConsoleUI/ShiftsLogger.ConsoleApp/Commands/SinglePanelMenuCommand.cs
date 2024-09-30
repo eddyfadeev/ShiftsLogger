@@ -1,6 +1,8 @@
 ﻿using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Interfaces.Services;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using ShiftsLogger.View.Services;
 using ShiftsLogger.View.Strategies.Selection;
 using ShiftsLogger.View.ViewModels;
@@ -11,17 +13,17 @@ namespace ShiftsLogger.ConsoleApp.Commands;
 public abstract class SinglePanelMenuCommand<TEntry> : ICommand
     where TEntry : class
 {
-    private protected readonly IPanelBuilder PanelBuilder;
+    private protected readonly IPanelBuilderService PanelBuilderService;
     private protected readonly IRenderService RenderService;
-    private protected List<TEntry> MenuEntries;
+    private protected IEnumerable<TEntry> MenuEntries;
     private protected bool IsMenuRunning;
 
     protected SinglePanelMenuCommand(
         IRenderService renderService,
-        IPanelBuilder panelBuilder)
+        IPanelBuilderService panelBuilderService)
     {
         RenderService = renderService;
-        PanelBuilder = panelBuilder;
+        PanelBuilderService = panelBuilderService;
         MenuEntries = [];
     }
 
@@ -33,7 +35,7 @@ public abstract class SinglePanelMenuCommand<TEntry> : ICommand
 
         while (IsMenuRunning)
         {
-            var panel = PanelBuilder.CreatePanel(
+            var panel = PanelBuilderService.CreatePanel(
                 renderInfo: viewModel, 
                 textAlignment: HorizontalAlignment.Center,
                 color: Color.Green,
@@ -46,16 +48,16 @@ public abstract class SinglePanelMenuCommand<TEntry> : ICommand
         }
     }
 
-    private protected abstract object GetChosenOption (SinglePanelViewModel<TEntry> viewModel);
+    private protected abstract object GetChosenOption (ISinglePanelViewModel<TEntry> viewModel);
     
     private protected abstract ICommand GetCommand(object chosenOption);
     
-    private protected abstract List<TEntry> PopulateMenuEntries();
-    
-    private protected virtual SelectionService GetSelectionService(SinglePanelViewModel<TEntry> viewModel) =>
-        new(new SinglePanelSelectionStrategy<TEntry>(viewModel));
-    
-    private protected virtual void ProcessUserInput(SelectionService selectionService, SinglePanelViewModel<TEntry> viewModel)
+    private protected abstract IEnumerable<TEntry> PopulateMenuEntries();
+
+    private protected virtual ISelectionService GetSelectionService(ISinglePanelViewModel<TEntry> viewModel) =>
+        new SelectionService(new SinglePanelSelectionStrategy<TEntry>(viewModel));
+
+    private protected virtual void ProcessUserInput(ISelectionService selectionService, ISinglePanelViewModel<TEntry> viewModel)
     {
         var key = Console.ReadKey(true).Key;
         

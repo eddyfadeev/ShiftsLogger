@@ -1,5 +1,5 @@
 ﻿using ShiftsLogger.View.Interfaces;
-using ShiftsLogger.View.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
 
 namespace ShiftsLogger.View.Strategies.Selection;
 
@@ -7,9 +7,9 @@ public class DoublePanelSelectionStrategy<TLeftPanelEntries, TRightPanelEntries>
     where TLeftPanelEntries : class
     where TRightPanelEntries : class
 {
-    private readonly DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> _viewModel;
+    private readonly IDoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> _viewModel;
 
-    public DoublePanelSelectionStrategy(DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> viewModel)
+    public DoublePanelSelectionStrategy(IDoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> viewModel)
     {
         _viewModel = viewModel;
     }
@@ -50,8 +50,8 @@ public class DoublePanelSelectionStrategy<TLeftPanelEntries, TRightPanelEntries>
                 break;
             case Enums.Selection.Select 
                 when !_viewModel.IsSinglePanelMode:
-                Console.WriteLine($"You selected: {_viewModel.LeftPanelViewModel.GetCurrentChoice()}, " +
-                                  $"{_viewModel.RightPanelViewModel.GetCurrentChoice()}");
+                Console.WriteLine($"You selected: {_viewModel.LeftPanelViewModel.GetCurrentElement()}, " +
+                                  $"{_viewModel.RightPanelViewModel.GetCurrentElement()}");
                 Environment.Exit(0);
                 break;
         }

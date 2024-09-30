@@ -12,7 +12,7 @@ public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
     private readonly FrozenDictionary<MainMenuOptions, Func<ICommand>> _factory;
 
     private readonly IRenderService _renderService;
-    private readonly IPanelBuilder _panelBuilder;
+    private readonly IPanelBuilderService _panelBuilderService;
     private readonly LocationsController _locationsController;
     private readonly UserController _userController;
     private readonly ShiftTypesController _shiftTypesController;
@@ -20,7 +20,7 @@ public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
 
     public MainMenuCommandsFactory(
         IRenderService renderService, 
-        IPanelBuilder panelBuilder, 
+        IPanelBuilderService panelBuilderService, 
         LocationsController locationsController,
         UserController userController,
         ShiftTypesController shiftTypesController,
@@ -30,7 +30,7 @@ public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
         _factory = InitializeFactory().ToFrozenDictionary();
 
         _renderService = renderService;
-        _panelBuilder = panelBuilder;
+        _panelBuilderService = panelBuilderService;
         _locationsController = locationsController;
         _userController = userController;
         _shiftTypesController = shiftTypesController;
@@ -44,13 +44,13 @@ public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
         new()
         {
             { MainMenuOptions.AllShifts, 
-                () => new AllShiftsMenuCommand(_renderService, _panelBuilder, _shiftsController) },
+                () => new AllShiftsMenuCommand(_renderService, _panelBuilderService, _shiftsController) },
             { MainMenuOptions.ShiftsByUser, 
-                () => new ShiftsByUserCommand(_renderService, _panelBuilder, _userController) },
+                () => new ShiftsByUserCommand(_renderService, _panelBuilderService, _userController) },
             { MainMenuOptions.ShiftsByType, () 
-                => new ShiftsByTypeCommand(_renderService, _panelBuilder, _shiftTypesController) },
+                => new ShiftsByTypeCommand(_renderService, _panelBuilderService, _shiftTypesController) },
             { MainMenuOptions.ShiftsByLocation, 
-                () => new ShiftsByLocationCommand(_renderService, _panelBuilder, _locationsController) },
+                () => new ShiftsByLocationCommand(_renderService, _panelBuilderService, _locationsController) },
             { MainMenuOptions.Exit, () => new ExitCommand() }
         };
 }

@@ -3,7 +3,7 @@ using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.Infrastructure.Extensions;
 using ShiftsLogger.View.Interfaces;
-using ShiftsLogger.View.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
 namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
 
@@ -14,9 +14,9 @@ public sealed class ShowMainMenuCommand : SinglePanelMenuCommand<string>
 
     public ShowMainMenuCommand(
         IRenderService renderService, 
-        IPanelBuilder panelBuilder, 
+        IPanelBuilderService panelBuilderService, 
         ICommandFactory<MainMenuOptions> mainMenuCommandFactory
-        ) : base(renderService, panelBuilder)
+        ) : base(renderService, panelBuilderService)
     {
         _mainMenuCommandFactory = mainMenuCommandFactory;
 
@@ -24,9 +24,9 @@ public sealed class ShowMainMenuCommand : SinglePanelMenuCommand<string>
         _mainMenuOptionsMap = MapMenuOptions();
     }
     
-    private protected override object GetChosenOption(SinglePanelViewModel<string> viewModel)
+    private protected override object GetChosenOption(ISinglePanelViewModel<string> viewModel)
     {
-        string selectedEntry = viewModel.GetCurrentChoice();
+        string selectedEntry = viewModel.GetCurrentElement();
         
         return _mainMenuOptionsMap[selectedEntry];
     }
@@ -34,7 +34,7 @@ public sealed class ShowMainMenuCommand : SinglePanelMenuCommand<string>
     private protected override ICommand GetCommand(object chosenOption) => 
         _mainMenuCommandFactory.Create((MainMenuOptions)chosenOption);
 
-    private protected override List<string> PopulateMenuEntries() =>
+    private protected override IEnumerable<string> PopulateMenuEntries() =>
         EnumExtensions.GetDescriptions<MainMenuOptions>().ToList();
     
     private static FrozenDictionary<string, MainMenuOptions> MapMenuOptions()
