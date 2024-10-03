@@ -3,12 +3,11 @@ using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
 namespace ShiftsLogger.View.Strategies.Selection;
 
-public class SinglePanelSelectionStrategy<TEntry> : ISelectionStrategy
-    where TEntry : class
+public class SinglePanelSelectionStrategy : ISelectionStrategy
 {
-    private readonly ISinglePanelViewModel<TEntry> _viewModel;
+    private readonly ISinglePanelViewModel _viewModel;
 
-    public SinglePanelSelectionStrategy(ISinglePanelViewModel<TEntry> viewModel)
+    public SinglePanelSelectionStrategy(ISinglePanelViewModel viewModel)
     {
         _viewModel = viewModel;
     }

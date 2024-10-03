@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShiftsLogger.Application.Interfaces;
-using ShiftsLogger.ConsoleApp.Commands.MainMenu;
+using ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.View.Interfaces;
 

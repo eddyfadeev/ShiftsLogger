@@ -1,6 +1,6 @@
 ﻿using ShiftsLogger.Application.Interfaces;
 
-namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
+namespace ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 
 public class ExitCommand : ICommand
 {

@@ -1,30 +1,27 @@
 ﻿using ShiftsLogger.Application.Interfaces;
-using ShiftsLogger.Domain.Interfaces;
-using ShiftsLogger.Domain.Models.Entities;
 using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Interfaces.ViewModels;
 using ShiftsLogger.View.Services;
 using ShiftsLogger.View.Strategies.Selection;
 using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
 
-namespace ShiftsLogger.ConsoleApp.Commands.MainMenu;
+namespace ShiftsLogger.ConsoleApp.UI.Commands;
 
-public abstract class ShiftsCommandBase<TLeftPanelEntities, TRightPanelEntities> : ICommand
-    where TLeftPanelEntities : class
-    where TRightPanelEntities: class
+public abstract class DoublePanelMenuCommand : ICommand
 {
-    private readonly IRenderService _renderService;
-    private readonly IPanelBuilderService _panelBuilderService;
+    private protected readonly IRenderService RenderService;
+    private protected readonly IPanelBuilderService PanelBuilderService;
     
-    private protected bool _isMenuRunning; 
-    private protected IEnumerable<TLeftPanelEntities> LeftPanelEntities;
-    private protected IEnumerable<TRightPanelEntities> RightPanelEntries;
+    private protected bool IsMenuRunning; 
+    private protected IEnumerable<IViewModelEntity> LeftPanelEntities;
+    private protected IEnumerable<IViewModelEntity> RightPanelEntries;
 
-    protected ShiftsCommandBase(IRenderService renderService, IPanelBuilderService panelBuilderService)
+    protected DoublePanelMenuCommand(IRenderService renderService, IPanelBuilderService panelBuilderService)
     {
-        _renderService = renderService;
-        _panelBuilderService = panelBuilderService;
+        RenderService = renderService;
+        PanelBuilderService = panelBuilderService;
         
         LeftPanelEntities = [];
         RightPanelEntries = [];
@@ -39,34 +36,40 @@ public abstract class ShiftsCommandBase<TLeftPanelEntities, TRightPanelEntities>
         
         var viewModel = CreateViewModel();
         var selectionService = GetSelectionService(viewModel);
-        _isMenuRunning = true;
+        IsMenuRunning = true;
         
         GetPanels(viewModel, out var leftPanel, out var rightPanel);
-        _renderService.RenderDoublePanelLayout(leftPanel, rightPanel);
+        RenderService.RenderDoublePanelLayout(leftPanel, rightPanel);
 
-        while (_isMenuRunning)
+        while (IsMenuRunning)
         {
             ProcessUserInput(selectionService, viewModel);
             
             GetPanels(viewModel, out leftPanel, out rightPanel);
-            _renderService.RenderDoublePanelLayout(leftPanel, rightPanel);
+            RenderService.RenderDoublePanelLayout(leftPanel, rightPanel);
         }
     }
 
-    private protected abstract IEnumerable<TLeftPanelEntities> FetchLeftPanelData();
+    private protected abstract IEnumerable<IViewModelEntity> FetchLeftPanelData();
     
-    private protected abstract void FetchRightPanelData(int entityId);
+    private protected abstract IEnumerable<IViewModelEntity> FetchRightPanelData(int entityId);
     
-    private protected virtual DoublePanelViewModel<TLeftPanelEntities, TRightPanelEntities> CreateViewModel() => new(LeftPanelEntities);
+    private protected virtual DoublePanelViewModel CreateViewModel() => 
+        new(LeftPanelEntities);
 
-    private protected virtual SelectionService GetSelectionService(DoublePanelViewModel<TLeftPanelEntities, TRightPanelEntities> viewModel) =>
-        new(new DoublePanelSelectionStrategy<TLeftPanelEntities, TRightPanelEntities>(viewModel));
+    private protected virtual SelectionService GetSelectionService(
+        DoublePanelViewModel viewModel) =>
+        new(
+            new DoublePanelSelectionStrategy(viewModel)
+            );
 
-    private protected virtual void GetPanels(DoublePanelViewModel<TLeftPanelEntities, TRightPanelEntities> viewModel, out Panel leftPanel, out Panel rightPanel)
+    private protected virtual void GetPanels(
+        DoublePanelViewModel viewModel, 
+        out Panel leftPanel, out Panel rightPanel)
     {
         leftPanel =
-            _panelBuilderService.CreatePanel(
-                renderInfo: viewModel.LeftPanelViewModel, 
+            PanelBuilderService.CreatePanel(
+                viewModel: viewModel.LeftPanelViewModel, 
                 textAlignment: HorizontalAlignment.Left,
                 color: Color.Green,
                 isSinglePanel: viewModel.IsSinglePanelMode,
@@ -76,24 +79,24 @@ public abstract class ShiftsCommandBase<TLeftPanelEntities, TRightPanelEntities>
         rightPanel = GetRightPanel(viewModel);
     }
 
-    private Panel GetRightPanel(DoublePanelViewModel<TLeftPanelEntities, TRightPanelEntities> viewModel) =>
+    private protected virtual Panel GetRightPanel(DoublePanelViewModel viewModel) =>
         viewModel switch
         {
             { SelectedFilterIndex: < 0 } 
-                => _panelBuilderService.CreateDummyPanel(
+                => PanelBuilderService.CreateDummyPanel(
                 "[grey]Choose a filter to see available shifts...[/]"),
             { SelectedFilterIndex: >= 0, RightPanelViewModel.PanelEntries.VisibleElements.Count: 0 } 
-                => _panelBuilderService.CreateDummyPanel(
+                => PanelBuilderService.CreateDummyPanel(
                 "[grey]No shifts available for this filter...[/]"),
-            _ => _panelBuilderService.CreatePanel(
-                renderInfo: viewModel.RightPanelViewModel,
+            _ => PanelBuilderService.CreatePanel(
+                viewModel: viewModel.RightPanelViewModel,
                 textAlignment: HorizontalAlignment.Left, 
                 color: Color.Blue, 
                 isSinglePanel: !viewModel.IsSinglePanelMode,
                 textDecorations: [TextDecorations.Bold, TextDecorations.Underline])
         };
 
-    private void ProcessUserInput(SelectionService selectionService, DoublePanelViewModel<TLeftPanelEntities, TRightPanelEntities> viewModel)
+    private protected virtual void ProcessUserInput(SelectionService selectionService, DoublePanelViewModel viewModel)
     {
         var key = Console.ReadKey(true).Key;
         
@@ -113,11 +116,11 @@ public abstract class ShiftsCommandBase<TLeftPanelEntities, TRightPanelEntities>
                 break;
             case ConsoleKey.Enter:
                 selectionService.ChangeSelection(Selection.Select);
-                FetchRightPanelData(viewModel.SelectedFilterIndex);
+                RightPanelEntries = FetchRightPanelData(viewModel.SelectedFilterIndex);
                 viewModel.UpdateRightPanelViewModel(RightPanelEntries);
                 break;
             case ConsoleKey.Escape:
-                _isMenuRunning = false;
+                IsMenuRunning = false;
                 break;
         }
     }

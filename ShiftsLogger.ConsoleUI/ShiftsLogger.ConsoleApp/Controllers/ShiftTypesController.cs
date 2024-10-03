@@ -1,4 +1,5 @@
 ﻿using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.ConsoleApp.UI.Models;
 using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.Domain.Models.Entities;
 using ShiftsLogger.Infrastructure.Services;

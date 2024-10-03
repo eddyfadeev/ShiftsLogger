@@ -3,13 +3,11 @@ using ShiftsLogger.View.ViewModels;
 
 namespace ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
 
-public interface IDoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries>  
-    :IDoublePanelScrollable, IEntriesFilterable, IReturnsEntry<TRightPanelEntries>
-    where TLeftPanelEntries : class
-    where TRightPanelEntries : class
+public interface IDoublePanelViewModel  
+    :IDoublePanelScrollable, IEntriesFilterable, IReturnsEntry<IViewModelEntity>
 {
-    public SinglePanelViewModel<TLeftPanelEntries> LeftPanelViewModel { get; }
-    public SinglePanelViewModel<TRightPanelEntries> RightPanelViewModel { get; }
-    void UpdateLeftPanelViewModel(IEnumerable<TLeftPanelEntries> leftPanelEntriesList);
-    void UpdateRightPanelViewModel(IEnumerable<TRightPanelEntries> rightPanelEntriesList);
+    public SinglePanelViewModel LeftPanelViewModel { get; }
+    public SinglePanelViewModel RightPanelViewModel { get; }
+    void UpdateLeftPanelViewModel(IEnumerable<IViewModelEntity> leftPanelEntriesList);
+    void UpdateRightPanelViewModel(IEnumerable<IViewModelEntity> rightPanelEntriesList);
 }

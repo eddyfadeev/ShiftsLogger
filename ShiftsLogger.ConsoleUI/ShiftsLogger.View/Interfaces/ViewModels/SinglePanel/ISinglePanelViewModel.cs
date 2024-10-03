@@ -2,8 +2,7 @@
 
 namespace ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
-public interface ISinglePanelViewModel<TEntity> : IScrollable, IReturnsEntry<TEntity>
-    where TEntity : notnull
+public interface ISinglePanelViewModel : IScrollable, IReturnsEntry<IViewModelEntity>
 {
-    OnScreenMenuList<TEntity> PanelEntries { get; }
+    OnScreenMenuList<IViewModelEntity> PanelEntries { get; }
 }

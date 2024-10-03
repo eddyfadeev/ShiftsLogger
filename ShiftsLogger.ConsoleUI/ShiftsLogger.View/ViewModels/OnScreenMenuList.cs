@@ -1,12 +1,14 @@
-﻿using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
+﻿using System.Collections.ObjectModel;
+using ShiftsLogger.View.Interfaces.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using ShiftsLogger.View.Services;
 
 namespace ShiftsLogger.View.ViewModels;
 
 public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
-    where T : notnull
+    where T : IViewModelEntity
 {
-    private readonly List<T> _allElements;
+    private readonly ObservableCollection<T> _allElements;
     private readonly object _lock = new();
     
     private int _onScreenElementsCount;
@@ -18,9 +20,10 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
     
     public OnScreenMenuList(IEnumerable<T> menuEntries)
     {
-        _allElements = menuEntries.ToList();
+        _allElements = new ObservableCollection<T>(menuEntries);
         VisibleElements = GetVisibleElements();
 
+        _allElements.CollectionChanged += OnCollectionChanged;
         ResizeService.ConsoleResized += OnConsoleResized;
         ResizeService.Start();
     }
@@ -81,6 +84,15 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
         {
             CurrentIndex = 0;
             _offset = 0;
+            VisibleElements = GetVisibleElements();
+        }
+    }
+    
+    private void OnCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        lock (_lock)
+        {
+            AdjustForResize();
             VisibleElements = GetVisibleElements();
         }
     }
@@ -148,7 +160,7 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
         }
         
         var element = _allElements.ElementAt(0);
-        return element.ToString().Split('\n').Length;
+        return element.ElementHeight;
     }
 
     public void Dispose()
@@ -165,6 +177,7 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
             {
                 ResizeService.ConsoleResized -= OnConsoleResized;
                 ResizeService.Stop();
+                _allElements.CollectionChanged -= OnCollectionChanged;
             }
 
             _disposed = true;

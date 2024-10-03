@@ -8,18 +8,17 @@ namespace ShiftsLogger.View.Services;
 
 public class PanelBuilderService : IPanelBuilderService
 {
-    public Panel CreatePanel<TPanelEntries>(
-        SinglePanelViewModel<TPanelEntries> renderInfo, 
+    public Panel CreatePanel(
+        SinglePanelViewModel viewModel, 
         HorizontalAlignment textAlignment, 
         Color color,
         bool isSinglePanel = true,
         params TextDecorations[] textDecorations
         )
-        where TPanelEntries : class
     {
         Markup panelText = GetPanelText(
-            entries: renderInfo.PanelEntries.VisibleElements,
-            selectedIndex: renderInfo.CurrentIndex,
+            entries: viewModel.PanelEntries.VisibleElements,
+            selectedIndex: viewModel.CurrentIndex,
             color: color,
             textDecorations: textDecorations,
             isSinglePanel: isSinglePanel

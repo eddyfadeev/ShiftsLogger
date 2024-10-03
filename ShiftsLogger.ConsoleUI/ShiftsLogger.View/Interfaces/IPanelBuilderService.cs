@@ -6,14 +6,13 @@ namespace ShiftsLogger.View.Interfaces;
 
 public interface IPanelBuilderService
 {
-    Panel CreatePanel<TPanelEntries>(
-        SinglePanelViewModel<TPanelEntries> renderInfo,
+    Panel CreatePanel(
+        SinglePanelViewModel viewModel,
         HorizontalAlignment textAlignment,
         Color color,
         bool isSinglePanel = true,
         params TextDecorations[] textDecorations
-    )
-        where TPanelEntries : class;
+    );
 
     Panel CreateDummyPanel(string text);
 }

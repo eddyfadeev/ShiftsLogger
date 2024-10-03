@@ -3,13 +3,11 @@ using ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
 
 namespace ShiftsLogger.View.Strategies.Selection;
 
-public class DoublePanelSelectionStrategy<TLeftPanelEntries, TRightPanelEntries> : ISelectionStrategy
-    where TLeftPanelEntries : class
-    where TRightPanelEntries : class
+public class DoublePanelSelectionStrategy : ISelectionStrategy
 {
-    private readonly IDoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> _viewModel;
+    private readonly IDoublePanelViewModel _viewModel;
 
-    public DoublePanelSelectionStrategy(IDoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> viewModel)
+    public DoublePanelSelectionStrategy(IDoublePanelViewModel viewModel)
     {
         _viewModel = viewModel;
     }

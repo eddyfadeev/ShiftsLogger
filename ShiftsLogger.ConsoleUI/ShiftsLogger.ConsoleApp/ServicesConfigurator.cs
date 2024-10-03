@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ShiftsLogger.ConsoleApp.Extensions;
+using ShiftsLogger.ConsoleApp.UI.Extensions;
 using ShiftsLogger.Infrastructure.Extensions;
 using ShiftsLogger.View.Extensions;
 

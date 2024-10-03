@@ -1,0 +1,6 @@
+﻿namespace ShiftsLogger.View.Interfaces.ViewModels;
+
+public interface IViewModelEntity
+{
+    int ElementHeight { get; }   
+}

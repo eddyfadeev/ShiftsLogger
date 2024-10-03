@@ -1,11 +1,11 @@
 ﻿using System.Collections.Frozen;
 using ShiftsLogger.Application.Interfaces;
-using ShiftsLogger.ConsoleApp.Commands.MainMenu;
 using ShiftsLogger.ConsoleApp.Controllers;
+using ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.View.Interfaces;
 
-namespace ShiftsLogger.ConsoleApp.Commands.Factory;
+namespace ShiftsLogger.ConsoleApp.UI.Commands.Factory;
 
 public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
 {
