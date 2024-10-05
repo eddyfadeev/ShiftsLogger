@@ -1,9 +1,8 @@
-﻿using Spectre.Console.Rendering;
+﻿using Spectre.Console;
 
 namespace ShiftsLogger.View.Interfaces;
 
 public interface IRenderService
 {
-    void RenderSinglePanelLayout(IRenderable panel);
-    void RenderDoublePanelLayout(IRenderable leftPanel, IRenderable rightPanel);
+    void Render(Layout layout);
 }

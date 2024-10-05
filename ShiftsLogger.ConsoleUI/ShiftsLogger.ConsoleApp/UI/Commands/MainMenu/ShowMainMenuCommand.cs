@@ -26,17 +26,17 @@ public sealed class ShowMainMenuCommand : SinglePanelMenuCommand
         MenuEntries = PopulateMenuEntries().ToList();
     }
     
-    private protected override object GetChosenOption(ISinglePanelViewModel viewModel)
+    protected override object GetChosenOption(ISinglePanelViewModel viewModel)
     {
         var selectedEntry = (MenuEntry)viewModel.GetCurrentElement();
         
         return _mainMenuOptionsMap[selectedEntry];
     }
 
-    private protected override ICommand GetCommand(object chosenOption) => 
+    protected override ICommand GetCommand(object chosenOption) => 
         _mainMenuCommandFactory.Create((MainMenuOptions)chosenOption);
 
-    private protected override IEnumerable<IViewModelEntity> PopulateMenuEntries() =>
+    protected override IEnumerable<IViewModelEntity> PopulateMenuEntries() =>
         _mainMenuOptionsMap.Keys;
 
     private static FrozenDictionary<MenuEntry, MainMenuOptions> MapMenuOptions()

@@ -5,6 +5,7 @@ using ShiftsLogger.View.Interfaces.Services;
 using ShiftsLogger.View.Interfaces.ViewModels;
 using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using ShiftsLogger.View.Services;
+using ShiftsLogger.View.Strategies.LayoutComposition;
 using ShiftsLogger.View.Strategies.Selection;
 using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
@@ -37,6 +38,7 @@ public abstract class SinglePanelMenuCommand : ICommand
         IsMenuRunning = true;
         var viewModel = new SinglePanelViewModel(MenuEntries);
         var selectionService = GetSelectionService(viewModel);
+        var layoutComposer = GetLayoutComposer();
 
         while (IsMenuRunning)
         {
@@ -47,22 +49,28 @@ public abstract class SinglePanelMenuCommand : ICommand
                 isSinglePanel: true,
                 textDecorations: [ TextDecorations.Underline, TextDecorations.Bold ]
             );
-            RenderService.RenderSinglePanelLayout(panel);
+            layoutComposer.SetRenderables(panel);
+            var layout = layoutComposer.GetLayout();
+            
+            RenderService.Render(layout);
             
             ProcessUserInput(selectionService, viewModel);
         }
     }
 
-    private protected abstract object GetChosenOption (ISinglePanelViewModel viewModel);
+    protected abstract object GetChosenOption (ISinglePanelViewModel viewModel);
     
-    private protected abstract ICommand GetCommand(object chosenOption);
+    protected abstract ICommand GetCommand(object chosenOption);
     
-    private protected abstract IEnumerable<IViewModelEntity> PopulateMenuEntries();
+    protected abstract IEnumerable<IViewModelEntity> PopulateMenuEntries();
 
-    private protected virtual ISelectionService GetSelectionService(ISinglePanelViewModel viewModel) =>
+    protected virtual ISelectionService GetSelectionService(ISinglePanelViewModel viewModel) =>
         new SelectionService(new SinglePanelSelectionStrategy(viewModel));
 
-    private protected virtual void ProcessUserInput(ISelectionService selectionService, ISinglePanelViewModel viewModel)
+    protected virtual LayoutComposerService GetLayoutComposer() =>
+        new(new SinglePanelLayoutStrategy());
+
+    protected virtual void ProcessUserInput(ISelectionService selectionService, ISinglePanelViewModel viewModel)
     {
         var key = Console.ReadKey(true).Key;
         

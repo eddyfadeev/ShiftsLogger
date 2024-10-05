@@ -20,9 +20,9 @@ public sealed class ShiftsByLocationCommand : DoublePanelMenuCommand
         LeftPanelEntities = FetchLeftPanelData();
     }
 
-    private protected override IEnumerable<LocationViewEntity> FetchLeftPanelData() =>
+    protected override IEnumerable<LocationViewEntity> FetchLeftPanelData() =>
         _locationsController.GetAllLocations().Result.Select(l => l.MapToViewEntity());
 
-    private protected override IEnumerable<ShiftViewEntity> FetchRightPanelData(int entityId) =>
+    protected override IEnumerable<ShiftViewEntity> FetchRightPanelData(int entityId) =>
         _locationsController.GetShiftsByLocationId(entityId).Result.Select(s => s.MapToViewEntity());
 }

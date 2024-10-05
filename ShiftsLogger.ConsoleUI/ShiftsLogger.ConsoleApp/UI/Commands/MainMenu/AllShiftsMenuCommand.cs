@@ -16,9 +16,9 @@ public sealed class AllShiftsMenuCommand : DoublePanelMenuCommand
         _shiftsController = shiftsController;
     }
 
-    private protected override IEnumerable<ShiftViewEntity> FetchLeftPanelData() =>
+    protected override IEnumerable<ShiftViewEntity> FetchLeftPanelData() =>
         _shiftsController.GetAllShifts().Result.Select(s => s.MapToViewEntity());
 
-    private protected override IEnumerable<ShiftViewEntity> FetchRightPanelData(int entityId) =>
+    protected override IEnumerable<ShiftViewEntity> FetchRightPanelData(int entityId) =>
         [_shiftsController.GetShiftById(entityId).Result.MapToViewEntity()];
 }

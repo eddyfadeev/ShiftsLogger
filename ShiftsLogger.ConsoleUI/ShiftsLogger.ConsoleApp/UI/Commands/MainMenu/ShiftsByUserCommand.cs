@@ -21,9 +21,9 @@ public sealed class ShiftsByUserCommand : DoublePanelMenuCommand
         LeftPanelEntities = FetchLeftPanelData();
     }
 
-    private protected override IEnumerable<UserViewEntity> FetchLeftPanelData() =>
+    protected override IEnumerable<UserViewEntity> FetchLeftPanelData() =>
         _userController.GetAllUsers().Result.Select(u => u.MapToViewEntity());
 
-    private protected override IEnumerable<ShiftViewEntity> FetchRightPanelData(int entityId) =>
+    protected override IEnumerable<ShiftViewEntity> FetchRightPanelData(int entityId) =>
         _userController.GetShiftsByUserId(entityId).Result.Select(s => s.MapToViewEntity());
 }

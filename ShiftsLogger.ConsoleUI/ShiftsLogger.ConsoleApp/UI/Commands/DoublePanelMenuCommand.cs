@@ -2,7 +2,9 @@
 using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
 using ShiftsLogger.View.Interfaces.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
 using ShiftsLogger.View.Services;
+using ShiftsLogger.View.Strategies.LayoutComposition;
 using ShiftsLogger.View.Strategies.Selection;
 using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
@@ -36,35 +38,46 @@ public abstract class DoublePanelMenuCommand : ICommand
         
         var viewModel = CreateViewModel();
         var selectionService = GetSelectionService(viewModel);
+        var layoutComposer = GetLayoutComposer();
+        
         IsMenuRunning = true;
         
         GetPanels(viewModel, out var leftPanel, out var rightPanel);
-        RenderService.RenderDoublePanelLayout(leftPanel, rightPanel);
+        layoutComposer.SetRenderables(leftPanel, rightPanel);
+        var layout = layoutComposer.GetLayout();
+        
+        RenderService.Render(layout);
 
         while (IsMenuRunning)
         {
             ProcessUserInput(selectionService, viewModel);
             
             GetPanels(viewModel, out leftPanel, out rightPanel);
-            RenderService.RenderDoublePanelLayout(leftPanel, rightPanel);
+            layoutComposer.SetRenderables(leftPanel, rightPanel);
+            layout = layoutComposer.GetLayout();
+            
+            RenderService.Render(layout);
         }
     }
 
-    private protected abstract IEnumerable<IViewModelEntity> FetchLeftPanelData();
+    protected abstract IEnumerable<IViewModelEntity> FetchLeftPanelData();
     
-    private protected abstract IEnumerable<IViewModelEntity> FetchRightPanelData(int entityId);
+    protected abstract IEnumerable<IViewModelEntity> FetchRightPanelData(int entityId);
     
-    private protected virtual DoublePanelViewModel CreateViewModel() => 
+    protected virtual DoublePanelViewModel CreateViewModel() => 
         new(LeftPanelEntities);
 
-    private protected virtual SelectionService GetSelectionService(
-        DoublePanelViewModel viewModel) =>
+    protected virtual SelectionService GetSelectionService(
+        IDoublePanelViewModel viewModel) =>
         new(
             new DoublePanelSelectionStrategy(viewModel)
             );
 
-    private protected virtual void GetPanels(
-        DoublePanelViewModel viewModel, 
+    protected virtual LayoutComposerService GetLayoutComposer() =>
+        new (new DoublePanelLayoutStrategy(splitRatio: 30, LayoutSplit.Vertical));
+
+    protected virtual void GetPanels(
+        IDoublePanelViewModel viewModel, 
         out Panel leftPanel, out Panel rightPanel)
     {
         leftPanel =
@@ -79,7 +92,7 @@ public abstract class DoublePanelMenuCommand : ICommand
         rightPanel = GetRightPanel(viewModel);
     }
 
-    private protected virtual Panel GetRightPanel(DoublePanelViewModel viewModel) =>
+    protected virtual Panel GetRightPanel(IDoublePanelViewModel viewModel) =>
         viewModel switch
         {
             { SelectedFilterIndex: < 0 } 
@@ -96,7 +109,7 @@ public abstract class DoublePanelMenuCommand : ICommand
                 textDecorations: [TextDecorations.Bold, TextDecorations.Underline])
         };
 
-    private protected virtual void ProcessUserInput(SelectionService selectionService, DoublePanelViewModel viewModel)
+    protected virtual void ProcessUserInput(SelectionService selectionService, DoublePanelViewModel viewModel)
     {
         var key = Console.ReadKey(true).Key;
         

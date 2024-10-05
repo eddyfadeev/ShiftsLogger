@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
 
@@ -9,7 +10,7 @@ namespace ShiftsLogger.View.Services;
 public class PanelBuilderService : IPanelBuilderService
 {
     public Panel CreatePanel(
-        SinglePanelViewModel viewModel, 
+        ISinglePanelViewModel viewModel, 
         HorizontalAlignment textAlignment, 
         Color color,
         bool isSinglePanel = true,
@@ -24,7 +25,17 @@ public class PanelBuilderService : IPanelBuilderService
             isSinglePanel: isSinglePanel
             );
         
-        return AlignText(panelText, textAlignment);
+        var panel = textAlignment switch
+        {
+            HorizontalAlignment.Center => new Panel(Align.Center(panelText)),
+            HorizontalAlignment.Right => new Panel(Align.Right(panelText)),
+            HorizontalAlignment.Left => new Panel(Align.Left(panelText)),
+            _ => new Panel(Align.Left(panelText))
+        };
+        
+        ApplyDefaultConfiguration(panel);
+
+        return panel;
     }
 
     public Panel CreateDummyPanel(string text)
@@ -33,21 +44,6 @@ public class PanelBuilderService : IPanelBuilderService
         ApplyDefaultConfiguration(dummyPanel);
 
         return dummyPanel;
-    }
-
-    private static Panel AlignText(Markup textToDisplay, HorizontalAlignment textAlignment)
-    {
-        var panel = textAlignment switch
-        {
-            HorizontalAlignment.Center => new Panel(Align.Center(textToDisplay)),
-            HorizontalAlignment.Right => new Panel(Align.Right(textToDisplay)),
-            HorizontalAlignment.Left => new Panel(Align.Left(textToDisplay)),
-            _ => new Panel(Align.Left(textToDisplay))
-        };
-        
-        ApplyDefaultConfiguration(panel);
-
-        return panel;
     }
 
     private static void ApplyDefaultConfiguration(Panel panel)
