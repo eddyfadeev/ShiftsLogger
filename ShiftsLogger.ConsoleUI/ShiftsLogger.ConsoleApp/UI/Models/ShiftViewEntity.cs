@@ -1,8 +1,8 @@
-﻿using ShiftsLogger.View.Interfaces.ViewModels;
+﻿using ShiftsLogger.View.ViewModels;
 
 namespace ShiftsLogger.ConsoleApp.UI.Models;
 
-public record ShiftViewEntity : IViewModelEntity
+public class ShiftViewEntity : ViewModelEntity
 {
     public int Id { get; init; }
     public int UserId { get; init; }
@@ -12,5 +12,9 @@ public record ShiftViewEntity : IViewModelEntity
     public DateTime EndTime { get; init; }
     public decimal HoursWorked { get; init; }
     public string? Description { get; init; }
-    public int ElementHeight => 7;
+
+    public ShiftViewEntity()
+    {
+        SetElementHeight(7);
+    }
 }

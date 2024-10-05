@@ -1,10 +1,14 @@
-﻿using ShiftsLogger.View.Interfaces.ViewModels;
+﻿using ShiftsLogger.View.ViewModels;
 
 namespace ShiftsLogger.ConsoleApp.UI.Models;
 
-public record ShiftTypeViewEntity : IViewModelEntity
+public class ShiftTypeViewEntity : ViewModelEntity
 {
     public int Id { get; init; }
     public string Name { get; init; }
-    public int ElementHeight => 1;
+
+    public ShiftTypeViewEntity()
+    {
+        SetElementHeight(1);
+    }
 }

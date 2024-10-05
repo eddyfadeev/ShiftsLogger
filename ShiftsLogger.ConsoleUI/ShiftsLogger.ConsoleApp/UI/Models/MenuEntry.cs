@@ -1,16 +1,15 @@
 ﻿using ShiftsLogger.View.Interfaces.ViewModels;
+using ShiftsLogger.View.ViewModels;
 
 namespace ShiftsLogger.ConsoleApp.UI.Models;
 
-public class MenuEntry : IViewModelEntity
+public class MenuEntry : ViewModelEntity
 {
     private readonly string _name;
-
-    public int ElementHeight { get; }
     
     public MenuEntry(string name, int elementHeight)
     {
-        ElementHeight = elementHeight;
+        SetElementHeight(elementHeight);
         _name = name;
     }
 

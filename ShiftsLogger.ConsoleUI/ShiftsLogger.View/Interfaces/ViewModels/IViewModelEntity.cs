@@ -2,10 +2,7 @@
 
 public interface IViewModelEntity
 {
-    int ElementHeight => CalculateElementHeight();
+    int ElementHeight { get; }
 
-    private int CalculateElementHeight()
-    {
-        return 0;
-    }
+    void SetElementHeight(int height);
 }

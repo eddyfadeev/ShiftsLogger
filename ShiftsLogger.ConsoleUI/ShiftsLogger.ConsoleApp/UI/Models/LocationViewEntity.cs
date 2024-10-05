@@ -1,16 +1,15 @@
-﻿using ShiftsLogger.View.Interfaces.ViewModels;
+﻿using ShiftsLogger.View.ViewModels;
 
 namespace ShiftsLogger.ConsoleApp.UI.Models;
 
-public record LocationViewEntity : IViewModelEntity
+public class LocationViewEntity : ViewModelEntity
 {
     public int Id { get; init; }
     public string Name { get; init; }
     public string? Address { get; init; }
-    // TODO: Figure it out
-    public int ElementHeight => 2;
-    public int CalculateElementHeight()
+
+    public LocationViewEntity()
     {
-        throw new NotImplementedException();
+        SetElementHeight(2);
     }
 }
