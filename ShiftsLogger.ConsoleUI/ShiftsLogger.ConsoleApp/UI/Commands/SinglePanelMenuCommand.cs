@@ -1,4 +1,5 @@
-﻿using ShiftsLogger.Application.Interfaces;
+﻿using System.Collections.Immutable;
+using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
 using ShiftsLogger.View.Interfaces.Services;
@@ -16,7 +17,7 @@ public abstract class SinglePanelMenuCommand : ICommand
 {
     private protected readonly IPanelBuilderService PanelBuilderService;
     private protected readonly IRenderService RenderService;
-    private protected List<IViewModelEntity> MenuEntries;
+    private protected ImmutableList<IViewModelEntity> MenuEntries;
     private protected bool IsMenuRunning;
 
     protected SinglePanelMenuCommand(
@@ -32,7 +33,7 @@ public abstract class SinglePanelMenuCommand : ICommand
     {
         if (MenuEntries.Count == 0)
         {
-            MenuEntries = PopulateMenuEntries().ToList();
+            MenuEntries = PopulateMenuEntries();
         }
         
         IsMenuRunning = true;
@@ -47,7 +48,7 @@ public abstract class SinglePanelMenuCommand : ICommand
                 textAlignment: HorizontalAlignment.Center,
                 color: Color.Green,
                 isSinglePanel: true,
-                textDecorations: [ TextDecorations.Underline, TextDecorations.Bold ]
+                TextDecorations.Underline, TextDecorations.Bold 
             );
             layoutComposer.SetRenderables(panel);
             var layout = layoutComposer.GetLayout();
@@ -62,7 +63,7 @@ public abstract class SinglePanelMenuCommand : ICommand
     
     protected abstract ICommand GetCommand(object chosenOption);
     
-    protected abstract IEnumerable<IViewModelEntity> PopulateMenuEntries();
+    protected abstract ImmutableList<IViewModelEntity> PopulateMenuEntries();
 
     protected virtual ISelectionService GetSelectionService(ISinglePanelViewModel viewModel) =>
         new SelectionService(new SinglePanelSelectionStrategy(viewModel));

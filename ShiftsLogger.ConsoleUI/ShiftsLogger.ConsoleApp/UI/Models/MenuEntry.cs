@@ -1,5 +1,4 @@
-﻿using ShiftsLogger.View.Interfaces.ViewModels;
-using ShiftsLogger.View.ViewModels;
+﻿using ShiftsLogger.View.ViewModels;
 
 namespace ShiftsLogger.ConsoleApp.UI.Models;
 

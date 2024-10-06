@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.ConsoleApp.UI.Models;
 using ShiftsLogger.Domain.Enums;
@@ -12,7 +13,7 @@ namespace ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 public sealed class ShowMainMenuCommand : SinglePanelMenuCommand
 {
     private readonly ICommandFactory<MainMenuOptions> _mainMenuCommandFactory;
-    private readonly FrozenDictionary<MenuEntry, MainMenuOptions> _mainMenuOptionsMap;
+    private readonly Dictionary<MenuEntry, MainMenuOptions> _mainMenuOptionsMap;
 
     public ShowMainMenuCommand(
         IRenderService renderService, 
@@ -23,7 +24,7 @@ public sealed class ShowMainMenuCommand : SinglePanelMenuCommand
         _mainMenuCommandFactory = mainMenuCommandFactory;
 
         _mainMenuOptionsMap = MapMenuOptions();
-        MenuEntries = PopulateMenuEntries().ToList();
+        MenuEntries = PopulateMenuEntries();
     }
     
     protected override object GetChosenOption(ISinglePanelViewModel viewModel)
@@ -36,10 +37,10 @@ public sealed class ShowMainMenuCommand : SinglePanelMenuCommand
     protected override ICommand GetCommand(object chosenOption) => 
         _mainMenuCommandFactory.Create((MainMenuOptions)chosenOption);
 
-    protected override IEnumerable<IViewModelEntity> PopulateMenuEntries() =>
-        _mainMenuOptionsMap.Keys;
+    protected override ImmutableList<IViewModelEntity> PopulateMenuEntries() =>
+        _mainMenuOptionsMap.Keys.ToImmutableList<IViewModelEntity>();
 
-    private static FrozenDictionary<MenuEntry, MainMenuOptions> MapMenuOptions()
+    private static Dictionary<MenuEntry, MainMenuOptions> MapMenuOptions()
     {
         var mainMenuOptionsMap = new Dictionary<MenuEntry, MainMenuOptions>();
         
@@ -49,6 +50,6 @@ public sealed class ShowMainMenuCommand : SinglePanelMenuCommand
             mainMenuOptionsMap.Add(new MenuEntry(value.GetDescription(), menuEntryHeight), value);
         }
 
-        return mainMenuOptionsMap.ToFrozenDictionary();
+        return mainMenuOptionsMap;
     }
 }

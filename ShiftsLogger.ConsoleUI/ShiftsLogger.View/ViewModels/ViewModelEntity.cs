@@ -9,7 +9,7 @@ public abstract class ViewModelEntity : IViewModelEntity
     public int ElementHeight
     {
         get => _elementHeight;
-        protected set
+        private set
         {
             if (value < 0)
             {

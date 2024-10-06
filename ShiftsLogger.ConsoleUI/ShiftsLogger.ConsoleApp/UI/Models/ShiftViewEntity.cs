@@ -15,6 +15,14 @@ public class ShiftViewEntity : ViewModelEntity
 
     public ShiftViewEntity()
     {
-        SetElementHeight(7);
+        SetElementHeight(5);
     }
+
+    public override string ToString() =>
+        $"""
+        {Id}. UserID: {UserId}
+        At: {LocationId}
+        {StartTime:U} - {EndTime:U} 
+        Hours at work: {HoursWorked}
+        """;
 }

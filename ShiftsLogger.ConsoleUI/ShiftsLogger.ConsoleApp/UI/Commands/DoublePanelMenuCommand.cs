@@ -86,7 +86,7 @@ public abstract class DoublePanelMenuCommand : ICommand
                 textAlignment: HorizontalAlignment.Left,
                 color: Color.Green,
                 isSinglePanel: viewModel.IsSinglePanelMode,
-                textDecorations: [ TextDecorations.Bold, TextDecorations.Underline ]
+                TextDecorations.Bold, TextDecorations.Underline
             );
 
         rightPanel = GetRightPanel(viewModel);
@@ -106,7 +106,7 @@ public abstract class DoublePanelMenuCommand : ICommand
                 textAlignment: HorizontalAlignment.Left, 
                 color: Color.Blue, 
                 isSinglePanel: !viewModel.IsSinglePanelMode,
-                textDecorations: [TextDecorations.Bold, TextDecorations.Underline])
+                TextDecorations.Bold, TextDecorations.Underline)
         };
 
     protected virtual void ProcessUserInput(SelectionService selectionService, DoublePanelViewModel viewModel)
