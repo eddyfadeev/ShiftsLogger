@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Interfaces.ViewModels;
 using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
@@ -10,6 +11,7 @@ namespace ShiftsLogger.View.Services;
 public class PanelBuilderService : IPanelBuilderService
 {
     public Panel CreatePanel(
+        Func<IViewModelEntity, string> menuRepresentation,
         ISinglePanelViewModel viewModel, 
         HorizontalAlignment textAlignment, 
         Color color,
@@ -18,6 +20,7 @@ public class PanelBuilderService : IPanelBuilderService
         )
     {
         Markup panelText = GetPanelText(
+            representationSelector: menuRepresentation,
             entries: viewModel.PanelEntries.VisibleElements,
             selectedIndex: viewModel.CurrentIndex,
             color: color,
@@ -52,28 +55,30 @@ public class PanelBuilderService : IPanelBuilderService
         panel.Border = BoxBorder.Rounded;
     }
     
-    private static Markup GetPanelText<TPanelEntry>(
-        IEnumerable<TPanelEntry> entries, 
+    private static Markup GetPanelText(
+        Func<IViewModelEntity, string> representationSelector,
+        IEnumerable<IViewModelEntity> entries, 
         Color color, 
         int selectedIndex, 
         bool isSinglePanel = true,
         params TextDecorations[] textDecorations
     )
-        where TPanelEntry : notnull
     {
         var sb = new StringBuilder();
         string decorations = GetTextDecorations(textDecorations);
         string textColor = color.ToString().ToLower();
+
+        var panelEntries = entries.ToList();
         
-        for (int i = 0; i < entries.Count(); i++)
+        for (int i = 0; i < panelEntries.Count; i++)
         {
             if (i == selectedIndex)
             {
-                sb.Append((isSinglePanel ? $"[{decorations} {textColor}]" : $"[{textColor}]") + entries.ElementAt(i) + "[/]\n");
+                sb.Append((isSinglePanel ? $"[{decorations} {textColor}]" : $"[{textColor}]") + representationSelector(panelEntries[i]) + "[/]\n");
             }
             else
             {
-                sb.Append(entries.ElementAt(i) + "\n");
+                sb.Append(representationSelector(panelEntries[i]) + "\n");
             }
         }
 

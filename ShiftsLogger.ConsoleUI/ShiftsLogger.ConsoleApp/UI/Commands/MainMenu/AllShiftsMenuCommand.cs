@@ -1,7 +1,6 @@
 ﻿using ShiftsLogger.ConsoleApp.Controllers;
 using ShiftsLogger.ConsoleApp.UI.Extensions;
 using ShiftsLogger.ConsoleApp.UI.Models;
-using ShiftsLogger.Domain.Models.Entities;
 using ShiftsLogger.View.Interfaces;
 
 namespace ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;

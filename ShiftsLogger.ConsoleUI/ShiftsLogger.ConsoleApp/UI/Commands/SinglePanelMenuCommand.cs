@@ -44,6 +44,7 @@ public abstract class SinglePanelMenuCommand : ICommand
         while (IsMenuRunning)
         {
             var panel = PanelBuilderService.CreatePanel(
+                menuRepresentation: (entry) => entry.ToString(), // TODO: Make appropriate in menu view
                 viewModel: viewModel, 
                 textAlignment: HorizontalAlignment.Center,
                 color: Color.Green,
