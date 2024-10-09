@@ -102,13 +102,15 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
         lock(_lock)
         {
             int newOnScreenCount = CountOnScreenElements();
-            
-            if (newOnScreenCount != _onScreenElementsCount)
+
+            if (newOnScreenCount == _onScreenElementsCount)
             {
-                _onScreenElementsCount = newOnScreenCount;
-                AdjustForResize();
-                VisibleElements = GetVisibleElements();
+                return;
             }
+            
+            _onScreenElementsCount = newOnScreenCount;
+            AdjustForResize();
+            VisibleElements = GetVisibleElements();
         }
     }
 
@@ -159,7 +161,7 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
             return 1;
         }
         
-        var element = _allElements.ElementAt(0);
+        var element = _allElements[0];
         return element.ElementHeight;
     }
 

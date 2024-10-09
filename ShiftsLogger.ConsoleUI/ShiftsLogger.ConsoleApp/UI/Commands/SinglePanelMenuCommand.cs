@@ -15,10 +15,10 @@ namespace ShiftsLogger.ConsoleApp.UI.Commands;
 
 public abstract class SinglePanelMenuCommand : ICommand
 {
-    private protected readonly IPanelBuilderService PanelBuilderService;
-    private protected readonly IRenderService RenderService;
-    private protected ImmutableList<IViewModelEntity> MenuEntries;
-    private protected bool IsMenuRunning;
+    protected readonly IPanelBuilderService PanelBuilderService;
+    protected readonly IRenderService RenderService;
+    protected ImmutableList<IViewModelEntity> MenuEntries;
+    protected bool IsMenuRunning;
 
     protected SinglePanelMenuCommand(
         IRenderService renderService,
@@ -51,6 +51,7 @@ public abstract class SinglePanelMenuCommand : ICommand
                 isSinglePanel: true,
                 TextDecorations.Underline, TextDecorations.Bold 
             );
+            
             layoutComposer.SetRenderables(panel);
             var layout = layoutComposer.GetLayout();
             

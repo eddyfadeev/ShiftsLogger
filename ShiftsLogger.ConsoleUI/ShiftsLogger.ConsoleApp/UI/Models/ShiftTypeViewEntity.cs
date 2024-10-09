@@ -9,6 +9,13 @@ public class ShiftTypeViewEntity : ViewModelEntity
 
     public ShiftTypeViewEntity()
     {
-        SetElementHeight(1);
+        ElementHeight = 1;
     }
+
+    public override string GetShortRepresentation() => ToString();
+
+    public override string GetDetailedRepresentation() => ToString();
+
+    public override string ToString() =>
+        $"{Id}. {Name}";
 }

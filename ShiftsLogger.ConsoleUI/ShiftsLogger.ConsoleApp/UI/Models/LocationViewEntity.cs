@@ -10,6 +10,16 @@ public class LocationViewEntity : ViewModelEntity
 
     public LocationViewEntity()
     {
-        SetElementHeight(2);
+        ElementHeight = 2;
     }
+
+    public override string GetShortRepresentation() => ToString();
+
+    public override string GetDetailedRepresentation() => ToString();
+
+    public override string ToString() =>
+        $"""
+        {Id}. {Name}
+        {Address ?? string.Empty}
+        """;
 }

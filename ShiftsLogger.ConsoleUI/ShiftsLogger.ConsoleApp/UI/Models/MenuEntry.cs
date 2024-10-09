@@ -8,9 +8,11 @@ public class MenuEntry : ViewModelEntity
     
     public MenuEntry(string name, int elementHeight)
     {
-        SetElementHeight(elementHeight);
+        ElementHeight = elementHeight;
         _name = name;
     }
 
     public override string ToString() => _name;
+    public override string GetShortRepresentation() => _name;
+    public override string GetDetailedRepresentation() => _name;
 }

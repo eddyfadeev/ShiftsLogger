@@ -17,12 +17,22 @@ public class ShiftViewEntity : ViewModelEntity
     {
         SetElementHeight(5);
     }
+    
+    public override string GetShortRepresentation()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override string GetDetailedRepresentation()
+    {
+        throw new NotImplementedException();
+    }
 
     public override string ToString() =>
         $"""
         {Id}. UserID: {UserId}
         At: {LocationId}
-        {StartTime:U} - {EndTime:U} 
-        Hours at work: {HoursWorked}
+        On: {StartTime:D}
+        Hours: {HoursWorked}
         """;
 }
