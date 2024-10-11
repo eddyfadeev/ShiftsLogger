@@ -82,7 +82,7 @@ public abstract class DoublePanelMenuCommand : ICommand
     {
         leftPanel =
             PanelBuilderService.CreatePanel(
-                menuRepresentation: (entry) => entry.ToString(), 
+                menuRepresentation: (entry) => entry.GetShortRepresentation(), 
                 viewModel: viewModel.LeftPanelViewModel, 
                 textAlignment: HorizontalAlignment.Left,
                 color: Color.Green,
@@ -103,7 +103,7 @@ public abstract class DoublePanelMenuCommand : ICommand
                 => PanelBuilderService.CreateDummyPanel(
                 "[grey]No shifts available for this filter...[/]"),
             _ => PanelBuilderService.CreatePanel(
-                menuRepresentation: (entry) => entry.ToString(),
+                menuRepresentation: (entry) => entry.GetDetailedRepresentation(),
                 viewModel: viewModel.RightPanelViewModel,
                 textAlignment: HorizontalAlignment.Left, 
                 color: Color.Blue, 

@@ -5,6 +5,8 @@ namespace ShiftsLogger.View.ViewModels;
 public abstract class ViewModelEntity : IViewModelEntity
 {
     private int _elementHeight = 1;
+    
+    public event Action? ElementHeightChanged;
 
     public int ElementHeight
     {
@@ -16,7 +18,11 @@ public abstract class ViewModelEntity : IViewModelEntity
                 throw new ArgumentException("Height cannot be less than zero!");
             }
 
-            _elementHeight = value;
+            if (_elementHeight != value)
+            {
+                _elementHeight = value;
+                ElementHeightChanged?.Invoke();
+            }
         }
     }
 

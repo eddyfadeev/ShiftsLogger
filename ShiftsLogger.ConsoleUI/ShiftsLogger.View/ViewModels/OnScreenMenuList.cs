@@ -22,10 +22,8 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
     {
         _allElements = new ObservableCollection<T>(menuEntries);
         VisibleElements = GetVisibleElements();
-
-        _allElements.CollectionChanged += OnCollectionChanged;
-        ResizeService.ConsoleResized += OnConsoleResized;
-        ResizeService.Start();
+        
+        SubscribeToEvents();
     }
 
     public T GetCurrentElement()
@@ -84,6 +82,14 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
         {
             CurrentIndex = 0;
             _offset = 0;
+            VisibleElements = GetVisibleElements();
+        }
+    }
+
+    private void OnElementHeightChanged()
+    {
+        lock (_lock)
+        {
             VisibleElements = GetVisibleElements();
         }
     }
@@ -149,12 +155,12 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
     {
         const int borders = 2; // sum of top and bottom border rows
         int consoleWindowHeight = Console.WindowHeight;
-        int elementHeight = GetElementHeight();
+        int elementHeight = GetElementsHeight();
 
         return (consoleWindowHeight - borders) / elementHeight;
     }
 
-    private int GetElementHeight()
+    private int GetElementsHeight()
     {
         if (!_allElements.Any())
         {
@@ -163,6 +169,30 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
         
         var element = _allElements[0];
         return element.ElementHeight;
+    }
+
+    private void SubscribeToEvents()
+    {
+        _allElements.CollectionChanged += OnCollectionChanged;
+        ResizeService.ConsoleResized += OnConsoleResized;
+        ResizeService.Start();
+
+        foreach (var entity in _allElements)
+        {
+            entity.ElementHeightChanged += OnElementHeightChanged;
+        }
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        _allElements.CollectionChanged -= OnCollectionChanged;
+        ResizeService.ConsoleResized -= OnConsoleResized;
+        ResizeService.Start();
+
+        foreach (var entity in _allElements)
+        {
+            entity.ElementHeightChanged -= OnElementHeightChanged;
+        }
     }
 
     public void Dispose()
@@ -177,9 +207,7 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
         {
             if (disposing)
             {
-                ResizeService.ConsoleResized -= OnConsoleResized;
-                ResizeService.Stop();
-                _allElements.CollectionChanged -= OnCollectionChanged;
+                UnsubscribeFromEvents();
             }
 
             _disposed = true;

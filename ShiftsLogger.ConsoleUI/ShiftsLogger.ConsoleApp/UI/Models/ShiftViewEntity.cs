@@ -12,20 +12,29 @@ public class ShiftViewEntity : ViewModelEntity
     public DateTime EndTime { get; init; }
     public decimal HoursWorked { get; init; }
     public string? Description { get; init; }
-
-    public ShiftViewEntity()
-    {
-        SetElementHeight(5);
-    }
     
     public override string GetShortRepresentation()
     {
-        throw new NotImplementedException();
+        SetElementHeight(4);
+        return $"""
+                {Id}. UserID: {UserId}
+                At: {LocationId}
+                On: {StartTime:D}
+                Hours: {HoursWorked}
+                """;
     }
 
     public override string GetDetailedRepresentation()
     {
-        throw new NotImplementedException();
+        SetElementHeight(6);
+        return $"""
+                {Id}. UserID: {UserId}
+                At: {LocationId}
+                Shift type: {ShiftTypeId}
+                From: {StartTime:F} To: {EndTime:F}
+                Hours: {HoursWorked}
+                Description: {Description ?? string.Empty}
+                """;
     }
 
     public override string ToString() =>

@@ -2,6 +2,7 @@
 
 public interface IViewModelEntity
 {
+    event Action? ElementHeightChanged;
     int ElementHeight { get; }
     void SetElementHeight(int height);
     string GetShortRepresentation();
