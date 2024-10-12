@@ -38,12 +38,18 @@ public class DoublePanelSelectionStrategy : ISelectionStrategy
                 _viewModel.SelectLeftPanel();
                 break;
             case Enums.Selection.MoveRight 
-                when _viewModel.IsFilterSelected:
+                when _viewModel is { IsFilterSelected: true, RightPanelViewModel.IsEmpty: false }:
                 _viewModel.SelectRightPanel();
                 break;
             case Enums.Selection.Select 
                 when _viewModel.IsSinglePanelMode:
                 _viewModel.ActivateFilter();
+
+                if (_viewModel.RightPanelViewModel.IsEmpty)
+                {
+                    break;
+                }
+                
                 _viewModel.SelectRightPanel();
                 _viewModel.ResetRightPanelSelection();
                 break;

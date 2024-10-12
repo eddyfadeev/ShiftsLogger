@@ -7,11 +7,16 @@ public class SinglePanelViewModel : ISinglePanelViewModel
 {
     public int CurrentIndex => PanelEntries.CurrentIndex;
 
+    public bool IsEmpty { get; }
+
     public OnScreenMenuList<IViewModelEntity> PanelEntries { get; }
 
     public SinglePanelViewModel(IEnumerable<IViewModelEntity> entries)
     {
+        entries = entries.ToList();
+        
         PanelEntries = new OnScreenMenuList<IViewModelEntity>(entries);
+        IsEmpty = !entries.Any();
     }
 
     public void MoveUp() => PanelEntries.MoveUp();
