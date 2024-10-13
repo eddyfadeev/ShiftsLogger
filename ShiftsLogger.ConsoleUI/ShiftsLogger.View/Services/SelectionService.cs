@@ -15,6 +15,6 @@ public class SelectionService : ISelectionService
 
     public void ChangeSelection(Selection move)
     {
-        _selectionStrategy?.ChangeSelection(move);
+        _selectionStrategy.ChangeSelection(move);
     }
 }

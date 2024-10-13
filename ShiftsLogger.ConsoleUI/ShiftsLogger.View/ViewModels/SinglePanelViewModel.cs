@@ -9,12 +9,8 @@ public class SinglePanelViewModel : ISinglePanelViewModel
 
     public OnScreenMenuList<IViewModelEntity> PanelEntries { get; }
 
-    public SinglePanelViewModel(IEnumerable<IViewModelEntity> entries)
-    {
-        entries = entries.ToList();
-        
+    public SinglePanelViewModel(IEnumerable<IViewModelEntity> entries) => 
         PanelEntries = new OnScreenMenuList<IViewModelEntity>(entries);
-    }
 
     public void MoveUp() => PanelEntries.MoveUp();
     public void MoveDown() => PanelEntries.MoveDown();
