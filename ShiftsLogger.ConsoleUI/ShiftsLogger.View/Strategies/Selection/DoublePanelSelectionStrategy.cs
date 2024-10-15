@@ -1,4 +1,4 @@
-﻿using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Interfaces;
 using ShiftsLogger.View.Interfaces.Strategies;
 using ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
 

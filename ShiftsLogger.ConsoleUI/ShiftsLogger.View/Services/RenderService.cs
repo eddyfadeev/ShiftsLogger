@@ -1,4 +1,4 @@
-﻿using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Interfaces;
 using Spectre.Console;
 
 namespace ShiftsLogger.View.Services;

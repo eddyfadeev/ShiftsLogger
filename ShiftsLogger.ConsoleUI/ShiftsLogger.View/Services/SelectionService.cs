@@ -1,4 +1,4 @@
-﻿using ShiftsLogger.View.Enums;
+using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces.Services;
 using ShiftsLogger.View.Interfaces.Strategies;
 

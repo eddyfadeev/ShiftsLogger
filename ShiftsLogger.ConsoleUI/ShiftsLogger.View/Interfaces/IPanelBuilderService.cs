@@ -1,4 +1,4 @@
-﻿using ShiftsLogger.View.Enums;
+using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces.ViewModels;
 using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using Spectre.Console;

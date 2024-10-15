@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using ShiftsLogger.Application.Interfaces;
 using ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 using ShiftsLogger.Domain.Enums;

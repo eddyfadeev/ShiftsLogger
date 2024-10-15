@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
 using ShiftsLogger.View.Interfaces.ViewModels;

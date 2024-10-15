@@ -1,4 +1,4 @@
-﻿using ShiftsLogger.View.Interfaces.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels;
 using ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
 using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
