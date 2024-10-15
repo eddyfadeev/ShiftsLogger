@@ -9,5 +9,7 @@ public static class ControllersExtensions
     {
         services.AddScoped<LocationsController>();
         services.AddScoped<ShiftsController>();
+        services.AddScoped<UserController>();
+        services.AddScoped<ShiftTypesController>();
     }
 }

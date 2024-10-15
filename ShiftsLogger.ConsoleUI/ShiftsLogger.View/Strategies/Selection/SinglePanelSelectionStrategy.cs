@@ -1,14 +1,14 @@
-﻿using ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
 using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Interfaces.Strategies;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
 namespace ShiftsLogger.View.Strategies.Selection;
 
-public class SinglePanelSelectionStrategy<TEntry> : ISelectionStrategy
-    where TEntry : class
+public class SinglePanelSelectionStrategy : ISelectionStrategy
 {
-    private readonly SinglePanelViewModel<TEntry> _viewModel;
+    private readonly ISinglePanelViewModel _viewModel;
 
-    public SinglePanelSelectionStrategy(SinglePanelViewModel<TEntry> viewModel)
+    public SinglePanelSelectionStrategy(ISinglePanelViewModel viewModel)
     {
         _viewModel = viewModel;
     }
@@ -18,13 +18,13 @@ public class SinglePanelSelectionStrategy<TEntry> : ISelectionStrategy
         switch (move)
         {
             case Enums.Selection.MoveUp:
-                _viewModel.UpdateSelectionIndex(_viewModel.SelectedEntryIndex - 1);
+                _viewModel.SelectPrevious();
                 break;
             case Enums.Selection.MoveDown:
-                _viewModel.UpdateSelectionIndex(_viewModel.SelectedEntryIndex + 1);
+                _viewModel.SelectNext();
                 break;
             case Enums.Selection.Select:
-                Console.WriteLine($"You selected: {_viewModel.PanelEntries[_viewModel.SelectedEntryIndex]}");
+                Console.WriteLine($"You selected: {_viewModel.GetCurrentElement()}");
                 Environment.Exit(0);
                 break;
         }

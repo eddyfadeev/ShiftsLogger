@@ -1,33 +1,20 @@
-﻿namespace ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
-public class SinglePanelViewModel<TEntry>
-    where TEntry : class
+namespace ShiftsLogger.View.ViewModels;
+
+public class SinglePanelViewModel : ISinglePanelViewModel
 {
-    public int SelectedEntryIndex { get; private set; }
+    public int CurrentIndex => PanelEntries.CurrentIndex;
 
-    public List<TEntry> PanelEntries { get; }
+    public OnScreenMenuList<IViewModelEntity> PanelEntries { get; }
 
-    public SinglePanelViewModel(List<TEntry> entries)
-    {
-        PanelEntries = entries;
-    }
-    
-    public void UpdateSelectionIndex(int newIndex)
-    {
-        if (!EnsureCorrectIndex(newIndex))
-        {
-            return;
-        }
-        
-        SelectedEntryIndex = newIndex;
-    }
+    public SinglePanelViewModel(IEnumerable<IViewModelEntity> entries) => 
+        PanelEntries = new OnScreenMenuList<IViewModelEntity>(entries);
 
-    private protected virtual bool EnsureCorrectIndex(int newIndex)
-    {
-        const int lowerBound = 0;
-        int upperBound = PanelEntries.Count - 1;
+    public void SelectPrevious() => PanelEntries.SelectPrevious();
+    public void SelectNext() => PanelEntries.SelectNext();
+    public void ResetSelection() => PanelEntries.ResetSelection();
 
-        return newIndex <= upperBound &&
-               newIndex >= lowerBound;
-    }
+    public IViewModelEntity GetCurrentElement() => PanelEntries.GetCurrentElement();
 }

@@ -1,15 +1,20 @@
-﻿using ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
+using ShiftsLogger.View.Enums;
+using ShiftsLogger.View.Interfaces.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using Spectre.Console;
 
 namespace ShiftsLogger.View.Interfaces;
 
 public interface IPanelBuilderService
 {
-    Panel PrepareRenderablePanel<TPanelEntries>(SinglePanelViewModel<TPanelEntries> renderInfo)
-        where TPanelEntries : class;
+    Panel CreatePanel(
+        Func<IViewModelEntity, string> menuRepresentation,
+        ISinglePanelViewModel viewModel,
+        HorizontalAlignment textAlignment,
+        Color selectorColor,
+        bool isSinglePanel = true,
+        params TextDecorations[] textDecorations
+    );
 
-    Tuple<Panel, Panel> PrepareRenderablePanels<TLeftPanelEntries, TRightPanelEntries>(
-        DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> renderInfo)
-        where TLeftPanelEntries : class
-        where TRightPanelEntries : class;
+    Panel CreateDummyPanel(string text);
 }

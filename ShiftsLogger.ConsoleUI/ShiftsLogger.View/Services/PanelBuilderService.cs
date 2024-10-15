@@ -1,86 +1,89 @@
-﻿using System.Text;
-using ShiftsLogger.ConsoleApp.ConsoleUI.ViewModels;
+using System.Text;
+using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Interfaces.ViewModels;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using Spectre.Console;
 
 namespace ShiftsLogger.View.Services;
 
 public class PanelBuilderService : IPanelBuilderService
 {
-    public Panel PrepareRenderablePanel<TPanelEntries>(SinglePanelViewModel<TPanelEntries> renderInfo)
-        where TPanelEntries : class
+    public Panel CreatePanel(
+        Func<IViewModelEntity, string> menuRepresentation,
+        ISinglePanelViewModel viewModel, 
+        HorizontalAlignment textAlignment, 
+        Color selectorColor,
+        bool isSinglePanel = true,
+        params TextDecorations[] textDecorations
+        )
     {
-        string panelText = GetPanelText(
-            entries: renderInfo.PanelEntries,
-            color: "green",
-            selectedIndex: renderInfo.SelectedEntryIndex
-        );
-
-        var panel = CreatePanel(panelText.TrimEnd());
+        Markup panelText = GetPanelText(
+            representationSelector: menuRepresentation,
+            entries: viewModel.PanelEntries.VisibleElements,
+            selectedIndex: viewModel.CurrentIndex,
+            color: selectorColor,
+            textDecorations: textDecorations,
+            isSinglePanel: isSinglePanel
+            );
+        
+        var panel = textAlignment switch
+        {
+            HorizontalAlignment.Center => new Panel(Align.Center(panelText)),
+            HorizontalAlignment.Right => new Panel(Align.Right(panelText)),
+            HorizontalAlignment.Left => new Panel(Align.Left(panelText)),
+            _ => new Panel(Align.Left(panelText))
+        };
+        
+        ApplyDefaultConfiguration(panel);
 
         return panel;
     }
-    
-    public Tuple<Panel, Panel> PrepareRenderablePanels<TLeftPanelEntries, TRightPanelEntries>(DoublePanelViewModel<TLeftPanelEntries, TRightPanelEntries> renderInfo)
-        where TLeftPanelEntries : class
-        where TRightPanelEntries : class
-    {
-        string filtersPanelText = GetPanelText(
-            entries: renderInfo.PanelEntries, 
-            color: "green", 
-            selectedIndex: renderInfo.SelectedEntryIndex, 
-            isSinglePanel: renderInfo.IsSinglePanelMode
-        );
-        
-        string shiftsPanelText;
-        if (renderInfo.LastActiveSelectionIndex < 0 
-            || !renderInfo.RightPanelEntries.TryGetValue(renderInfo.PanelEntries[renderInfo.LastActiveSelectionIndex], 
-                out var shifts))
-        {
-            shiftsPanelText = "[grey]Choose a location to see available shifts...[/]";
-        }
-        else
-        {
-            shiftsPanelText = GetPanelText(
-                entries: shifts, 
-                color: "blue", 
-                selectedIndex: renderInfo.RightPanelActiveIndex, 
-                isSinglePanel: !renderInfo.IsSinglePanelMode
-            );
-        }
-        
-        var leftPanel = CreatePanel(filtersPanelText.TrimEnd());
-        var rightPanel = CreatePanel(shiftsPanelText.TrimEnd());
 
-        return new Tuple<Panel, Panel>(leftPanel, rightPanel);
+    public Panel CreateDummyPanel(string text)
+    {
+        var dummyPanel = new Panel(text);
+        ApplyDefaultConfiguration(dummyPanel);
+
+        return dummyPanel;
     }
 
-    private static Panel CreatePanel(string textToDisplay) =>
-        new(textToDisplay)
-        {
-            Expand = true,
-            Border = BoxBorder.Rounded
-        };
+    private static void ApplyDefaultConfiguration(Panel panel)
+    {
+        panel.Expand = true;
+        panel.Border = BoxBorder.Rounded;
+    }
     
-    private static string GetPanelText<TPanelEntry>(
-        List<TPanelEntry> entries, string color, int selectedIndex, bool isSinglePanel = true
+    private static Markup GetPanelText(
+        Func<IViewModelEntity, string> representationSelector,
+        IEnumerable<IViewModelEntity> entries, 
+        Color color, 
+        int selectedIndex, 
+        bool isSinglePanel = true,
+        params TextDecorations[] textDecorations
     )
-        where TPanelEntry : notnull
     {
         var sb = new StringBuilder();
+        string decorations = GetTextDecorations(textDecorations);
+        string textColor = color.ToString().ToLower();
+
+        var panelEntries = entries.ToList();
         
-        for (int i = 0; i < entries.Count; i++)
+        for (int i = 0; i < panelEntries.Count; i++)
         {
             if (i == selectedIndex)
             {
-                sb.Append((isSinglePanel ? $"[bold underline {color}]" : $"[{color}]") + entries[i] + "[/]\n");
+                sb.Append((isSinglePanel ? $"[{decorations} {textColor}]" : $"[{textColor}]") + representationSelector(panelEntries[i]) + "[/]\n");
             }
             else
             {
-                sb.Append(entries[i] + "\n");
+                sb.Append(representationSelector(panelEntries[i]) + "\n");
             }
         }
 
-        return sb.ToString();
+        return new Markup(sb.ToString());
     }
+
+    private static string GetTextDecorations(params TextDecorations[] textDecorations)
+        => string.Join(" ", textDecorations.Select(d => d.ToString().ToLower()));
 }

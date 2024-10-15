@@ -1,9 +1,10 @@
-﻿using ShiftsLogger.View.Enums;
-using ShiftsLogger.View.Interfaces;
+using ShiftsLogger.View.Enums;
+using ShiftsLogger.View.Interfaces.Services;
+using ShiftsLogger.View.Interfaces.Strategies;
 
 namespace ShiftsLogger.View.Services;
 
-public class SelectionService
+public class SelectionService : ISelectionService
 {
     private readonly ISelectionStrategy _selectionStrategy;
 

@@ -1,4 +1,5 @@
 ﻿using ShiftsLogger.Application.Interfaces;
+using ShiftsLogger.ConsoleApp.UI.Models;
 using ShiftsLogger.Domain.Enums;
 using ShiftsLogger.Domain.Interfaces;
 using ShiftsLogger.Domain.Models.Entities;
@@ -52,7 +53,7 @@ public class ShiftsController
         new Enum[]
         {
             ApiEndpoints.Locations.GetShiftsByLocationId,
-            ApiEndpoints.ShiftTypes.GetShiftsByTypeId,
+            ApiEndpoints.ShiftTypes.GetShiftsByShiftTypeId,
             ApiEndpoints.Users.GetShiftsByUserId
         };
 }
