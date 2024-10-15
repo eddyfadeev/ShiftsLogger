@@ -44,13 +44,13 @@ public class MainMenuCommandsFactory : ICommandFactory<MainMenuOptions>
         new()
         {
             { MainMenuOptions.AllShifts, 
-                () => new AllShiftsMenuCommand(_renderService, _panelBuilderService, _shiftsController) },
+                () => new OpenAllShifts(_renderService, _panelBuilderService, _shiftsController) },
             { MainMenuOptions.ShiftsByUser, 
-                () => new ShiftsByUserCommand(_renderService, _panelBuilderService, _userController) },
+                () => new OpenShiftsByUser(_renderService, _panelBuilderService, _userController) },
             { MainMenuOptions.ShiftsByType, () 
-                => new ShiftsByTypeCommand(_renderService, _panelBuilderService, _shiftTypesController) },
+                => new OpenShiftsByType(_renderService, _panelBuilderService, _shiftTypesController) },
             { MainMenuOptions.ShiftsByLocation, 
-                () => new ShiftsByLocationCommand(_renderService, _panelBuilderService, _locationsController) },
-            { MainMenuOptions.Exit, () => new ExitCommand() }
+                () => new OpenShiftsByLocation(_renderService, _panelBuilderService, _locationsController) },
+            { MainMenuOptions.Exit, () => new ExitFromApp() }
         };
 }

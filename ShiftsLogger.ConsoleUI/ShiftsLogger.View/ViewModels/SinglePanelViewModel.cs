@@ -12,8 +12,8 @@ public class SinglePanelViewModel : ISinglePanelViewModel
     public SinglePanelViewModel(IEnumerable<IViewModelEntity> entries) => 
         PanelEntries = new OnScreenMenuList<IViewModelEntity>(entries);
 
-    public void MoveUp() => PanelEntries.MoveUp();
-    public void MoveDown() => PanelEntries.MoveDown();
+    public void SelectPrevious() => PanelEntries.SelectPrevious();
+    public void SelectNext() => PanelEntries.SelectNext();
     public void ResetSelection() => PanelEntries.ResetSelection();
 
     public IViewModelEntity GetCurrentElement() => PanelEntries.GetCurrentElement();

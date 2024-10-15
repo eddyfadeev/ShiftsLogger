@@ -18,10 +18,10 @@ public class SinglePanelSelectionStrategy : ISelectionStrategy
         switch (move)
         {
             case Enums.Selection.MoveUp:
-                _viewModel.MoveUp();
+                _viewModel.SelectPrevious();
                 break;
             case Enums.Selection.MoveDown:
-                _viewModel.MoveDown();
+                _viewModel.SelectNext();
                 break;
             case Enums.Selection.Select:
                 Console.WriteLine($"You selected: {_viewModel.GetCurrentElement()}");

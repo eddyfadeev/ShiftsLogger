@@ -5,11 +5,11 @@ using ShiftsLogger.View.Interfaces;
 
 namespace ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 
-public sealed class ShiftsByLocationCommand : DoublePanelMenuCommand
+public sealed class OpenShiftsByLocation : DoublePanelMenuCommand
 {
     private readonly LocationsController _locationsController;
 
-    public ShiftsByLocationCommand(
+    public OpenShiftsByLocation(
         IRenderService renderService,
         IPanelBuilderService panelBuilderService,
         LocationsController locationsController

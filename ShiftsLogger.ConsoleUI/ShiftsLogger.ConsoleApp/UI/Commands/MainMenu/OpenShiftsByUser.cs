@@ -6,11 +6,11 @@ using ShiftsLogger.View.Interfaces;
 
 namespace ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 
-public sealed class ShiftsByUserCommand : DoublePanelMenuCommand
+public sealed class OpenShiftsByUser : DoublePanelMenuCommand
 {
     private readonly UserController _userController;
 
-    public ShiftsByUserCommand(
+    public OpenShiftsByUser(
         IRenderService renderService, 
         IPanelBuilderService panelBuilderService, 
         UserController userController

@@ -6,7 +6,7 @@ using Spectre.Console.Rendering;
 
 namespace ShiftsLogger.View.Strategies.LayoutComposition;
 
-public sealed class DoublePanelLayoutStrategy : ILayoutStrategy
+public class DoublePanelLayoutStrategy : ILayoutStrategy
 {
     private int _mainPanelRatio = 50; // console width percent
     private int _supportPanelRatio = 50; // console width percent
@@ -70,13 +70,13 @@ public sealed class DoublePanelLayoutStrategy : ILayoutStrategy
         {
             LayoutSplit.Vertical =>
                 new Layout().SplitColumns(
-                    new Layout(objects[0]).Ratio(MainPanelRatio),
-                    new Layout(objects[1]).Ratio(SupportPanelRatio)
+                    new Layout("left", objects[0]).Ratio(MainPanelRatio),
+                    new Layout("right", objects[1]).Ratio(SupportPanelRatio)
                 ),
             LayoutSplit.Horizontal =>
                 new Layout().SplitRows(
-                    new Layout(objects[0]).Ratio(MainPanelRatio),
-                    new Layout(objects[1]).Ratio(SupportPanelRatio)
+                    new Layout("top", objects[0]).Ratio(MainPanelRatio),
+                    new Layout("bottom", objects[1]).Ratio(SupportPanelRatio)
                 ),
             _ => throw new ArgumentException("Invalid split type")
         };

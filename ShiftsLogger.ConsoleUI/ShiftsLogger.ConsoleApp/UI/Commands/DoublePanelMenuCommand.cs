@@ -3,22 +3,24 @@ using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
 using ShiftsLogger.View.Interfaces.ViewModels;
 using ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 using ShiftsLogger.View.Services;
 using ShiftsLogger.View.Strategies.LayoutComposition;
 using ShiftsLogger.View.Strategies.Selection;
 using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace ShiftsLogger.ConsoleApp.UI.Commands;
 
 public abstract class DoublePanelMenuCommand : ICommand
 {
-    private protected readonly IRenderService RenderService;
-    private protected readonly IPanelBuilderService PanelBuilderService;
+    protected readonly IRenderService RenderService;
+    protected readonly IPanelBuilderService PanelBuilderService;
     
-    private protected bool IsMenuRunning; 
-    private protected IEnumerable<IViewModelEntity> LeftPanelEntities;
-    private protected IEnumerable<IViewModelEntity> RightPanelEntries;
+    protected bool IsMenuRunning; 
+    protected IEnumerable<IViewModelEntity> LeftPanelEntities;
+    protected IEnumerable<IViewModelEntity> RightPanelEntries;
 
     protected DoublePanelMenuCommand(IRenderService renderService, IPanelBuilderService panelBuilderService)
     {
@@ -36,13 +38,13 @@ public abstract class DoublePanelMenuCommand : ICommand
             LeftPanelEntities = FetchLeftPanelData();
         }
         
-        var viewModel = CreateViewModel();
+        var viewModel = CreatePrimaryViewModel();
         var selectionService = GetSelectionService(viewModel);
         var layoutComposer = GetLayoutComposer();
         
         IsMenuRunning = true;
         
-        GetPanels(viewModel, out var leftPanel, out var rightPanel);
+        GetRenderables(viewModel, out var leftPanel, out var rightPanel);
         layoutComposer.SetRenderables(leftPanel, rightPanel);
         var layout = layoutComposer.GetLayout();
         
@@ -50,9 +52,9 @@ public abstract class DoublePanelMenuCommand : ICommand
 
         while (IsMenuRunning)
         {
-            ProcessUserInput(selectionService, viewModel);
+            ProcessUserInput(selectionService, (DoublePanelViewModel)viewModel);
             
-            GetPanels(viewModel, out leftPanel, out rightPanel);
+            GetRenderables(viewModel, out leftPanel, out rightPanel);
             layoutComposer.SetRenderables(leftPanel, rightPanel);
             layout = layoutComposer.GetLayout();
             
@@ -64,8 +66,11 @@ public abstract class DoublePanelMenuCommand : ICommand
     
     protected abstract IEnumerable<IViewModelEntity> FetchRightPanelData(int entityId);
     
-    protected virtual DoublePanelViewModel CreateViewModel() => 
-        new(LeftPanelEntities);
+    protected virtual IDoublePanelViewModel CreatePrimaryViewModel() => 
+        new DoublePanelViewModel(LeftPanelEntities);
+
+    protected virtual ISinglePanelViewModel CreateSecondaryViewModel() =>
+        new SinglePanelViewModel(RightPanelEntries);
 
     protected virtual SelectionService GetSelectionService(
         IDoublePanelViewModel viewModel) =>
@@ -76,42 +81,43 @@ public abstract class DoublePanelMenuCommand : ICommand
     protected virtual LayoutComposerService GetLayoutComposer() =>
         new (new DoublePanelLayoutStrategy(splitRatio: 30, LayoutSplit.Vertical));
 
-    protected virtual void GetPanels(
+    protected virtual void GetRenderables(
         IDoublePanelViewModel viewModel, 
-        out Panel leftPanel, out Panel rightPanel)
+        out IRenderable leftPanel, out IRenderable rightPanel)
     {
         leftPanel =
             PanelBuilderService.CreatePanel(
                 menuRepresentation: (entry) => entry.GetShortRepresentation(), 
                 viewModel: viewModel.LeftPanelViewModel, 
                 textAlignment: HorizontalAlignment.Left,
-                color: Color.Green,
+                selectorColor: Color.Green,
                 isSinglePanel: viewModel.IsSinglePanelMode,
                 TextDecorations.Bold, TextDecorations.Underline
             );
 
-        rightPanel = GetRightPanel(viewModel);
+        rightPanel = GetRightRenderable(viewModel);
     }
 
-    protected virtual Panel GetRightPanel(IDoublePanelViewModel viewModel) =>
+    protected virtual IRenderable GetRightRenderable(IDoublePanelViewModel viewModel) =>
         viewModel switch
         {
-            { SelectedFilterIndex: < 0 } 
-                => PanelBuilderService.CreateDummyPanel(
+            { SelectedFilterIndex: < 0 } => 
+                PanelBuilderService.CreateDummyPanel(
                 "[grey]Choose a filter to see available shifts...[/]"),
-            { SelectedFilterIndex: >= 0, RightPanelViewModel.PanelEntries.VisibleElements.Count: 0 } 
-                => PanelBuilderService.CreateDummyPanel(
+            { SelectedFilterIndex: >= 0, RightPanelViewModel.PanelEntries.VisibleElements.Count: 0 } => 
+                PanelBuilderService.CreateDummyPanel(
                 "[grey]No shifts available for this filter...[/]"),
-            _ => PanelBuilderService.CreatePanel(
+            _ => 
+                PanelBuilderService.CreatePanel(
                 menuRepresentation: (entry) => entry.GetDetailedRepresentation(),
                 viewModel: viewModel.RightPanelViewModel,
                 textAlignment: HorizontalAlignment.Left, 
-                color: Color.Blue, 
+                selectorColor: Color.Blue, 
                 isSinglePanel: !viewModel.IsSinglePanelMode,
                 TextDecorations.Bold, TextDecorations.Underline)
         };
 
-    protected virtual void ProcessUserInput(SelectionService selectionService, DoublePanelViewModel viewModel)
+    protected virtual void ProcessUserInput(SelectionService selectionService, IDoublePanelViewModel viewModel)
     {
         var key = Console.ReadKey(true).Key;
         
@@ -132,7 +138,8 @@ public abstract class DoublePanelMenuCommand : ICommand
             case ConsoleKey.Enter:
                 selectionService.ChangeSelection(Selection.Select);
                 RightPanelEntries = FetchRightPanelData(viewModel.SelectedFilterIndex);
-                viewModel.UpdateRightPanelViewModel(RightPanelEntries);
+                var rightPanel = CreateSecondaryViewModel();
+                viewModel.UpdateRightPanelViewModel(rightPanel);
                 break;
             case ConsoleKey.Escape:
                 IsMenuRunning = false;

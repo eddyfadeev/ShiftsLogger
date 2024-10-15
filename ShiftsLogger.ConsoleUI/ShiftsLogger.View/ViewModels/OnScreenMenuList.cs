@@ -40,7 +40,7 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
         }
     }
 
-    public void MoveUp()
+    public void SelectPrevious()
     {
         lock(_lock)
         {
@@ -56,7 +56,7 @@ public class OnScreenMenuList<T> : IReturnsEntry<T>, IScrollable, IDisposable
         }
     }
 
-    public void MoveDown()
+    public void SelectNext()
     {
         lock(_lock)
         {

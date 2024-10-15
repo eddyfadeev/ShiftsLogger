@@ -3,7 +3,6 @@ using ShiftsLogger.View.Enums;
 using ShiftsLogger.View.Interfaces;
 using ShiftsLogger.View.Interfaces.ViewModels;
 using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
-using ShiftsLogger.View.ViewModels;
 using Spectre.Console;
 
 namespace ShiftsLogger.View.Services;
@@ -14,7 +13,7 @@ public class PanelBuilderService : IPanelBuilderService
         Func<IViewModelEntity, string> menuRepresentation,
         ISinglePanelViewModel viewModel, 
         HorizontalAlignment textAlignment, 
-        Color color,
+        Color selectorColor,
         bool isSinglePanel = true,
         params TextDecorations[] textDecorations
         )
@@ -23,7 +22,7 @@ public class PanelBuilderService : IPanelBuilderService
             representationSelector: menuRepresentation,
             entries: viewModel.PanelEntries.VisibleElements,
             selectedIndex: viewModel.CurrentIndex,
-            color: color,
+            color: selectorColor,
             textDecorations: textDecorations,
             isSinglePanel: isSinglePanel
             );

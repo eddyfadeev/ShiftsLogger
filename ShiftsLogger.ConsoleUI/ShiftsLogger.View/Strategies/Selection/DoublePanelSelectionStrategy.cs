@@ -19,19 +19,19 @@ public class DoublePanelSelectionStrategy : ISelectionStrategy
         {
             case Enums.Selection.MoveUp 
                 when _viewModel.IsSinglePanelMode:
-                _viewModel.LeftPanelViewModel.MoveUp();
+                _viewModel.LeftPanelViewModel.SelectPrevious();
                 break;
             case Enums.Selection.MoveUp 
                 when !_viewModel.IsSinglePanelMode:
-                _viewModel.RightPanelViewModel.MoveUp();
+                _viewModel.RightPanelViewModel.SelectPrevious();
                 break;
             case Enums.Selection.MoveDown 
                 when _viewModel.IsSinglePanelMode:
-                _viewModel.LeftPanelViewModel.MoveDown();
+                _viewModel.LeftPanelViewModel.SelectNext();
                 break;
             case Enums.Selection.MoveDown 
                 when !_viewModel.IsSinglePanelMode:
-                _viewModel.RightPanelViewModel.MoveDown();
+                _viewModel.RightPanelViewModel.SelectNext();
                 break;
             case Enums.Selection.MoveLeft 
                 when _viewModel.IsFilterSelected:

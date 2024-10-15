@@ -3,7 +3,7 @@
 public interface IScrollable
 {
     int CurrentIndex { get; }
-    void MoveUp();
-    void MoveDown();
+    void SelectPrevious();
+    void SelectNext();
     void ResetSelection();
 }

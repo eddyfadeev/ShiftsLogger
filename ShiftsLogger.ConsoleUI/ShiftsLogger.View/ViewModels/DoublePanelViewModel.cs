@@ -1,5 +1,6 @@
 ﻿using ShiftsLogger.View.Interfaces.ViewModels;
 using ShiftsLogger.View.Interfaces.ViewModels.DoublePanel;
+using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
 namespace ShiftsLogger.View.ViewModels;
 
@@ -10,8 +11,8 @@ public class DoublePanelViewModel : IDoublePanelViewModel
 
     public bool IsFilterSelected { get; private set; }
 
-    public SinglePanelViewModel LeftPanelViewModel { get; private set; }
-    public SinglePanelViewModel RightPanelViewModel { get; private set; }
+    public ISinglePanelViewModel LeftPanelViewModel { get; private set; }
+    public ISinglePanelViewModel RightPanelViewModel { get; private set; }
 
     public DoublePanelViewModel(IEnumerable<IViewModelEntity> leftPanelEntriesList) : this(leftPanelEntriesList, []) {}
     
@@ -39,11 +40,11 @@ public class DoublePanelViewModel : IDoublePanelViewModel
         IsFilterSelected = true;
     }
 
-    public void UpdateLeftPanelViewModel(IEnumerable<IViewModelEntity> leftPanelEntriesList) =>
-        LeftPanelViewModel = new SinglePanelViewModel(leftPanelEntriesList);
+    public void UpdateLeftPanelViewModel(ISinglePanelViewModel leftPanelModel) =>
+        LeftPanelViewModel = leftPanelModel;
 
-    public void UpdateRightPanelViewModel(IEnumerable<IViewModelEntity> rightPanelEntriesList) =>
-        RightPanelViewModel = new SinglePanelViewModel(rightPanelEntriesList);
+    public void UpdateRightPanelViewModel(ISinglePanelViewModel rightPanelModel) =>
+        RightPanelViewModel = rightPanelModel;
 
     public IViewModelEntity GetCurrentElement() => RightPanelViewModel.GetCurrentElement();
 }

@@ -18,7 +18,7 @@ public static class Program
         var panelBuilder = serviceProvider.GetRequiredService<IPanelBuilderService>();
         var mainMenuFactory = serviceProvider.GetRequiredService<ICommandFactory<MainMenuOptions>>();
         
-        var showMainMenu = new ShowMainMenuCommand(renderService, panelBuilder, mainMenuFactory);
+        var showMainMenu = new ShowMainMenu(renderService, panelBuilder, mainMenuFactory);
         
         showMainMenu.Execute();
     }

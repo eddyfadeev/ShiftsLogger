@@ -10,12 +10,12 @@ using ShiftsLogger.View.Interfaces.ViewModels.SinglePanel;
 
 namespace ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 
-public sealed class ShowMainMenuCommand : SinglePanelMenuCommand
+public sealed class ShowMainMenu : SinglePanelMenuCommand
 {
     private readonly ICommandFactory<MainMenuOptions> _mainMenuCommandFactory;
     private readonly Dictionary<MenuEntry, MainMenuOptions> _mainMenuOptionsMap;
 
-    public ShowMainMenuCommand(
+    public ShowMainMenu(
         IRenderService renderService, 
         IPanelBuilderService panelBuilderService, 
         ICommandFactory<MainMenuOptions> mainMenuCommandFactory

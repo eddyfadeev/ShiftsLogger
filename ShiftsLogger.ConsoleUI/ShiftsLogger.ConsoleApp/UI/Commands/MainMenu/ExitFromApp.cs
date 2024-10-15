@@ -2,7 +2,7 @@
 
 namespace ShiftsLogger.ConsoleApp.UI.Commands.MainMenu;
 
-public class ExitCommand : ICommand
+public class ExitFromApp : ICommand
 {
     public void Execute()
     {

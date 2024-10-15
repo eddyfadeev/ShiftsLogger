@@ -47,7 +47,7 @@ public abstract class SinglePanelMenuCommand : ICommand
                 menuRepresentation: (entry) => entry.GetShortRepresentation(), // TODO: Make appropriate in menu view
                 viewModel: viewModel, 
                 textAlignment: HorizontalAlignment.Center,
-                color: Color.Green,
+                selectorColor: Color.Green,
                 isSinglePanel: true,
                 TextDecorations.Underline, TextDecorations.Bold 
             );

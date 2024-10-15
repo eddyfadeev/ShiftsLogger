@@ -15,16 +15,6 @@ public static class ModelExtensions
             Role = entity.Role
         };
     
-    public static User MapToEntity(this UserViewEntity viewEntity) =>
-        new()
-        {
-            Id = viewEntity.Id,
-            FirstName = viewEntity.FirstName,
-            LastName = viewEntity.LastName,
-            Email = viewEntity.Email,
-            Role = viewEntity.Role
-        };
-
     public static LocationViewEntity MapToViewEntity(this Location entity) =>
         new()
         {
@@ -33,14 +23,6 @@ public static class ModelExtensions
             Address = entity.Address
         };
     
-    public static Location MapToEntity(this LocationViewEntity viewEntity) =>
-        new()
-        {
-            Id = viewEntity.Id,
-            Name = viewEntity.Name,
-            Address = viewEntity.Address
-        };
-
     public static ShiftTypeViewEntity MapToViewEntity(this ShiftType entity) =>
         new()
         {
@@ -48,13 +30,6 @@ public static class ModelExtensions
             Name = entity.Name
         };
     
-    public static ShiftType MapToEntity(this ShiftTypeViewEntity viewEntity) =>
-        new()
-        {
-            Id = viewEntity.Id,
-            Name = viewEntity.Name
-        };
-
     public static ShiftViewEntity MapToViewEntity(this Shift entity) =>
         new()
         {
@@ -66,6 +41,31 @@ public static class ModelExtensions
             EndTime = entity.EndTime,
             HoursWorked = entity.HoursWorked,
             Description = entity.Description
+        };
+    
+    public static User MapToEntity(this UserViewEntity viewEntity) =>
+        new()
+        {
+            Id = viewEntity.Id,
+            FirstName = viewEntity.FirstName,
+            LastName = viewEntity.LastName,
+            Email = viewEntity.Email,
+            Role = viewEntity.Role
+        };
+    
+    public static Location MapToEntity(this LocationViewEntity viewEntity) =>
+        new()
+        {
+            Id = viewEntity.Id,
+            Name = viewEntity.Name,
+            Address = viewEntity.Address
+        };
+    
+    public static ShiftType MapToEntity(this ShiftTypeViewEntity viewEntity) =>
+        new()
+        {
+            Id = viewEntity.Id,
+            Name = viewEntity.Name
         };
     
     public static Shift MapToEntity(this ShiftViewEntity viewEntity) =>
