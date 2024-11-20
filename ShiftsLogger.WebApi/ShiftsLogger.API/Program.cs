@@ -1,11 +1,13 @@
 using ShiftsLogger.API;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = await CreateHostBuilder(args);
+await builder.Build().RunAsync();
+return;
 
-var startup = new Startup(builder.Configuration);
-startup.ConfigureServices(builder.Services);
-
-var app = builder.Build();
-Startup.Configure(app, app.Environment);
-
-await app.RunAsync();
+static async Task<IHostBuilder> CreateHostBuilder(string[] args) =>
+    await Task.Run(() => 
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            }));
