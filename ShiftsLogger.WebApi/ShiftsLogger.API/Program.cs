@@ -1,6 +1,10 @@
+using NLog;
 using ShiftsLogger.API;
 
 var builder = await CreateHostBuilder(args);
+
+LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+
 await builder.Build().RunAsync();
 return;
 
