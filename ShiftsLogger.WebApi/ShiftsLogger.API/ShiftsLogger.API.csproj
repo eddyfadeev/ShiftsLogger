@@ -18,6 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Application\ShiftsLogger.Application.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Domain\ShiftsLogger.Domain.csproj" />
     <ProjectReference Include="..\ShiftsLogger.Infrastructure\ShiftsLogger.Infrastructure.csproj" />
@@ -30,6 +31,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    <PackageReference Include="NLog" Version="5.3.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.0.0" />
   </ItemGroup>
