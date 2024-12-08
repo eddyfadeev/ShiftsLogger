@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.HttpOverrides;
 using ShiftsLogger.API.Extensions;
 using ShiftsLogger.API.Middleware;
 using ShiftsLogger.Infrastructure.Extensions;
@@ -16,6 +17,7 @@ public class Startup
     {
         services.ConfigureCors();
         services.ConfigureIisIntegration();
+        services.ConfigureLoggerService();
         services.ConfigureDbContext(_configuration);
         services.ConfigureRepositories();
         services.ConfigureUnitOfWork();
@@ -53,7 +55,12 @@ public class Startup
         
         app.UseRouting();
 
-        app.UseCors();
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.All
+        });
+
+        app.UseCors("CorsPolicy");
         app.UseAuthorization();
         
         app.UseEndpoints(endpoints =>
