@@ -5,7 +5,7 @@ using Entities.Validators;
 
 namespace Entities.Models.Entity;
 
-public class Shift : IDbModel
+public sealed class Shift : IDbModel, IEquatable<Shift>
 {
     [Column("ShiftId")]
     public Guid Id { get; init; }
@@ -40,4 +40,49 @@ public class Shift : IDbModel
     public ShiftType? ShiftType { get; init; }
 
     #endregion
+
+    public bool Equals(Shift? other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+        
+        return Id.Equals(other.Id) && 
+               StartTime.Equals(other.StartTime) && 
+               EndTime.Equals(other.EndTime) && 
+               Description == other.Description && 
+               HoursWorked.Equals(other.HoursWorked) &&
+               UserId.Equals(other.UserId) && 
+               LocationId.Equals(other.LocationId) && 
+               ShiftTypeId.Equals(other.ShiftTypeId);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+        
+        return obj.GetType() == GetType() && 
+               Equals((Shift)obj);
+    }
+
+    public override int GetHashCode() =>
+        HashCode.Combine
+        (
+            Id, StartTime, EndTime, Description, 
+            HoursWorked, UserId, LocationId, ShiftTypeId
+        );
 }
