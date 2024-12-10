@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Entities.Interfaces;
 
-namespace Entities.Models.Entity;
+namespace Entities.Models;
 
-public sealed class ShiftType : IDbModel, IEquatable<ShiftType>
+public sealed class ShiftType : IEquatable<ShiftType>
 {
     [Column("ShiftTypeId")]
     public Guid Id { get; init; }

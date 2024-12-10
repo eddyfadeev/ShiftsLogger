@@ -1,5 +1,5 @@
 ﻿using Contracts.Repository;
-using Entities.Models.Entity;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
