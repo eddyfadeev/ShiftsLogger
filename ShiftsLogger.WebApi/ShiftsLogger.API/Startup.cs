@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.HttpOverrides;
 using ShiftsLogger.API.Extensions;
+using ShiftsLogger.Presentation;
 
 namespace ShiftsLogger.API;
 
@@ -25,7 +26,8 @@ public class Startup
             .AddJsonOptions(options => 
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            });
+            })
+            .AddApplicationPart(typeof(AssemblyReference).Assembly);
         
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
