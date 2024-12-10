@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Entities.Interfaces;
 
-namespace Entities.Models.Entity;
+namespace Entities.Models;
 
-public sealed class User : IDbModel, IEquatable<User>
+public sealed class User : IEquatable<User>
 {
     [Column("UserId")]
     public Guid Id { get; init; }
