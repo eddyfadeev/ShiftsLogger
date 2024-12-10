@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ShiftsLogger.Domain.Models;
-using ShiftsLogger.Domain.Models.Entity;
+using Entities.Models;
 
-namespace ShiftsLogger.Domain.Validators;
+namespace Entities.Validators;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class ShiftDateValidatorAttribute : ValidationAttribute
