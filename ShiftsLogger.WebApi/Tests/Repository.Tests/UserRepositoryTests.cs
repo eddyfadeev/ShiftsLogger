@@ -148,10 +148,10 @@ public class UserRepositoryTests
     }
     
     [Test]
-    public void UpdateUser_ThrowsArgumentNullException_WhenPassedNull()
+    public void UpdateUser_ThrowsNullReferenceException_WhenPassedNull()
     {
-        Assert.Throws<ArgumentNullException>(() =>
-            _repository.DeleteUser(null));
+        Assert.Throws<NullReferenceException>(() =>
+            _repository.UpdateUser(null));
     }
 
     [Test]

@@ -139,10 +139,10 @@ public class ShiftTypeRepositoryTests
     }
     
     [Test]
-    public void UpdateShiftType_ThrowsArgumentNullException_WhenPassedNull()
+    public void UpdateShiftType_ThrowsNullReferenceException_WhenPassedNull()
     {
-        Assert.Throws<ArgumentNullException>(() =>
-            _repository.DeleteShiftType(null));
+        Assert.Throws<NullReferenceException>(() =>
+            _repository.UpdateShiftType(null));
     }
 
     [Test]

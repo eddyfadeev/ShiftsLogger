@@ -142,10 +142,10 @@ public class LocationRepositoryTests
     }
     
     [Test]
-    public void UpdateLocation_ThrowsArgumentNullException_WhenPassedNull()
+    public void UpdateLocation_ThrowsNullReferenceException_WhenPassedNull()
     {
-        Assert.Throws<ArgumentNullException>(() =>
-            _repository.DeleteLocation(null));
+        Assert.Throws<NullReferenceException>(() =>
+            _repository.UpdateLocation(null));
     }
 
     [Test]

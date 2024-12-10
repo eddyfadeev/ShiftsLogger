@@ -69,6 +69,34 @@ public class ShiftRepositoryTests
         
         Assert.That(result, Is.Null);
     }
+
+    [Test]
+    public async Task GetByIdsAsync_ReturnsCorrectShifts()
+    {
+        var expected = await _context.Shifts.AsNoTracking().Take(5).ToListAsync();
+        var testIds = expected.Select(s => s.Id).ToList();
+        
+        var result = await _repository.GetByIdsAsync(testIds, trackChanges: false);
+        
+        Assert.That(result, Is.EquivalentTo(expected));
+    }
+    
+    [Test]
+    public async Task GetByIdsAsync_ReturnsEmptyEnumerable_WhenNoMatchesInDb()
+    {
+        List<Guid> testIds = [Guid.NewGuid(), Guid.NewGuid()];
+        var result = await _repository.GetByIdsAsync(testIds, trackChanges: false);
+        
+        Assert.That(result, Is.Empty);
+    }
+    
+    [Test]
+    public async Task GetByIdsAsync_ReturnsEmptyEnumerable_WhenPassedEmptyEnumerable()
+    {
+        var result = await _repository.GetByIdsAsync([], trackChanges: false);
+        
+        Assert.That(result, Is.Empty);
+    }
     
     [Test]
     public void CreateShift_CreatesEntityWithStateAdded()
@@ -145,10 +173,10 @@ public class ShiftRepositoryTests
     }
     
     [Test]
-    public void UpdateShift_ThrowsArgumentNullException_WhenPassedNull()
+    public void UpdateShift_ThrowsNullReferenceException_WhenPassedNull()
     {
-        Assert.Throws<ArgumentNullException>(() =>
-            _repository.DeleteShift(null));
+        Assert.Throws<NullReferenceException>(() =>
+            _repository.UpdateShift(null));
     }
 
     [Test]
