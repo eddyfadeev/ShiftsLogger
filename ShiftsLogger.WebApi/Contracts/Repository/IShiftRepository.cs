@@ -1,4 +1,4 @@
-﻿using Entities.Models.Entity;
+﻿using Entities.Models;
 
 namespace Contracts.Repository;
 

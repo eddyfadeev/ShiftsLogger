@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Entities.Interfaces;
 using Entities.Validators;
 
-namespace Entities.Models.Entity;
+namespace Entities.Models;
 
-public sealed class Shift : IDbModel, IEquatable<Shift>
+public sealed class Shift : IEquatable<Shift>
 {
     [Column("ShiftId")]
     public Guid Id { get; init; }
