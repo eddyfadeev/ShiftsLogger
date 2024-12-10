@@ -23,8 +23,8 @@ public class RepositoryContext(DbContextOptions options) : DbContext(options)
             warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
     }
 
-    public DbSet<Location>? Locations { get; set; }
-    public DbSet<ShiftType>? ShiftTypes { get; set; }
-    public DbSet<User>? Users { get; set; }
-    public DbSet<Shift>? Shifts { get; set; }
+    public DbSet<Location> Locations { get; set; }
+    public DbSet<ShiftType> ShiftTypes { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Shift> Shifts { get; set; }
 }
