@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.ErrorModel;
+using Entities.Exceptions.NotFound;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace ShiftsLogger.API;
@@ -22,6 +23,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         {
             httpContext.Response.StatusCode = contextFeature.Error switch
             {
+                NotFoundException => StatusCodes.Status404NotFound,
                 _ => StatusCodes.Status500InternalServerError
             };
             
