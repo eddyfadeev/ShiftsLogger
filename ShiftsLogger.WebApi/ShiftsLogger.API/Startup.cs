@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using ShiftsLogger.API.Extensions;
 using ShiftsLogger.API.Middleware;
-using ShiftsLogger.Infrastructure.Extensions;
 
 namespace ShiftsLogger.API;
 
@@ -18,10 +17,9 @@ public class Startup
         services.ConfigureCors();
         services.ConfigureIisIntegration();
         services.ConfigureLoggerService();
-        services.ConfigureDbContext(_configuration);
-        services.ConfigureRepositories();
-        services.ConfigureUnitOfWork();
-        services.ConfigureEvents();
+        services.ConfigureRepositoryManager();
+        services.ConfigureServiceManager();
+        services.ConfigureSqlContext(_configuration);
         
         services.AddControllers()
             .AddJsonOptions(options => 
