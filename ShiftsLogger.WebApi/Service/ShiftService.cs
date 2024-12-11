@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.Exceptions.BadRequest;
+using Entities.Exceptions.NotFound;
 using Service.Contracts;
 using Shared.Dto;
 using Shared.Mapper;
@@ -23,6 +24,20 @@ internal sealed class ShiftService : IShiftService
         
         var shifts = await _repository.Shift.GetAllShiftsAsync(requestParameters, trackChanges);
         
+        var dtos = shifts.Select(s => s.MapToDto()).ToList();
+
+        return (dtos, shifts.MetaData);
+    }
+
+    public async Task<(List<ShiftDto> shifts, MetaData metaData)> GetShiftsForLocation(Guid locationId, ShiftParameters requestParameters, bool trackChanges)
+    {
+        if (!_repository.Location.LocationExists(locationId))
+        {
+            throw new LocationNotFoundException(locationId);
+        }
+
+        var shifts = await _repository.Shift.GetAllShiftsAsync(requestParameters, trackChanges);
+
         var dtos = shifts.Select(s => s.MapToDto()).ToList();
 
         return (dtos, shifts.MetaData);
