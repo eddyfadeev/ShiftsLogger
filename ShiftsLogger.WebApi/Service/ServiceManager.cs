@@ -19,7 +19,7 @@ public sealed class ServiceManager : IServiceManager
             new UserService(repositoryManager, logger));
 
         _shiftService = new Lazy<IShiftService>(() =>
-            new ShiftService(repositoryManager, logger));
+            new ShiftService(repositoryManager));
 
         _shiftTypeService = new Lazy<IShiftTypeService>(() =>
             new ShiftTypeService(repositoryManager, logger));
