@@ -11,6 +11,7 @@ public static class MapperExtensions
             Id = shift.Id,
             StartTime = shift.StartTime,
             EndTime = shift.EndTime,
+            HoursWorked = shift.HoursWorked,
             Description = shift.Description ?? string.Empty
         };
 
