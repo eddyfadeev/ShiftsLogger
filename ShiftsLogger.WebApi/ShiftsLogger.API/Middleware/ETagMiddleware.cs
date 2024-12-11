@@ -11,12 +11,8 @@ public class ETagMiddleware
     {
         context.Response.OnStarting(() =>
         {
-            if (context.Request.Method.Equals("GET") && 
-                context.Response.StatusCode == 200 )
-            {
-                var etag = $"\"{Guid.NewGuid():n}\"";
-                context.Response.Headers.ETag = etag;
-            }
+            var etag = $"\"{Guid.NewGuid():n}\"";
+            context.Response.Headers.ETag = etag;
             
             return Task.CompletedTask;
         });

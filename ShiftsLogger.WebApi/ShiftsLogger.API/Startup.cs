@@ -68,10 +68,16 @@ public class Startup
 
         app.UseCors("CorsPolicy");
 
-        app.UseMiddleware<PaginationHeaderMiddleware>();
-        app.UseMiddleware<ETagMiddleware>();
+        app.UseWhen
+        (
+            context => context is { Request.Method: "GET", Response.StatusCode: 200 },
+            builder =>
+            {
+                builder.UseMiddleware<PaginationHeaderMiddleware>();
+                builder.UseMiddleware<ETagMiddleware>();
+                builder.UseOutputCache();
+            });
         
-        app.UseOutputCache();
         app.UseAuthorization();
         
         app.UseEndpoints(endpoints =>
