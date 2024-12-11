@@ -6,8 +6,7 @@ public record ShiftDto
     public DateTime StartTime { get; init; }
     public DateTime EndTime { get; init; }
 
-    public decimal HoursWorked =>
-        (decimal)(EndTime - StartTime).TotalHours;
+    public decimal HoursWorked { get; init; }
 
     private readonly string? _description;
     public string? Description 
