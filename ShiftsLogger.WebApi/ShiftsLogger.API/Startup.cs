@@ -22,7 +22,12 @@ public class Startup
         services.ConfigureSqlContext(_configuration);
         services.AddExceptionHandler<GlobalExceptionHandler>();
         
-        services.AddControllers()
+        services.AddControllers(config =>
+            {
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
+            })
+            .AddXmlDataContractSerializerFormatters()
             .AddJsonOptions(options => 
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
