@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 
 namespace Repository.Tests;
 
@@ -24,7 +25,7 @@ public class ShiftRepositoryTests
     [Test]
     public async Task GetAllShiftsAsync_ReturnsShiftsOrderedByName()
     {
-        var result = await _repository.GetAllShiftsAsync(trackChanges: false);
+        var result = await _repository.GetAllShiftsAsync(new ShiftParameters(), trackChanges: false);
         
         Assert.That(result, Is.Ordered.By(nameof(Shift.StartTime)));
     }
@@ -32,9 +33,12 @@ public class ShiftRepositoryTests
     [Test]
     public async Task GetAllShiftsAsync_ReturnsCorrectShifts()
     {
-        var expected = await _context.Shifts.ToListAsync();
+        var raw = await _context.Shifts.Take(10).ToListAsync();
+        var parameters = new ShiftParameters();
 
-        var result = await _repository.GetAllShiftsAsync(trackChanges: false);
+        var expected = new PagedList<Shift>(raw.Count, parameters.PageNumber, parameters.PageSize, raw);
+        
+        var result = await _repository.GetAllShiftsAsync(parameters, trackChanges: false);
 
         Assert.That(result, Is.EquivalentTo(expected));
     }
@@ -44,7 +48,7 @@ public class ShiftRepositoryTests
     {
         await _context.Database.EnsureDeletedAsync();
 
-        var result = await _repository.GetAllShiftsAsync(trackChanges: false);
+        var result = await _repository.GetAllShiftsAsync(new ShiftParameters(), trackChanges: false);
 
         Assert.That(result, Is.Empty);
     }
