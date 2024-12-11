@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Service.Contracts;
 using Shared.RequestFeatures;
+using ShiftsLogger.Presentation.Extensions;
 
 namespace ShiftsLogger.Presentation.Controllers;
 
@@ -23,10 +23,7 @@ public class ShiftsController : ControllerBase
     {
         var pagedResult = await _service.ShiftService.GetAllShiftsAsync(requestParameters, trackChanges: false);
         
-        var etag = $"\"{Guid.NewGuid():n}\"";
-        
-        Response.Headers.ETag = etag;
-        Response.Headers["X-Pagination"] = JsonSerializer.Serialize(pagedResult.metaData);
+        this.SetPaginationMetadata(pagedResult.metaData);
         
         return Ok(pagedResult.shifts);
     }
@@ -38,11 +35,8 @@ public class ShiftsController : ControllerBase
     {
         var pagedResult =
             await _service.ShiftService.GetShiftsForLocation(locationId, requestParameters, trackChanges: false);
-        
-        var etag = $"\"{Guid.NewGuid():n}\"";
-        
-        Response.Headers.ETag = etag;
-        Response.Headers["X-Pagination"] = JsonSerializer.Serialize(pagedResult.metaData);
+
+        this.SetPaginationMetadata(pagedResult.metaData);
         
         return Ok(pagedResult.shifts);
     }
