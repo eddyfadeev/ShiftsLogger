@@ -1,11 +1,17 @@
+using NLog;
 using ShiftsLogger.API;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = await CreateHostBuilder(args);
 
-var startup = new Startup(builder.Configuration);
-startup.ConfigureServices(builder.Services);
+LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
-var app = builder.Build();
-Startup.Configure(app, app.Environment);
+await builder.Build().RunAsync();
+return;
 
-await app.RunAsync();
+static async Task<IHostBuilder> CreateHostBuilder(string[] args) =>
+    await Task.Run(() => 
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            }));
