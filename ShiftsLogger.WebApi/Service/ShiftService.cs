@@ -15,7 +15,7 @@ internal sealed class ShiftService : IShiftService
     public ShiftService(IRepositoryManager repository) =>
         _repository = repository;
 
-    public async Task<(List<ShiftDto> shifts, MetaData metaData)> 
+    public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
         GetAllShiftsAsync(ShiftParameters requestParameters, bool trackChanges)
     {
         if (!requestParameters.ValidWorkedHoursRange)
@@ -27,10 +27,10 @@ internal sealed class ShiftService : IShiftService
         
         var dtos = shifts.Select(s => s.MapToDto()).ToList();
 
-        return (dtos, shifts.MetaData);
+        return (dtos, shifts.PaginationMetaData);
     }
 
-    public async Task<(List<ShiftDto> shifts, MetaData metaData)> 
+    public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
         GetShiftsForLocation(Guid locationId, ShiftParameters requestParameters, bool trackChanges)
     {
         if (!_repository.Location.LocationExists(locationId))
@@ -42,6 +42,6 @@ internal sealed class ShiftService : IShiftService
 
         var dtos = shifts.Select(s => s.MapToDto()).ToList();
 
-        return (dtos, shifts.MetaData);
+        return (dtos, shifts.PaginationMetaData);
     }
 }
