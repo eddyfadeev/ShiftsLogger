@@ -1,8 +1,8 @@
-﻿namespace ShiftsLogger.Domain.Models.Dto;
+﻿namespace Shared.Dto;
 
 public record UserDto
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string Email { get; init; }
