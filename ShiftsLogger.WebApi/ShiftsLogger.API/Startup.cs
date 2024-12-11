@@ -21,6 +21,7 @@ public class Startup
         services.ConfigureServiceManager();
         services.ConfigureSqlContext(_configuration);
         services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.ConfigureOutputCaching();
         
         services.AddControllers(config =>
             {
@@ -65,6 +66,7 @@ public class Startup
         });
 
         app.UseCors("CorsPolicy");
+        app.UseOutputCache();
         app.UseAuthorization();
         
         app.UseEndpoints(endpoints =>
