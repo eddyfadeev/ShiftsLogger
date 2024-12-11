@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Entities.Validators;
 
@@ -21,8 +22,11 @@ public sealed class Shift : IEquatable<Shift>
     
     [MaxLength(2000, ErrorMessage = "Description can't be longer than 2000 characters")]
     public string? Description { get; init; }
-    
-    public decimal HoursWorked => (decimal)(EndTime - StartTime).TotalHours;
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [Column(TypeName = "decimal(18,2)")]
+    [Description("Computed by the db column for hours worked")]
+    public decimal HoursWorked { get; set; }
 
     #region Foreign Relations
 
