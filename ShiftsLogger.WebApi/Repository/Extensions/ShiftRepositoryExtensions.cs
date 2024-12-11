@@ -43,4 +43,9 @@ public static class ShiftRepositoryExtensions
             ? shifts.OrderBy(s => s.StartTime) 
             : shifts.OrderBy(orderQuery);
     }
+
+    public static IQueryable<Shift> Page(this IQueryable<Shift> shifts, ShiftParameters queryParameters) =>
+        shifts
+            .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+            .Take(queryParameters.PageSize);
 }
