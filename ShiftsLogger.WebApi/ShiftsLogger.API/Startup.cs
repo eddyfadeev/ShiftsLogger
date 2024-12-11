@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.HttpOverrides;
 using ShiftsLogger.API.Extensions;
+using ShiftsLogger.API.Middleware;
 using ShiftsLogger.Presentation;
 
 namespace ShiftsLogger.API;
@@ -66,6 +67,10 @@ public class Startup
         });
 
         app.UseCors("CorsPolicy");
+
+        app.UseMiddleware<PaginationHeaderMiddleware>();
+        app.UseMiddleware<ETagMiddleware>();
+        
         app.UseOutputCache();
         app.UseAuthorization();
         
