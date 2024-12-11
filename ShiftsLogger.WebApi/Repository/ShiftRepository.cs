@@ -19,12 +19,32 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
             .Page(queryParameters)
             .ToListAsync();
 
-        var count = await FindAll(trackChanges).CountAsync();
+        var count = await FindAll(trackChanges)
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .Sort(queryParameters)
+            .CountAsync();
 
         return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
     }
-    
-    
+
+    public async Task<PagedList<Shift>> GetShiftsForLocation(Guid locationId, ShiftParameters queryParameters, bool trackChanges)
+    {
+        var shifts = await FindByCondition(s => s.LocationId.Equals(locationId), trackChanges)
+            .Filter(queryParameters)
+            .Sort(queryParameters)
+            .Sort(queryParameters)
+            .Page(queryParameters)
+            .ToListAsync();
+        
+        var count = await FindAll(trackChanges)
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .Sort(queryParameters)
+            .CountAsync();
+
+        return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
+    }
 
     public async Task<Shift?> GetShiftByIdAsync(Guid shiftId, bool trackChanges) =>
         await FindByCondition(s => s.Id.Equals(shiftId), trackChanges)
