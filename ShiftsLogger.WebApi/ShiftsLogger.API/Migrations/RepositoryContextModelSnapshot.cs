@@ -22,7 +22,7 @@ namespace ShiftsLogger.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Entities.Models.Entity.Location", b =>
+            modelBuilder.Entity("Entities.Models.Location", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace ShiftsLogger.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Entities.Models.Entity.Shift", b =>
+            modelBuilder.Entity("Entities.Models.Shift", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,6 +70,11 @@ namespace ShiftsLogger.API.Migrations
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("HoursWorked")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(18,2)")
+                        .HasComputedColumnSql("DATEDIFF(MINUTE, StartTime, EndTime) / 60.00", true);
 
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uniqueidentifier");
@@ -96,167 +101,183 @@ namespace ShiftsLogger.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2c1733c1-589c-4fd2-978e-46a8695c37ea"),
-                            Description = "Worked a shift on 2024-05-22",
-                            EndTime = new DateTime(2024, 5, 22, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("974244f9-657c-4ed4-b9b9-acf4141365c9"),
+                            Description = "Worked a shift on 2024-05-24",
+                            EndTime = new DateTime(2024, 5, 24, 7, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
                             ShiftTypeId = new Guid("4b4f9afe-b143-48be-8c1f-b72b2fddbdab"),
-                            StartTime = new DateTime(2024, 5, 22, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 5, 24, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
                         },
                         new
                         {
-                            Id = new Guid("e7d814d7-caa4-45db-aeca-4ddd37bbb38b"),
-                            Description = "Worked a shift on 2024-05-23",
-                            EndTime = new DateTime(2024, 5, 23, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("9d1636e6-fae1-4415-a1e4-3ee0ca0ce1a3"),
+                            Description = "Worked a shift on 2024-05-25",
+                            EndTime = new DateTime(2024, 5, 25, 1, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
                             ShiftTypeId = new Guid("4b4f9afe-b143-48be-8c1f-b72b2fddbdab"),
-                            StartTime = new DateTime(2024, 5, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 5, 25, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
                         },
                         new
                         {
-                            Id = new Guid("e2e73feb-4dbf-4e70-9977-82353927f84e"),
-                            Description = "Worked a shift on 2024-06-01",
-                            EndTime = new DateTime(2024, 6, 1, 8, 0, 0, 0, DateTimeKind.Local),
-                            LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
-                            ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
-                            StartTime = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Local),
-                            UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
-                        },
-                        new
-                        {
-                            Id = new Guid("64bc7c73-07df-418c-a92b-60751c1b37c4"),
-                            Description = "Worked a shift on 2024-06-02",
-                            EndTime = new DateTime(2024, 6, 2, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("0201e763-504b-4762-95a7-2336b1e12070"),
+                            Description = "Worked a shift on 2024-06-03",
+                            EndTime = new DateTime(2024, 6, 3, 14, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
                             ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
-                            StartTime = new DateTime(2024, 6, 2, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 6, 3, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
                         },
                         new
                         {
-                            Id = new Guid("80655015-d164-4133-b8a0-af5e8851f210"),
-                            Description = "Worked a shift on 2024-06-11",
-                            EndTime = new DateTime(2024, 6, 11, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("bd54b1d1-f3bc-4169-a47f-4ddb0846db74"),
+                            Description = "Worked a shift on 2024-06-04",
+                            EndTime = new DateTime(2024, 6, 4, 14, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
+                            LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
+                            ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
+                            StartTime = new DateTime(2024, 6, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
+                        },
+                        new
+                        {
+                            Id = new Guid("3c2256b5-ef40-4794-a9a2-9787fd1328c3"),
+                            Description = "Worked a shift on 2024-06-13",
+                            EndTime = new DateTime(2024, 6, 13, 6, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("4524ce96-d845-4f38-8699-4d5472285bc2"),
                             ShiftTypeId = new Guid("4b4f9afe-b143-48be-8c1f-b72b2fddbdab"),
-                            StartTime = new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 6, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
                         },
                         new
                         {
-                            Id = new Guid("f760b149-30b7-4ecc-9320-910cd129286f"),
-                            Description = "Worked a shift on 2024-06-12",
-                            EndTime = new DateTime(2024, 6, 12, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("fda66f00-45ad-4e24-b8b6-75b19f26413c"),
+                            Description = "Worked a shift on 2024-06-14",
+                            EndTime = new DateTime(2024, 6, 14, 8, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("4524ce96-d845-4f38-8699-4d5472285bc2"),
                             ShiftTypeId = new Guid("4b4f9afe-b143-48be-8c1f-b72b2fddbdab"),
-                            StartTime = new DateTime(2024, 6, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 6, 14, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
                         },
                         new
                         {
-                            Id = new Guid("f1ef0cdf-4e06-4871-8cd9-8319e44895f4"),
-                            Description = "Worked a shift on 2024-06-21",
-                            EndTime = new DateTime(2024, 6, 21, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("a8639cf9-b64c-4f52-a223-89830a6453ef"),
+                            Description = "Worked a shift on 2024-06-23",
+                            EndTime = new DateTime(2024, 6, 23, 2, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("4524ce96-d845-4f38-8699-4d5472285bc2"),
                             ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
-                            StartTime = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 6, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
                         },
                         new
                         {
-                            Id = new Guid("9bab4782-a30a-4438-8ccb-b4a4760aeefe"),
-                            Description = "Worked a shift on 2024-06-22",
-                            EndTime = new DateTime(2024, 6, 22, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("6e45dacf-bbc8-4194-8de1-c36f058c35e4"),
+                            Description = "Worked a shift on 2024-06-24",
+                            EndTime = new DateTime(2024, 6, 24, 9, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("4524ce96-d845-4f38-8699-4d5472285bc2"),
                             ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
-                            StartTime = new DateTime(2024, 6, 22, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 6, 24, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("487081eb-ce7a-45a9-8112-b0a563310e9d")
                         },
                         new
                         {
-                            Id = new Guid("82796461-6ede-4f6d-a988-9a0f7f35ca3d"),
-                            Description = "Worked a shift on 2024-07-01",
-                            EndTime = new DateTime(2024, 7, 1, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("193f8e8c-7a10-418e-85e5-90655409f6ac"),
+                            Description = "Worked a shift on 2024-07-03",
+                            EndTime = new DateTime(2024, 7, 3, 14, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
                             ShiftTypeId = new Guid("4b4f9afe-b143-48be-8c1f-b72b2fddbdab"),
-                            StartTime = new DateTime(2024, 7, 1, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 7, 3, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("cbe1f697-611c-431d-8503-e62d78615184")
                         },
                         new
                         {
-                            Id = new Guid("b789f457-e47d-482d-b5ea-4a22e0ed9727"),
-                            Description = "Worked a shift on 2024-07-02",
-                            EndTime = new DateTime(2024, 7, 2, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("83f55b2f-11d2-438c-a520-e0759ad633c6"),
+                            Description = "Worked a shift on 2024-07-04",
+                            EndTime = new DateTime(2024, 7, 4, 8, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
                             ShiftTypeId = new Guid("4b4f9afe-b143-48be-8c1f-b72b2fddbdab"),
-                            StartTime = new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 7, 4, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("cbe1f697-611c-431d-8503-e62d78615184")
                         },
                         new
                         {
-                            Id = new Guid("90286d40-395f-43a2-8212-109905a746ac"),
-                            Description = "Worked a shift on 2024-07-11",
-                            EndTime = new DateTime(2024, 7, 11, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("f84f3dcf-b652-44e9-adc4-7b494de151ae"),
+                            Description = "Worked a shift on 2024-07-13",
+                            EndTime = new DateTime(2024, 7, 13, 13, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
                             ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
-                            StartTime = new DateTime(2024, 7, 11, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 7, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("cbe1f697-611c-431d-8503-e62d78615184")
                         },
                         new
                         {
-                            Id = new Guid("aec53468-e3fb-41ff-a6b8-78d24ecbad84"),
-                            Description = "Worked a shift on 2024-07-12",
-                            EndTime = new DateTime(2024, 7, 12, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("907769ad-4421-446a-a0cc-3c47a935ee44"),
+                            Description = "Worked a shift on 2024-07-14",
+                            EndTime = new DateTime(2024, 7, 14, 8, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("d7367ce4-91aa-483c-ba09-89ca48d97259"),
                             ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
-                            StartTime = new DateTime(2024, 7, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 7, 14, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("cbe1f697-611c-431d-8503-e62d78615184")
                         },
                         new
                         {
-                            Id = new Guid("da160e9a-de5f-4c8d-96d9-b2eee5f32d97"),
-                            Description = "Worked a shift on 2024-07-21",
-                            EndTime = new DateTime(2024, 7, 21, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("ed23c7ce-cda6-4539-ba0b-05e283fcca8a"),
+                            Description = "Worked a shift on 2024-07-23",
+                            EndTime = new DateTime(2024, 7, 23, 10, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("4524ce96-d845-4f38-8699-4d5472285bc2"),
                             ShiftTypeId = new Guid("4b4f9afe-b143-48be-8c1f-b72b2fddbdab"),
-                            StartTime = new DateTime(2024, 7, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 7, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("cbe1f697-611c-431d-8503-e62d78615184")
                         },
                         new
                         {
-                            Id = new Guid("c99791da-0e1a-441f-9f75-1919c1d23cb8"),
-                            Description = "Worked a shift on 2024-07-22",
-                            EndTime = new DateTime(2024, 7, 22, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("128ce800-27d9-43ca-a88d-2b2eab8dfa0a"),
+                            Description = "Worked a shift on 2024-07-24",
+                            EndTime = new DateTime(2024, 7, 24, 6, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("4524ce96-d845-4f38-8699-4d5472285bc2"),
                             ShiftTypeId = new Guid("4b4f9afe-b143-48be-8c1f-b72b2fddbdab"),
-                            StartTime = new DateTime(2024, 7, 22, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 7, 24, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("cbe1f697-611c-431d-8503-e62d78615184")
                         },
                         new
                         {
-                            Id = new Guid("8e321961-7dff-4ac6-94a1-da0e82562dca"),
-                            Description = "Worked a shift on 2024-07-31",
-                            EndTime = new DateTime(2024, 7, 31, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("5c124381-8d88-440d-b632-11fb473858a5"),
+                            Description = "Worked a shift on 2024-08-02",
+                            EndTime = new DateTime(2024, 8, 2, 12, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("4524ce96-d845-4f38-8699-4d5472285bc2"),
                             ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
-                            StartTime = new DateTime(2024, 7, 31, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 8, 2, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("cbe1f697-611c-431d-8503-e62d78615184")
                         },
                         new
                         {
-                            Id = new Guid("973e71ef-e48d-44fc-b990-5ac61ae69cbe"),
-                            Description = "Worked a shift on 2024-08-01",
-                            EndTime = new DateTime(2024, 8, 1, 8, 0, 0, 0, DateTimeKind.Local),
+                            Id = new Guid("0a205db4-da35-40d2-9056-901af675d8b5"),
+                            Description = "Worked a shift on 2024-08-03",
+                            EndTime = new DateTime(2024, 8, 3, 15, 0, 0, 0, DateTimeKind.Local),
+                            HoursWorked = 0m,
                             LocationId = new Guid("4524ce96-d845-4f38-8699-4d5472285bc2"),
                             ShiftTypeId = new Guid("9d670142-f75f-40db-9f96-2e7913b8ed05"),
-                            StartTime = new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartTime = new DateTime(2024, 8, 3, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = new Guid("cbe1f697-611c-431d-8503-e62d78615184")
                         });
                 });
 
-            modelBuilder.Entity("Entities.Models.Entity.ShiftType", b =>
+            modelBuilder.Entity("Entities.Models.ShiftType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -285,7 +306,7 @@ namespace ShiftsLogger.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Entities.Models.Entity.User", b =>
+            modelBuilder.Entity("Entities.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -333,21 +354,21 @@ namespace ShiftsLogger.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Entities.Models.Entity.Shift", b =>
+            modelBuilder.Entity("Entities.Models.Shift", b =>
                 {
-                    b.HasOne("Entities.Models.Entity.Location", "Location")
+                    b.HasOne("Entities.Models.Location", "Location")
                         .WithMany("Shifts")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Entity.ShiftType", "ShiftType")
+                    b.HasOne("Entities.Models.ShiftType", "ShiftType")
                         .WithMany("Shifts")
                         .HasForeignKey("ShiftTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Entity.User", "User")
+                    b.HasOne("Entities.Models.User", "User")
                         .WithMany("Shifts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -360,17 +381,17 @@ namespace ShiftsLogger.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Entities.Models.Entity.Location", b =>
+            modelBuilder.Entity("Entities.Models.Location", b =>
                 {
                     b.Navigation("Shifts");
                 });
 
-            modelBuilder.Entity("Entities.Models.Entity.ShiftType", b =>
+            modelBuilder.Entity("Entities.Models.ShiftType", b =>
                 {
                     b.Navigation("Shifts");
                 });
 
-            modelBuilder.Entity("Entities.Models.Entity.User", b =>
+            modelBuilder.Entity("Entities.Models.User", b =>
                 {
                     b.Navigation("Shifts");
                 });
