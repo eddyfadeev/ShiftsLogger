@@ -5,8 +5,8 @@ namespace Service.Contracts;
 
 public interface IShiftService
 {
-    Task<(List<ShiftDto> shifts, MetaData metaData)> GetAllShiftsAsync(ShiftParameters requestParameters, bool trackChanges);
+    Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> GetAllShiftsAsync(ShiftParameters requestParameters, bool trackChanges);
 
-    Task<(List<ShiftDto> shifts, MetaData metaData)> GetShiftsForLocation(Guid locationId,
+    Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> GetShiftsForLocation(Guid locationId,
         ShiftParameters requestParameters, bool trackChanges);
 }
