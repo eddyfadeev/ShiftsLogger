@@ -14,6 +14,14 @@ public static class MapperExtensions
             HoursWorked = shift.HoursWorked,
             Description = shift.Description ?? string.Empty
         };
+    
+    public static LocationDto MapToDto(this Location location) =>
+        new()
+        {
+            Id = location.Id,
+            Name = location.Name ?? string.Empty,
+            Address = location.Address ?? string.Empty
+        };
 
     public static Shift MapToEntity(this ShiftDto shift) =>
         new()
