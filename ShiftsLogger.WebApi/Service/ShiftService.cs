@@ -30,6 +30,7 @@ internal sealed class ShiftService : IShiftService
         return (dtos, shifts.PaginationMetaData);
     }
 
+    // TODO: Should I move it to the LocationService???
     public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
         GetShiftsForLocation(Guid locationId, ShiftParameters requestParameters, bool trackChanges)
     {
@@ -43,5 +44,17 @@ internal sealed class ShiftService : IShiftService
         var dtos = shifts.Select(s => s.MapToDto()).ToList();
 
         return (dtos, shifts.PaginationMetaData);
+    }
+
+    public async Task<ShiftDto> GetShiftByIdAsync(Guid shiftId, bool trackChanges)
+    {
+        var shift = await _repository.Shift.GetShiftByIdAsync(shiftId, trackChanges);
+        
+        if (shift is null) 
+        {
+            throw new ShiftNotFoundException(shiftId);
+        }
+        
+        return shift.MapToDto();
     }
 }
