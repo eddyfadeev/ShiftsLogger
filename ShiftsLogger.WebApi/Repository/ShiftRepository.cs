@@ -38,14 +38,44 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
         var shifts = await FindByCondition(s => s.LocationId.Equals(locationId), trackChanges)
             .Filter(queryParameters)
             .Sort(queryParameters)
+            .Page(queryParameters)
+            .ToListAsync();
+        
+        var count = await FindByCondition(s => s.LocationId.Equals(locationId), trackChanges)
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .CountAsync();
+
+        return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
+    }
+    
+    public async Task<PagedList<Shift>> GetShiftsForShiftType(Guid shiftTypeId, ShiftParameters queryParameters, bool trackChanges)
+    {
+        var shifts = await FindByCondition(s => s.ShiftTypeId.Equals(shiftTypeId), trackChanges)
+            .Filter(queryParameters)
             .Sort(queryParameters)
             .Page(queryParameters)
             .ToListAsync();
         
-        var count = await FindAll(trackChanges)
+        var count = await FindByCondition(s => s.ShiftTypeId.Equals(shiftTypeId), trackChanges)
             .Filter(queryParameters)
             .Search(queryParameters)
+            .CountAsync();
+
+        return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
+    }
+    
+    public async Task<PagedList<Shift>> GetShiftsForUser(Guid userId, ShiftParameters queryParameters, bool trackChanges)
+    {
+        var shifts = await FindByCondition(s => s.UserId.Equals(userId), trackChanges)
+            .Filter(queryParameters)
             .Sort(queryParameters)
+            .Page(queryParameters)
+            .ToListAsync();
+        
+        var count = await FindByCondition(s => s.UserId.Equals(userId), trackChanges)
+            .Filter(queryParameters)
+            .Search(queryParameters)
             .CountAsync();
 
         return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
