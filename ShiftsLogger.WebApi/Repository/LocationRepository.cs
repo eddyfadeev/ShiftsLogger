@@ -13,14 +13,12 @@ public class LocationRepository : RepositoryBase<Location>, ILocationRepository
     public async Task<PagedList<Location>> GetAllLocationsAsync(LocationParameters queryParameters, bool trackChanges)
     {
         var locations = await FindAll(trackChanges)
-            .Filter(queryParameters)
             .Search(queryParameters)
             .Sort(queryParameters)
             .Page(queryParameters)
             .ToListAsync();
 
         var count = await FindAll(trackChanges)
-            .Filter(queryParameters)
             .Search(queryParameters)
             .CountAsync();
 
