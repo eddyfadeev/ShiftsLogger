@@ -7,7 +7,6 @@ public class ShiftParameters : RequestParameters
     public DateTime? ToDate { get; set; } = DateTime.MaxValue;
     public decimal MinWorkedHours { get; set; } = 0;
     public decimal MaxWorkedHours { get; set; } = int.MaxValue;
-    public string? Search { get; set; } = string.Empty;
 
     public bool ValidWorkedHoursRange => 
         MaxWorkedHours > MinWorkedHours;
