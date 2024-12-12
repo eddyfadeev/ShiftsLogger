@@ -50,11 +50,7 @@ public class Startup
             c.RoutePrefix = string.Empty;
         });
         
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-        else
+        if (!env.IsDevelopment())
         {
             app.UseHsts();
         }
