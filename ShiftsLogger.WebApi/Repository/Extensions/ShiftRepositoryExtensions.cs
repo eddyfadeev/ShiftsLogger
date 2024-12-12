@@ -18,7 +18,7 @@ public static class ShiftRepositoryExtensions
     {
         if (string.IsNullOrWhiteSpace(queryParameters.OrderBy))
         {
-            return shifts.OrderBy(s => s.StartTime);
+            return shifts.OrderByDescending(s => s.StartTime);
         }
 
         var orderQuery = QueryBuilder.CreateOrderQuery<Shift>(queryParameters.OrderBy);
