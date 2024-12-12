@@ -22,10 +22,15 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
         var count = await FindAll(trackChanges)
             .Filter(queryParameters)
             .Search(queryParameters)
-            .Sort(queryParameters)
             .CountAsync();
 
-        return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
+        return new PagedList<Shift>
+        (
+            count, 
+            queryParameters.PageNumber, 
+            queryParameters.PageSize, 
+            shifts
+        );
     }
 
     public async Task<PagedList<Shift>> GetShiftsForLocation(Guid locationId, ShiftParameters queryParameters, bool trackChanges)
