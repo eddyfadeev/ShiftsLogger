@@ -1,10 +1,11 @@
 ﻿using Entities.Models;
+using Shared.RequestFeatures;
 
 namespace Contracts.Repository;
 
 public interface ILocationRepository
 {
-    Task<IEnumerable<Location>> GetAllLocationsAsync(bool trackChanges);
+    Task<PagedList<Location>> GetAllLocationsAsync(LocationParameters queryParameters, bool trackChanges);
     Task<Location?> GetLocationByIdAsync(Guid locationId, bool trackChanges);
     void CreateLocation(Location location);
     void DeleteLocation(Location location);
