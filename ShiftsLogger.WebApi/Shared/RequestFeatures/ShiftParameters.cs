@@ -2,7 +2,7 @@
 
 public class ShiftParameters : RequestParameters
 {
-    public ShiftParameters() => OrderBy = "start_time";
+    public ShiftParameters() => OrderBy = "start_time desc";
     public DateTime? FromDate { get; set; } = DateTime.MinValue;
     public DateTime? ToDate { get; set; } = DateTime.MaxValue;
     public decimal MinWorkedHours { get; set; } = 0;
