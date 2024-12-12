@@ -44,6 +44,36 @@ internal sealed class ShiftService : IShiftService
 
         return (dtos, shifts.PaginationMetaData);
     }
+    
+    public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
+        GetShiftsForShiftType(Guid shiftTypeId, ShiftParameters requestParameters, bool trackChanges)
+    {
+        if (!_repository.ShiftType.ShiftTypeExists(shiftTypeId))
+        {
+            throw new ShiftTypeNotFoundException(shiftTypeId);
+        }
+
+        var shifts = await _repository.Shift.GetShiftsForShiftType(shiftTypeId, requestParameters, trackChanges);
+
+        var dtos = shifts.Select(s => s.MapToDto()).ToList();
+
+        return (dtos, shifts.PaginationMetaData);
+    }
+    
+    public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
+        GetShiftsForUser(Guid userId, ShiftParameters requestParameters, bool trackChanges)
+    {
+        if (!_repository.User.UserExists(userId))
+        {
+            throw new UserNotFoundException(userId);
+        }
+
+        var shifts = await _repository.Shift.GetShiftsForUser(userId, requestParameters, trackChanges);
+
+        var dtos = shifts.Select(s => s.MapToDto()).ToList();
+
+        return (dtos, shifts.PaginationMetaData);
+    }
 
     public async Task<ShiftDto> GetShiftByIdAsync(Guid shiftId, bool trackChanges)
     {
