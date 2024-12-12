@@ -13,7 +13,7 @@ public sealed class ServiceManager : IServiceManager
     public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger)
     {
         _locationService = new Lazy<ILocationService>(() =>
-            new LocationService(repositoryManager, logger));
+            new LocationService(repositoryManager));
 
         _userService = new Lazy<IUserService>(() =>
             new UserService(repositoryManager, logger));
