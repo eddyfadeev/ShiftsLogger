@@ -7,8 +7,8 @@ using ShiftsLogger.Presentation.Extensions;
 namespace ShiftsLogger.Presentation.Controllers;
 
 [Route("api/shifts")]
-[Route("api/shift-types/{shiftTypeId:guid}/shifts")]
-[Route("api/users/{userId:guid}/shifts")]
+// [Route("api/shift-types/{shiftTypeId:guid}/shifts")]
+// [Route("api/users/{userId:guid}/shifts")]
 [ApiController]
 [OutputCache(PolicyName = "15MinsExpiry")]
 public class ShiftsController : ControllerBase
@@ -28,16 +28,11 @@ public class ShiftsController : ControllerBase
         return Ok(pagedResult.shifts);
     }
 
-    [HttpGet]
-    [Route("api/{locationId:guid}/shifts")]
-    public async Task<IActionResult> GetShiftsForLocation(Guid locationId,
-        [FromQuery] ShiftParameters requestParameters)
+    [HttpGet("{shiftId:guid}", Name = "GetShiftById")]
+    public async Task<IActionResult> GetShiftById(Guid shiftId)
     {
-        var pagedResult =
-            await _service.ShiftService.GetShiftsForLocation(locationId, requestParameters, trackChanges: false);
-
-        this.SetPaginationMetadata(pagedResult.metaData);
+        var shift = await _service.ShiftService.GetShiftByIdAsync(shiftId, trackChanges: false);
         
-        return Ok(pagedResult.shifts);
+        return Ok(shift);
     }
 }
