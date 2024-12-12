@@ -30,7 +30,6 @@ internal sealed class ShiftService : IShiftService
         return (dtos, shifts.PaginationMetaData);
     }
 
-    // TODO: Should I move it to the LocationService???
     public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
         GetShiftsForLocation(Guid locationId, ShiftParameters requestParameters, bool trackChanges)
     {
