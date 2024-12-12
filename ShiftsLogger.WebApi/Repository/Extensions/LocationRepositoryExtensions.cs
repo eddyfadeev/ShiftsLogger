@@ -7,11 +7,6 @@ namespace Repository.Extensions;
 
 public static class LocationRepositoryExtensions
 {
-    public static IQueryable<Location>
-        Filter(this IQueryable<Location> locations, LocationParameters queryParameters) =>
-        locations.Where(l =>
-            l.Name!.Equals(queryParameters.FilterByName));
-
     public static IQueryable<Location> Sort(this IQueryable<Location> locations, LocationParameters queryParameters)
     {
         if (string.IsNullOrWhiteSpace(queryParameters.OrderBy))
