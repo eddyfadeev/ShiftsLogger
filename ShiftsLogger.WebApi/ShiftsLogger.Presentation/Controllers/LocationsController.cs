@@ -25,16 +25,4 @@ public class LocationsController : ControllerBase
 
         return Ok(pagedResult.locations);
     }
-    
-    [HttpGet("{locationId:guid}/shifts")]
-    public async Task<IActionResult> GetShiftsForLocation(Guid locationId,
-        [FromQuery] ShiftParameters requestParameters)
-    {
-        var pagedResult =
-            await _service.ShiftService.GetShiftsForLocation(locationId, requestParameters, trackChanges: false);
-        
-        this.SetPaginationMetadata(pagedResult.metaData);
-        
-        return Ok(pagedResult.shifts);
-    }
 }
