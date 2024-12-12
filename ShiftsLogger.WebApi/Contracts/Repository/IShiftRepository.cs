@@ -6,7 +6,6 @@ namespace Contracts.Repository;
 public interface IShiftRepository
 {
     Task<PagedList<Shift>> GetAllShiftsAsync(ShiftParameters queryParameters, bool trackChanges);
-
     Task<PagedList<Shift>> GetShiftsForLocation(Guid locationId, ShiftParameters queryParameters, bool trackChanges);
     Task<Shift?> GetShiftByIdAsync(Guid shiftId, bool trackChanges);
     void CreateShift(Shift shift);
