@@ -1,7 +1,9 @@
 ﻿using Contracts;
+using Entities.Exceptions.NotFound;
+using Entities.Models;
 using Service.Contracts;
-using Shared.Dto;
-using Shared.Mapper;
+using Shared.Dto.Location;
+using Shared.Mappers;
 using Shared.RequestFeatures;
 
 namespace Service;
@@ -23,4 +25,44 @@ internal sealed class LocationService : ILocationService
 
         return (dtos, locations.PaginationMetaData);
     }
+
+    public async Task<LocationDto> GetLocationById(Guid locationId, bool trackChanges)
+    {
+        var location = await _repository.Location.GetLocationByIdAsync(locationId, trackChanges);
+        if (location is null)
+        {
+            throw new LocationNotFoundException(locationId);
+        }
+
+        return location.MapToDto();
+    }
+
+    public async Task CreateLocation(LocationForCreationDto location)
+    {
+        var entity = location.MapToEntity();
+        _repository.Location.CreateLocation(entity);
+
+        await _repository.SaveAsync();
+    }
+
+    public async Task DeleteLocation(Guid locationId, bool trackChanges)
+    {
+        var entity = await TryGetLocationEntity(locationId, trackChanges);
+        
+        _repository.Location.DeleteLocation(entity);
+        await _repository.SaveAsync();
+    }
+
+    public async Task UpdateLocation(Guid locationId, LocationForUpdateDto updateDto, bool trackChanges)
+    {
+        var location = await TryGetLocationEntity(locationId, trackChanges);
+
+        location.UpdateEntity(updateDto);
+        await _repository.SaveAsync();
+    }
+
+    private async Task<Location> TryGetLocationEntity(Guid locationId, bool trackChanges) =>
+        _repository.Location.LocationExists(locationId)
+            ? await _repository.Location.GetLocationByIdAsync(locationId, trackChanges)
+            : throw new LocationNotFoundException(locationId);
 }
