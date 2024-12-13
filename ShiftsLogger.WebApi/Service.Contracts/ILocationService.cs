@@ -7,9 +7,8 @@ public interface ILocationService
 {
     Task<(List<LocationDto> locations, PaginationMetaData metaData)> 
         GetAllLocationsAsync(LocationParameters queryParameters, bool trackChanges);
-    Task<LocationDto> GetLocationById(Guid locationId, bool trackChanges);
-    Task CreateLocation(LocationForCreationDto location);
-    Task DeleteLocation(Guid locationId, bool trackChanges);
-    Task UpdateLocation(Guid locationId, LocationForUpdateDto updateDto, bool trackChanges);
-    
+    Task<LocationDto> GetLocationByIdAsync(Guid locationId, bool trackChanges);
+    Task<LocationDto> CreateLocationAsync(LocationForCreationDto location);
+    Task DeleteLocationAsync(Guid locationId, bool trackChanges);
+    Task UpdateLocationAsync(Guid locationId, LocationForUpdateDto updateDto, bool trackChanges);
 }
