@@ -40,10 +40,7 @@ public class LocationRepository : RepositoryBase<Location>, ILocationRepository
 
     public void DeleteLocation(Location location) =>
         Delete(location);
-
-    public void UpdateLocation(Location location) =>
-        Update(location);
-
+    
     public bool LocationExists(Guid locationId) =>
         Exists(l => l.Id.Equals(locationId));
 }
