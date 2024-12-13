@@ -1,5 +1,6 @@
 ﻿using System.Linq.Dynamic.Core;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Utility;
 using Shared.RequestFeatures;
 
@@ -27,4 +28,13 @@ public static class ShiftRepositoryExtensions
             ? shifts.OrderBy(s => s.StartTime) 
             : shifts.OrderBy(orderQuery);
     }
+
+    public static IQueryable<Shift> IncludeLocation(this IQueryable<Shift> shifts, RepositoryContext context) =>
+        shifts.Include(s => s.Location);
+    
+    public static IQueryable<Shift> IncludeUser(this IQueryable<Shift> shifts, RepositoryContext context) =>
+        shifts.Include(s => s.User);
+    
+    public static IQueryable<Shift> IncludeShiftType(this IQueryable<Shift> shifts, RepositoryContext context) =>
+        shifts.Include(s => s.ShiftType);
 }
