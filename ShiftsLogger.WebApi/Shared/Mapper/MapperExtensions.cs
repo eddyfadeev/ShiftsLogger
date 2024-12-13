@@ -9,8 +9,11 @@ public static class MapperExtensions
         new()
         {
             Id = shift.Id,
+            User = string.Join(' ', shift.User?.FirstName, shift.User?.LastName),
+            Location = shift!.Location.Name,
             StartTime = shift.StartTime,
             EndTime = shift.EndTime,
+            ShiftType = shift!.ShiftType.Name,
             HoursWorked = shift.HoursWorked,
             Description = shift.Description ?? string.Empty
         };
