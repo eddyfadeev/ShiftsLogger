@@ -26,7 +26,7 @@ internal sealed class LocationService : ILocationService
         return (dtos, locations.PaginationMetaData);
     }
 
-    public async Task<LocationDto> GetLocationById(Guid locationId, bool trackChanges)
+    public async Task<LocationDto> GetLocationByIdAsync(Guid locationId, bool trackChanges)
     {
         var location = await _repository.Location.GetLocationByIdAsync(locationId, trackChanges);
         if (location is null)
@@ -37,15 +37,17 @@ internal sealed class LocationService : ILocationService
         return location.MapToDto();
     }
 
-    public async Task CreateLocation(LocationForCreationDto location)
+    public async Task<LocationDto> CreateLocationAsync(LocationForCreationDto location)
     {
         var entity = location.MapToEntity();
+        
         _repository.Location.CreateLocation(entity);
-
         await _repository.SaveAsync();
+
+        return entity.MapToDto();
     }
 
-    public async Task DeleteLocation(Guid locationId, bool trackChanges)
+    public async Task DeleteLocationAsync(Guid locationId, bool trackChanges)
     {
         var entity = await TryGetLocationEntity(locationId, trackChanges);
         
@@ -53,7 +55,7 @@ internal sealed class LocationService : ILocationService
         await _repository.SaveAsync();
     }
 
-    public async Task UpdateLocation(Guid locationId, LocationForUpdateDto updateDto, bool trackChanges)
+    public async Task UpdateLocationAsync(Guid locationId, LocationForUpdateDto updateDto, bool trackChanges)
     {
         var location = await TryGetLocationEntity(locationId, trackChanges);
 
