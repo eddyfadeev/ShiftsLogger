@@ -31,9 +31,9 @@ public class LocationRepository : RepositoryBase<Location>, ILocationRepository
         );
     }
 
-    public async Task<Location?> GetLocationByIdAsync(Guid locationId, bool trackChanges) =>
+    public async Task<Location> GetLocationByIdAsync(Guid locationId, bool trackChanges) =>
         await FindByCondition(l => l.Id.Equals(locationId), trackChanges)
-            .SingleOrDefaultAsync();
+            .SingleAsync();
 
     public void CreateLocation(Location location) =>
         Create(location);
