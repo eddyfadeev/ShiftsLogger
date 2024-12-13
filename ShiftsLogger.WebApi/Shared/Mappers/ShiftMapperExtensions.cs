@@ -1,9 +1,9 @@
 ﻿using Entities.Models;
 using Shared.Dto;
 
-namespace Shared.Mapper;
+namespace Shared.Mappers;
 
-public static class MapperExtensions
+public static class ShiftMapperExtensions
 {
     public static ShiftDto MapToDto(this Shift shift) =>
         new()
@@ -18,13 +18,7 @@ public static class MapperExtensions
             Description = shift.Description ?? string.Empty
         };
     
-    public static LocationDto MapToDto(this Location location) =>
-        new()
-        {
-            Id = location.Id,
-            Name = location.Name ?? string.Empty,
-            Address = location.Address ?? string.Empty
-        };
+    
 
     public static Shift MapToEntity(this ShiftDto shift) =>
         new()
