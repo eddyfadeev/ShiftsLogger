@@ -70,6 +70,9 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
 
     public async Task<Shift?> GetShiftByIdAsync(Guid shiftId, bool trackChanges) =>
         await FindByCondition(s => s.Id.Equals(shiftId), trackChanges)
+            .IncludeUser()
+            .IncludeShiftType()
+            .IncludeLocation()
             .SingleOrDefaultAsync();
 
     public void CreateShift(Shift shift) =>
