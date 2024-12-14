@@ -3,5 +3,5 @@
 public class ShiftTypeParameters : RequestParameters
 {
     public ShiftTypeParameters() => 
-        OrderBy = "name asc";
+        OrderBy = "name";
 }
