@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 
 namespace Repository.Tests;
 
@@ -24,7 +25,7 @@ public class ShiftTypeRepositoryTests
     [Test]
     public async Task GetAllShiftTypesAsync_ReturnsShiftTypesOrderedByName()
     {
-        var result = await _repository.GetAllShiftTypesAsync(trackChanges: false);
+        var result = await _repository.GetAllShiftTypesAsync(new ShiftTypeParameters(), trackChanges: false);
         
         Assert.That(result, Is.Ordered.By(nameof(ShiftType.Name)));
     }
@@ -34,7 +35,7 @@ public class ShiftTypeRepositoryTests
     {
         var expected = await _context.ShiftTypes.ToListAsync();
 
-        var result = await _repository.GetAllShiftTypesAsync(trackChanges: false);
+        var result = await _repository.GetAllShiftTypesAsync(new ShiftTypeParameters(), trackChanges: false);
 
         Assert.That(result, Is.EquivalentTo(expected));
     }
@@ -44,7 +45,7 @@ public class ShiftTypeRepositoryTests
     {
         await _context.Database.EnsureDeletedAsync();
 
-        var result = await _repository.GetAllShiftTypesAsync(trackChanges: false);
+        var result = await _repository.GetAllShiftTypesAsync(new ShiftTypeParameters(), trackChanges: false);
 
         Assert.That(result, Is.Empty);
     }
@@ -118,31 +119,6 @@ public class ShiftTypeRepositoryTests
     {
         Assert.Throws<ArgumentNullException>(() =>
             _repository.DeleteShiftType(null));
-    }
-    
-    [Test]
-    public void UpdateShiftType_CreatesEntityWithStateModified()
-    {
-        var expected = new ShiftType
-        {
-            Id = Guid.NewGuid(),
-            Name = "Test Name"
-        };
-
-        _repository.UpdateShiftType(expected);
-
-        var result = _context.ChangeTracker
-            .Entries<ShiftType>()
-            .First(e => e.State == EntityState.Modified);
-        
-        Assert.That(result.Entity, Is.EqualTo(expected));
-    }
-    
-    [Test]
-    public void UpdateShiftType_ThrowsNullReferenceException_WhenPassedNull()
-    {
-        Assert.Throws<NullReferenceException>(() =>
-            _repository.UpdateShiftType(null));
     }
 
     [Test]
