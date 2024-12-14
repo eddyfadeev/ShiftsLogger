@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Shared.Dto;
+namespace Shared.Dto.Shift;
 
 [DataContract]
 public record ShiftDto
