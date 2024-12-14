@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Run Repository Tests
-        run: dotnet test /mnt/f/CsharpProjects/ShiftsLogger/ShiftsLogger.WebApi/Tests/Repository.Tests
+      run: dotnet test ShiftsLogger.WebApi/Tests/Repository.Tests
 
-      - name: Run Service Tests
-        run: dotnet test /mnt/f/CsharpProjects/ShiftsLogger/ShiftsLogger.WebApi/Tests/Service.Tests
+    - name: Run Service Tests
+      run: dotnet test ShiftsLogger.WebApi/Tests/Service.Tests
