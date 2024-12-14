@@ -9,7 +9,7 @@ using Shared.RequestFeatures;
 
 namespace Service.Tests;
 
-public class Tests
+public class LocationServiceTests
 {
     private ILocationRepository _locationRepositoryMock;
     private IRepositoryManager _repositoryManagerMock;
