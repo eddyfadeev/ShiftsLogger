@@ -9,7 +9,7 @@ public static class ShiftTypeMapperExtensions
         new()
         {
             Id = shiftType.Id,
-            Name = shiftType!.Name
+            Name = shiftType.Name ?? "Error mapping shift type name"
         };
 
     public static ShiftType MapToEntity(this ShiftTypeForCreationDto shiftType) =>
