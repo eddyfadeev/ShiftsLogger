@@ -1,5 +1,5 @@
 ﻿using Entities.Models;
-using Shared.Dto;
+using Shared.Dto.Shift;
 
 namespace Shared.Mappers;
 
@@ -10,10 +10,10 @@ public static class ShiftMapperExtensions
         {
             Id = shift.Id,
             User = string.Join(' ', shift.User?.FirstName, shift.User?.LastName),
-            Location = shift!.Location.Name,
+            Location = shift.Location.Name,
             StartTime = shift.StartTime,
             EndTime = shift.EndTime,
-            ShiftType = shift!.ShiftType.Name,
+            ShiftType = shift.ShiftType.Name,
             HoursWorked = shift.HoursWorked,
             Description = shift.Description ?? string.Empty
         };
