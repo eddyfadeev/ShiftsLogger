@@ -62,12 +62,13 @@ public class LocationRepositoryTests
     }
     
     [Test]
-    public void GetLocationByIdAsync_ThrowsInvalidOperationException_WhenNoMatchesInDb()
+    public async Task GetLocationByIdAsync_ReturnsNull_WhenNoMatchesInDb()
     {
         var randomId = Guid.NewGuid();
+
+        var result = await _repository.GetLocationByIdAsync(randomId, false);
         
-        Assert.ThrowsAsync<InvalidOperationException>(async () => 
-            _ = await _repository.GetLocationByIdAsync(randomId, trackChanges: false));
+        Assert.That(result, Is.Null);
     }
 
     [Test]
