@@ -19,14 +19,6 @@ public static class LocationMapperExtensions
             Name = location.Name,
             Address = location.Address,
         };
-
-    public static Location MapToEntity(this LocationDto location) =>
-        new()
-        {
-            Id = location.Id,
-            Name = location.Name,
-            Address = location.Address
-        };
     
     public static Location UpdateEntity(this Location location, LocationForUpdateDto updateDto)
     {
