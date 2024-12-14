@@ -44,9 +44,15 @@ public abstract class RequestParameters
     public string OrderBy
     {
         get => _orderBy;
-        set => _orderBy = string.IsNullOrWhiteSpace(value) 
-                        ? _orderBy 
-                        : value;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return;
+            }
+            
+            _orderBy = NormalizeOrderBy(value);
+        }
     }
 
     public string? Search
@@ -55,5 +61,36 @@ public abstract class RequestParameters
         set => _search = string.IsNullOrWhiteSpace(value)
                         ? _search
                         : value;
+    }
+
+    private static string NormalizeOrderBy(string orderBy)
+    {
+        if (string.IsNullOrWhiteSpace(orderBy))
+        {
+            return string.Empty;
+        }
+
+        var orderDirection = ExtractOrderDirection(orderBy);
+
+        var filteredArray = orderBy.Where(char.IsLetter).ToArray();
+        
+        var filteredQueryString = string.Join("", filteredArray).ToLower();
+    
+        return $"{filteredQueryString} {orderDirection}";
+    }
+
+    private static string ExtractOrderDirection(string orderBy)
+    {
+        if (string.IsNullOrWhiteSpace(orderBy))
+        {
+            return string.Empty;
+        }
+        
+        string[] parts = orderBy.Split([' '], StringSplitOptions.RemoveEmptyEntries);
+        string orderDirection = parts.Length > 1 ? parts[^1].ToLower() : "asc";
+        
+        orderDirection = (orderDirection == "desc") ? "desc" : "asc";
+        
+        return orderDirection;
     }
 }
