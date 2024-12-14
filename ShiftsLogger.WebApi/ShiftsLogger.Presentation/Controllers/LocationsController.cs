@@ -46,7 +46,7 @@ public class LocationsController : ControllerBase
         return CreatedAtRoute
         (
             "GetLocationById",
-            new { id = createdLocation.Id },
+            new { locationId = createdLocation.Id },
             createdLocation
         );
     }
