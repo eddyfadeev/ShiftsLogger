@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 
 namespace Repository.Tests;
 
@@ -24,7 +25,7 @@ public class UserRepositoryTests
     [Test]
     public async Task GetAllUsersAsync_ReturnsUsersOrderedByFirstName()
     {
-        var result = await _repository.GetAllUsersAsync(trackChanges: false);
+        var result = await _repository.GetAllUsersAsync(new UserParameters(), trackChanges: false);
         
         Assert.That(result, Is.Ordered.By(nameof(User.FirstName)));
     }
@@ -34,7 +35,7 @@ public class UserRepositoryTests
     {
         var expected = await _context.Users.ToListAsync();
 
-        var result = await _repository.GetAllUsersAsync(trackChanges: false);
+        var result = await _repository.GetAllUsersAsync(new UserParameters(), trackChanges: false);
 
         Assert.That(result, Is.EquivalentTo(expected));
     }
@@ -44,7 +45,7 @@ public class UserRepositoryTests
     {
         await _context.Database.EnsureDeletedAsync();
 
-        var result = await _repository.GetAllUsersAsync(trackChanges: false);
+        var result = await _repository.GetAllUsersAsync(new UserParameters(), trackChanges: false);
 
         Assert.That(result, Is.Empty);
     }
