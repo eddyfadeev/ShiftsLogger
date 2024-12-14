@@ -8,6 +8,26 @@ namespace Repository.Extensions;
 
 public static class ShiftRepositoryExtensions
 {
+    public static IQueryable<Shift>
+        ApplyQueryParametersForRetrieve(this IQueryable<Shift> shifts, ShiftParameters queryParameters) =>
+        shifts
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .IncludeLocation()
+            .IncludeUser()
+            .IncludeShiftType()
+            .Sort(queryParameters)
+            .Page(queryParameters);
+    
+    public static IQueryable<Shift> 
+        ApplyQueryParametersForCount(this IQueryable<Shift> shifts, ShiftParameters queryParameters) =>
+        shifts
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .IncludeLocation()
+            .IncludeUser()
+            .IncludeShiftType();
+    
     public static IQueryable<Shift> Filter(this IQueryable<Shift> shifts, ShiftParameters queryParameters) =>
         shifts.Where(s =>
             s.StartTime >= queryParameters.FromDate &&
@@ -28,13 +48,13 @@ public static class ShiftRepositoryExtensions
             ? shifts.OrderBy(s => s.StartTime) 
             : shifts.OrderBy(orderQuery);
     }
-
-    public static IQueryable<Shift> IncludeLocation(this IQueryable<Shift> shifts, RepositoryContext context) =>
+    
+    private static IQueryable<Shift> IncludeLocation(this IQueryable<Shift> shifts) =>
         shifts.Include(s => s.Location);
-    
-    public static IQueryable<Shift> IncludeUser(this IQueryable<Shift> shifts, RepositoryContext context) =>
+
+    private static IQueryable<Shift> IncludeUser(this IQueryable<Shift> shifts) =>
         shifts.Include(s => s.User);
-    
-    public static IQueryable<Shift> IncludeShiftType(this IQueryable<Shift> shifts, RepositoryContext context) =>
+
+    private static IQueryable<Shift> IncludeShiftType(this IQueryable<Shift> shifts) =>
         shifts.Include(s => s.ShiftType);
 }
