@@ -41,9 +41,6 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
     public void DeleteUser(User user) =>
         Delete(user);
 
-    public void UpdateUser(User user) =>
-        Update(user);
-
     public bool UserExists(Guid userId) =>
         Exists(u => u.Id.Equals(userId));
 }
