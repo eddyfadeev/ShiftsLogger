@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using ShiftsLogger.API.Extensions;
 using ShiftsLogger.API.Middleware;
 using ShiftsLogger.Presentation;
+using ShiftsLogger.Presentation.ActionFilters;
 
 namespace ShiftsLogger.API;
 
@@ -23,6 +24,7 @@ public class Startup
         services.ConfigureSqlContext(_configuration);
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.ConfigureOutputCaching();
+        services.AddScoped<ValidationFilterAttribute>();
         
         services.AddControllers(config =>
             {
