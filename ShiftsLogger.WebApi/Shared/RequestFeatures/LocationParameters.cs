@@ -3,5 +3,5 @@
 public class LocationParameters : RequestParameters
 {
     public LocationParameters() =>
-        OrderBy = "name asc";
+        OrderBy = "name";
 }
