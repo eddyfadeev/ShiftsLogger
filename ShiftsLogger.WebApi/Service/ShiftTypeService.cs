@@ -30,7 +30,7 @@ internal sealed class ShiftTypeService : IShiftTypeService
     {
         var shiftType = await TryGetShiftTypeEntity(shiftTypeId, trackChanges);
 
-        return shiftType.MapToDto();
+        return shiftType!.MapToDto();
     }
 
     public async Task<ShiftTypeDto> CreateShiftTypeAsync(ShiftTypeForCreationDto shiftType)
@@ -47,7 +47,7 @@ internal sealed class ShiftTypeService : IShiftTypeService
     {
         var entity = await TryGetShiftTypeEntity(shiftTypeId, trackChanges);
         
-        _repository.ShiftType.DeleteShiftType(entity);
+        _repository.ShiftType.DeleteShiftType(entity!);
         await _repository.SaveAsync();
     }
 
@@ -56,11 +56,11 @@ internal sealed class ShiftTypeService : IShiftTypeService
     {
         var entity = await TryGetShiftTypeEntity(shiftTypeId, trackChanges);
         
-        entity.UpdateEntity(shiftTypeForUpdate);
+        entity?.UpdateEntity(shiftTypeForUpdate);
         await _repository.SaveAsync();
     }
 
-    private async Task<ShiftType> TryGetShiftTypeEntity(Guid shiftTypeId, bool trackChanges) =>
+    private async Task<ShiftType?> TryGetShiftTypeEntity(Guid shiftTypeId, bool trackChanges) =>
         _repository.ShiftType.ShiftTypeExists(shiftTypeId)
             ? await _repository.ShiftType.GetShiftTypeByIdAsync(shiftTypeId, trackChanges)
             : throw new ShiftTypeNotFoundException(shiftTypeId);
