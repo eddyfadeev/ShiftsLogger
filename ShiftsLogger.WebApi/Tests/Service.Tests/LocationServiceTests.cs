@@ -102,9 +102,12 @@ public class Tests
             Name = testLocation.Name,
             Address = testLocation.Address
         };
-
-        _repositoryManagerMock.Location
-            .GetLocationByIdAsync(Arg.Any<Guid>(), Arg.Any<bool>())
+        
+        _repositoryManagerMock.SaveAsync()
+            .Returns(Task.CompletedTask);
+        _locationRepositoryMock.LocationExists(Arg.Any<Guid>())
+            .Returns(true);
+        _locationRepositoryMock.GetLocationByIdAsync(Arg.Any<Guid>(), Arg.Any<bool>())
             .Returns(Task.FromResult(testLocation));
 
         var result = await _serviceManager.LocationService.GetLocationByIdAsync(id, false);
