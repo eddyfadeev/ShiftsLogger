@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OutputCaching;
 using Service.Contracts;
 using Shared.RequestFeatures;
 using ShiftsLogger.Presentation.Extensions;
@@ -8,7 +7,6 @@ namespace ShiftsLogger.Presentation.Controllers;
 
 [Route("api/users/{userId:guid}/shifts")]
 [ApiController]
-[OutputCache(PolicyName = "15MinsExpiry")]
 public class ShiftsPerUserController : ControllerBase
 {
     private readonly IServiceManager _service;

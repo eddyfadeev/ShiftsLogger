@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OutputCaching;
 using Service.Contracts;
 using Shared.Dto.Location;
 using Shared.RequestFeatures;
@@ -10,7 +9,6 @@ namespace ShiftsLogger.Presentation.Controllers;
 
 [Route("api/locations")]
 [ApiController]
-[OutputCache(PolicyName = "15MinsExpiry")]
 public class LocationsController : ControllerBase
 {
     private readonly IServiceManager _service;
