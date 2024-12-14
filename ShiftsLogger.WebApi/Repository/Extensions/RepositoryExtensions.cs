@@ -14,7 +14,9 @@ public static class RepositoryExtensions
     public static IQueryable<T> Search<T>(this IQueryable<T> query, RequestParameters queryParameters)
     {
         if (string.IsNullOrEmpty(queryParameters.Search))
+        {
             return query;
+        }
 
         var searchQuery = queryParameters.Search.Trim().ToLower();
         var searchPredicate = QueryBuilder.CreateSearchQuery<T>(searchQuery);
