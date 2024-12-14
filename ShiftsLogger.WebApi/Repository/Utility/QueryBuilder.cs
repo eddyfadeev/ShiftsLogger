@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Repository.Utility;
 
-public static class OrderQueryBuilder
+public static class QueryBuilder
 {
     public static string CreateOrderQuery<T>(string orderByQuery)
     {
@@ -35,5 +35,24 @@ public static class OrderQueryBuilder
         string orderQuery = queryBuilder.ToString().TrimEnd(',', ' ');
 
         return orderQuery;
+    }
+    
+    public static string CreateSearchQuery<T>(string searchQuery)
+    {
+        var stringProperties = typeof(T).GetProperties()
+            .Where(p => p.PropertyType == typeof(string))
+            .Select(p => p.Name)
+            .ToList();
+
+        if (!stringProperties.Any())
+        {
+            return string.Empty;
+        }
+
+        var predicate = stringProperties
+            .Select(prop => $"({prop} != null && {prop}.ToLower().Contains(@0))")
+            .Aggregate((a, b) => $"{a} || {b}");
+
+        return predicate;
     }
 }

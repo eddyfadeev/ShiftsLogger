@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 
 namespace Repository.Tests;
 
@@ -24,7 +25,7 @@ public class LocationRepositoryTests
     [Test]
     public async Task GetAllLocationsAsync_ReturnsLocationsOrderedByName()
     {
-        var result = await _repository.GetAllLocationsAsync(trackChanges: false);
+        var result = await _repository.GetAllLocationsAsync(new LocationParameters(), trackChanges: false);
         
         Assert.That(result, Is.Ordered.By(nameof(Location.Name)));
     }
@@ -34,7 +35,7 @@ public class LocationRepositoryTests
     {
         var expected = await _context.Locations.ToListAsync();
 
-        var result = await _repository.GetAllLocationsAsync(trackChanges: false);
+        var result = await _repository.GetAllLocationsAsync(new LocationParameters(), trackChanges: false);
 
         Assert.That(result, Is.EquivalentTo(expected));
     }
@@ -44,7 +45,7 @@ public class LocationRepositoryTests
     {
         await _context.Database.EnsureDeletedAsync();
 
-        var result = await _repository.GetAllLocationsAsync(trackChanges: false);
+        var result = await _repository.GetAllLocationsAsync(new LocationParameters(), trackChanges: false);
 
         Assert.That(result, Is.Empty);
     }
@@ -64,8 +65,8 @@ public class LocationRepositoryTests
     public async Task GetLocationByIdAsync_ReturnsNull_WhenNoMatchesInDb()
     {
         var randomId = Guid.NewGuid();
-        
-        var result = await _repository.GetLocationByIdAsync(randomId, trackChanges: false);
+
+        var result = await _repository.GetLocationByIdAsync(randomId, false);
         
         Assert.That(result, Is.Null);
     }
@@ -120,32 +121,6 @@ public class LocationRepositoryTests
     {
         Assert.Throws<ArgumentNullException>(() =>
             _repository.DeleteLocation(null));
-    }
-    
-    [Test]
-    public void UpdateLocation_CreatesEntityWithStateModified()
-    {
-        var expected = new Location
-        {
-            Id = Guid.NewGuid(),
-            Name = "Test Location",
-            Address = "Test address"
-        };
-
-        _repository.UpdateLocation(expected);
-
-        var result = _context.ChangeTracker
-            .Entries<Location>()
-            .First(e => e.State == EntityState.Modified);
-        
-        Assert.That(result.Entity, Is.EqualTo(expected));
-    }
-    
-    [Test]
-    public void UpdateLocation_ThrowsNullReferenceException_WhenPassedNull()
-    {
-        Assert.Throws<NullReferenceException>(() =>
-            _repository.UpdateLocation(null));
     }
 
     [Test]

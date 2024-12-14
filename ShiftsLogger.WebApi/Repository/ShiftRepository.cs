@@ -10,19 +10,75 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
 {
     public ShiftRepository(RepositoryContext repositoryContext) : base(repositoryContext) {}
 
-    public async Task<PagedList<Shift>> GetAllShiftsAsync(ShiftParameters requestParameters, bool trackChanges)
+    public async Task<PagedList<Shift>> GetAllShiftsAsync(ShiftParameters queryParameters, bool trackChanges)
     {
         var shifts = await FindAll(trackChanges)
-            .Filter(requestParameters)
-            .Search(requestParameters)
-            .Sort(requestParameters)
-            .Skip((requestParameters.PageNumber - 1) * requestParameters.PageSize)
-            .Take(requestParameters.PageSize)
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .Sort(queryParameters)
+            .Page(queryParameters)
             .ToListAsync();
 
-        var count = await FindAll(trackChanges).CountAsync();
+        var count = await FindAll(trackChanges)
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .CountAsync();
 
-        return new PagedList<Shift>(count, requestParameters.PageNumber, requestParameters.PageSize, shifts);
+        return new PagedList<Shift>
+        (
+            count, 
+            queryParameters.PageNumber, 
+            queryParameters.PageSize, 
+            shifts
+        );
+    }
+
+    public async Task<PagedList<Shift>> GetShiftsForLocation(Guid locationId, ShiftParameters queryParameters, bool trackChanges)
+    {
+        var shifts = await FindByCondition(s => s.LocationId.Equals(locationId), trackChanges)
+            .Filter(queryParameters)
+            .Sort(queryParameters)
+            .Page(queryParameters)
+            .ToListAsync();
+        
+        var count = await FindByCondition(s => s.LocationId.Equals(locationId), trackChanges)
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .CountAsync();
+
+        return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
+    }
+    
+    public async Task<PagedList<Shift>> GetShiftsForShiftType(Guid shiftTypeId, ShiftParameters queryParameters, bool trackChanges)
+    {
+        var shifts = await FindByCondition(s => s.ShiftTypeId.Equals(shiftTypeId), trackChanges)
+            .Filter(queryParameters)
+            .Sort(queryParameters)
+            .Page(queryParameters)
+            .ToListAsync();
+        
+        var count = await FindByCondition(s => s.ShiftTypeId.Equals(shiftTypeId), trackChanges)
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .CountAsync();
+
+        return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
+    }
+    
+    public async Task<PagedList<Shift>> GetShiftsForUser(Guid userId, ShiftParameters queryParameters, bool trackChanges)
+    {
+        var shifts = await FindByCondition(s => s.UserId.Equals(userId), trackChanges)
+            .Filter(queryParameters)
+            .Sort(queryParameters)
+            .Page(queryParameters)
+            .ToListAsync();
+        
+        var count = await FindByCondition(s => s.UserId.Equals(userId), trackChanges)
+            .Filter(queryParameters)
+            .Search(queryParameters)
+            .CountAsync();
+
+        return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
     }
 
     public async Task<Shift?> GetShiftByIdAsync(Guid shiftId, bool trackChanges) =>

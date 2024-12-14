@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F720B2EB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.Tests", "Tests\Repository.Tests\Repository.Tests.csproj", "{7CBF0937-7447-42F8-8579-AB5DAD82B5F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Tests", "Tests\Service.Tests\Service.Tests.csproj", "{79D05CA2-E895-4915-8201-44793ACC66A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{7CBF0937-7447-42F8-8579-AB5DAD82B5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CBF0937-7447-42F8-8579-AB5DAD82B5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CBF0937-7447-42F8-8579-AB5DAD82B5F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D05CA2-E895-4915-8201-44793ACC66A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D05CA2-E895-4915-8201-44793ACC66A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D05CA2-E895-4915-8201-44793ACC66A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D05CA2-E895-4915-8201-44793ACC66A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +86,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7CBF0937-7447-42F8-8579-AB5DAD82B5F6} = {F720B2EB-A5E9-4027-945C-AE55A5246D94}
+		{79D05CA2-E895-4915-8201-44793ACC66A8} = {F720B2EB-A5E9-4027-945C-AE55A5246D94}
 	EndGlobalSection
 EndGlobal

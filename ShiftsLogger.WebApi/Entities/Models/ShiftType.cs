@@ -10,7 +10,7 @@ public sealed class ShiftType : IEquatable<ShiftType>
     
     [Required(ErrorMessage = "Shift type name is required" )]
     [MaxLength(60, ErrorMessage = "Maximum length for the Name is 60 characters.")]
-    public string? Name { get; init; }
+    public string? Name { get; set; }
     
     public ICollection<Shift>? Shifts { get; init; }
 

@@ -1,5 +1,6 @@
 ﻿using System.Linq.Dynamic.Core;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Utility;
 using Shared.RequestFeatures;
 
@@ -14,33 +15,26 @@ public static class ShiftRepositoryExtensions
             s.HoursWorked >= queryParameters.MinWorkedHours &&
             s.HoursWorked <= queryParameters.MaxWorkedHours);
 
-    public static IQueryable<Shift> Search(this IQueryable<Shift> shifts, ShiftParameters queryParameters)
-    {
-        if (string.IsNullOrWhiteSpace(queryParameters.Search))
-        {
-            return shifts;
-        }
-        
-        var searchTerm = queryParameters.Search.Trim().ToLower();
-
-        return shifts.Where(
-            s => 
-            s.Description != null && 
-            s.Description.ToLower().Contains(searchTerm)
-        );
-    }
-
     public static IQueryable<Shift> Sort(this IQueryable<Shift> shifts, ShiftParameters queryParameters)
     {
         if (string.IsNullOrWhiteSpace(queryParameters.OrderBy))
         {
-            return shifts.OrderBy(s => s.StartTime);
+            return shifts.OrderByDescending(s => s.StartTime);
         }
 
-        var orderQuery = OrderQueryBuilder.CreateOrderQuery<Shift>(queryParameters.OrderBy);
+        var orderQuery = QueryBuilder.CreateOrderQuery<Shift>(queryParameters.OrderBy);
 
         return string.IsNullOrWhiteSpace(orderQuery) 
             ? shifts.OrderBy(s => s.StartTime) 
             : shifts.OrderBy(orderQuery);
     }
+
+    public static IQueryable<Shift> IncludeLocation(this IQueryable<Shift> shifts, RepositoryContext context) =>
+        shifts.Include(s => s.Location);
+    
+    public static IQueryable<Shift> IncludeUser(this IQueryable<Shift> shifts, RepositoryContext context) =>
+        shifts.Include(s => s.User);
+    
+    public static IQueryable<Shift> IncludeShiftType(this IQueryable<Shift> shifts, RepositoryContext context) =>
+        shifts.Include(s => s.ShiftType);
 }

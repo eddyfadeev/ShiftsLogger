@@ -10,19 +10,19 @@ public sealed class ServiceManager : IServiceManager
     private readonly Lazy<IShiftService> _shiftService;
     private readonly Lazy<IShiftTypeService> _shiftTypeService;
 
-    public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger)
+    public ServiceManager(IRepositoryManager repositoryManager)
     {
         _locationService = new Lazy<ILocationService>(() =>
-            new LocationService(repositoryManager, logger));
+            new LocationService(repositoryManager));
 
         _userService = new Lazy<IUserService>(() =>
-            new UserService(repositoryManager, logger));
+            new UserService(repositoryManager));
 
         _shiftService = new Lazy<IShiftService>(() =>
             new ShiftService(repositoryManager));
 
         _shiftTypeService = new Lazy<IShiftTypeService>(() =>
-            new ShiftTypeService(repositoryManager, logger));
+            new ShiftTypeService(repositoryManager));
     }
     
     public IShiftService ShiftService => 

@@ -1,7 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.HttpOverrides;
 using ShiftsLogger.API.Extensions;
+using ShiftsLogger.API.Middleware;
 using ShiftsLogger.Presentation;
+using ShiftsLogger.Presentation.ActionFilters;
 
 namespace ShiftsLogger.API;
 
@@ -21,6 +23,8 @@ public class Startup
         services.ConfigureServiceManager();
         services.ConfigureSqlContext(_configuration);
         services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.ConfigureOutputCaching();
+        services.AddScoped<ValidationFilterAttribute>();
         
         services.AddControllers(config =>
             {
@@ -48,11 +52,7 @@ public class Startup
             c.RoutePrefix = string.Empty;
         });
         
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-        else
+        if (!env.IsDevelopment())
         {
             app.UseHsts();
         }
@@ -65,6 +65,17 @@ public class Startup
         });
 
         app.UseCors("CorsPolicy");
+
+        app.UseWhen
+        (
+            context => context is { Request.Method: "GET", Response.StatusCode: 200 },
+            builder =>
+            {
+                builder.UseMiddleware<PaginationHeaderMiddleware>();
+                builder.UseMiddleware<ETagMiddleware>();
+                builder.UseOutputCache();
+            });
+        
         app.UseAuthorization();
         
         app.UseEndpoints(endpoints =>

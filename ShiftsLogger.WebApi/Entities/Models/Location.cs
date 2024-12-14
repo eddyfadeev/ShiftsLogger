@@ -10,10 +10,10 @@ public sealed class Location : IEquatable<Location>
     
     [Required(ErrorMessage = "Location name is required" )]
     [MaxLength(60, ErrorMessage = "Maximum length for the Name is 60 characters.")]
-    public string? Name { get; init; }
+    public string Name { get; set; }
     
     [MaxLength(500, ErrorMessage = "Maximum length for the Address is 500 characters.")]
-    public string? Address { get; init; }
+    public string? Address { get; set; }
     
     public ICollection<Shift>? Shifts { get; init; }
 

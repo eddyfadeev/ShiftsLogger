@@ -1,10 +1,11 @@
 ﻿using Entities.Models;
+using Shared.RequestFeatures;
 
 namespace Contracts.Repository;
 
 public interface IUserRepository
 {
-    Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges);
+    Task<PagedList<User>> GetAllUsersAsync(UserParameters queryParameters, bool trackChanges);
     Task<User?> GetUserByIdAsync(Guid userId, bool trackChanges);
     void CreateUser(User user);
     void DeleteUser(User user);

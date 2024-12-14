@@ -1,19 +1,24 @@
 ﻿using Entities.Models;
 using Shared.Dto;
 
-namespace Shared.Mapper;
+namespace Shared.Mappers;
 
-public static class MapperExtensions
+public static class ShiftMapperExtensions
 {
     public static ShiftDto MapToDto(this Shift shift) =>
         new()
         {
             Id = shift.Id,
+            User = string.Join(' ', shift.User?.FirstName, shift.User?.LastName),
+            Location = shift!.Location.Name,
             StartTime = shift.StartTime,
             EndTime = shift.EndTime,
+            ShiftType = shift!.ShiftType.Name,
             HoursWorked = shift.HoursWorked,
             Description = shift.Description ?? string.Empty
         };
+    
+    
 
     public static Shift MapToEntity(this ShiftDto shift) =>
         new()
