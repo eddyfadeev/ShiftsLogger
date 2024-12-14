@@ -13,6 +13,5 @@ public interface IShiftRepository
     void CreateShift(Shift shift);
     Task<IEnumerable<Shift>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
     void DeleteShift(Shift shift);
-    void UpdateShift(Shift shift); 
     bool ShiftExists(Guid shiftId);
 }
