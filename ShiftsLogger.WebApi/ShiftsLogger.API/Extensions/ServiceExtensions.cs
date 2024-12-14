@@ -58,6 +58,6 @@ public static class ServiceExtensions
     public static void ConfigureOutputCaching(this IServiceCollection services) =>
         services.AddOutputCache(options =>
         {
-            options.AddPolicy("15MinsExpiry", p => p.Expire(TimeSpan.FromMinutes(15)));
+            options.AddPolicy("60Seconds", p => p.Expire(TimeSpan.FromSeconds(60)));
         });
 }
