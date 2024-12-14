@@ -1,4 +1,4 @@
-﻿using Shared.Dto;
+﻿using Shared.Dto.Shift;
 using Shared.RequestFeatures;
 
 namespace Service.Contracts;
@@ -18,4 +18,7 @@ public interface IShiftService
         GetShiftsForUser(Guid userId, ShiftParameters requestParameters, bool trackChanges);
     
     Task<ShiftDto> GetShiftByIdAsync(Guid shiftId, bool trackChanges);
+    Task<ShiftDto> CreateShift(Guid shiftId, ShiftForCreationDto shift);
+    Task DeleteShift(Guid shiftId, bool trackChanges);
+    Task<ShiftDto> UpdateShift(Guid shiftId, ShiftForUpdateDto updateDto, bool trackChanges);
 }
