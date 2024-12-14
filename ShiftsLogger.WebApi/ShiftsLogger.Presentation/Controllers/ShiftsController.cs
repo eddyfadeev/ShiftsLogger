@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OutputCaching;
 using Service.Contracts;
+using Shared.Dto.Shift;
 using Shared.RequestFeatures;
+using ShiftsLogger.Presentation.ActionFilters;
 using ShiftsLogger.Presentation.Extensions;
 
 namespace ShiftsLogger.Presentation.Controllers;
 
 [Route("api/shifts")]
-// [Route("api/shift-types/{shiftTypeId:guid}/shifts")]
-// [Route("api/users/{userId:guid}/shifts")]
 [ApiController]
-[OutputCache(PolicyName = "15MinsExpiry")]
 public class ShiftsController : ControllerBase
 {
     private readonly IServiceManager _service;
@@ -34,5 +32,34 @@ public class ShiftsController : ControllerBase
         var shift = await _service.ShiftService.GetShiftByIdAsync(shiftId, trackChanges: false);
         
         return Ok(shift);
+    }
+
+    [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
+    public async Task<IActionResult> CreateShift([FromBody] ShiftForCreationDto shift)
+    {
+        var createdShift = await _service.ShiftService.CreateShift(Guid.NewGuid(), shift);
+
+        return CreatedAtRoute
+        (
+            "GetShiftById",
+            new { shiftId = createdShift.Id },
+            createdShift
+        );
+    }
+
+    [HttpDelete("{shiftId:guid}")]
+    public async Task<IActionResult> DeleteShift(Guid shiftId)
+    {
+        await _service.ShiftService.DeleteShift(shiftId, trackChanges: false);
+        return NoContent();
+    }
+
+    [HttpPut("{shiftId:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
+    public async Task<IActionResult> UpdateShift(Guid shiftId, [FromBody] ShiftForUpdateDto shift)
+    {
+        await _service.ShiftService.UpdateShift(shiftId, shift, trackChanges: true);
+        return NoContent();
     }
 }
