@@ -49,12 +49,12 @@ public static class ShiftRepositoryExtensions
             : shifts.OrderBy(orderQuery);
     }
     
-    private static IQueryable<Shift> IncludeLocation(this IQueryable<Shift> shifts) =>
+    public static IQueryable<Shift> IncludeLocation(this IQueryable<Shift> shifts) =>
         shifts.Include(s => s.Location);
 
-    private static IQueryable<Shift> IncludeUser(this IQueryable<Shift> shifts) =>
+    public static IQueryable<Shift> IncludeUser(this IQueryable<Shift> shifts) =>
         shifts.Include(s => s.User);
 
-    private static IQueryable<Shift> IncludeShiftType(this IQueryable<Shift> shifts) =>
+    public static IQueryable<Shift> IncludeShiftType(this IQueryable<Shift> shifts) =>
         shifts.Include(s => s.ShiftType);
 }
