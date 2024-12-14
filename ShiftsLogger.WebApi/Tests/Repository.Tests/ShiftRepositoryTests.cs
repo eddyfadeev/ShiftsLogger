@@ -155,33 +155,6 @@ public class ShiftRepositoryTests
         Assert.Throws<ArgumentNullException>(() =>
             _repository.DeleteShift(null));
     }
-    
-    [Test]
-    public void UpdateShift_CreatesEntityWithStateModified()
-    {
-        var expected = new Shift
-        {
-            Id = Guid.NewGuid(),
-            StartTime = DateTime.Now.AddHours(-12),
-            EndTime = DateTime.Now.AddHours(-4),
-            Description = "Test"
-        };
-
-        _repository.UpdateShift(expected);
-
-        var result = _context.ChangeTracker
-            .Entries<Shift>()
-            .First(e => e.State == EntityState.Modified);
-        
-        Assert.That(result.Entity, Is.EqualTo(expected));
-    }
-    
-    [Test]
-    public void UpdateShift_ThrowsNullReferenceException_WhenPassedNull()
-    {
-        Assert.Throws<NullReferenceException>(() =>
-            _repository.UpdateShift(null));
-    }
 
     [Test]
     public async Task ShiftExists_ReturnsTrueWhenShiftExists()

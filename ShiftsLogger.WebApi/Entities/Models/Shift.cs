@@ -13,33 +13,33 @@ public sealed class Shift : IEquatable<Shift>
     [Required(ErrorMessage = "Shift start time is required")]
     [DataType(DataType.DateTime)]
     [ShiftDateValidator]
-    public DateTime StartTime { get; init; }
+    public DateTime StartTime { get; set; }
     
     [Required(ErrorMessage = "Shift end time is required")]
     [DataType(DataType.DateTime)]
     [ShiftDateValidator]
-    public DateTime EndTime { get; init; }
+    public DateTime EndTime { get; set; }
     
     [MaxLength(2000, ErrorMessage = "Description can't be longer than 2000 characters")]
-    public string? Description { get; init; }
+    public string? Description { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     [Column(TypeName = "decimal(18,2)")]
     [Description("Computed by the db column for hours worked")]
-    public decimal HoursWorked { get; set; }
+    public decimal HoursWorked { get; init; }
 
     #region Foreign Relations
 
     [ForeignKey(nameof(User))]
-    public Guid UserId { get; init; }
+    public Guid UserId { get; set; }
     public User? User { get; init; }
     
     [ForeignKey(nameof(Location))]
-    public Guid LocationId { get; init; }
+    public Guid LocationId { get; set; }
     public Location? Location { get; init; }
     
     [ForeignKey(nameof(ShiftType))]
-    public Guid ShiftTypeId { get; init; }
+    public Guid ShiftTypeId { get; set; }
     public ShiftType? ShiftType { get; init; }
 
     #endregion

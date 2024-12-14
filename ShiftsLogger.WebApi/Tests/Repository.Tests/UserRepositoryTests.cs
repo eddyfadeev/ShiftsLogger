@@ -126,34 +126,6 @@ public class UserRepositoryTests
         Assert.Throws<ArgumentNullException>(() =>
             _repository.DeleteUser(null));
     }
-    
-    [Test]
-    public void UpdateUser_CreatesEntityWithStateModified()
-    {
-        var expected = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Test First Name",
-            LastName = "Test Last Name",
-            Email = "Test Email",
-            Role = "Test Role"
-        };
-
-        _repository.UpdateUser(expected);
-
-        var result = _context.ChangeTracker
-            .Entries<User>()
-            .First(e => e.State == EntityState.Modified);
-        
-        Assert.That(result.Entity, Is.EqualTo(expected));
-    }
-    
-    [Test]
-    public void UpdateUser_ThrowsNullReferenceException_WhenPassedNull()
-    {
-        Assert.Throws<NullReferenceException>(() =>
-            _repository.UpdateUser(null));
-    }
 
     [Test]
     public async Task UserExists_ReturnsTrueWhenUserExists()

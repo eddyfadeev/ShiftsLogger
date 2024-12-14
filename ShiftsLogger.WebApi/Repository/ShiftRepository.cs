@@ -13,15 +13,11 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
     public async Task<PagedList<Shift>> GetAllShiftsAsync(ShiftParameters queryParameters, bool trackChanges)
     {
         var shifts = await FindAll(trackChanges)
-            .Filter(queryParameters)
-            .Search(queryParameters)
-            .Sort(queryParameters)
-            .Page(queryParameters)
+            .ApplyQueryParametersForRetrieve(queryParameters)
             .ToListAsync();
 
         var count = await FindAll(trackChanges)
-            .Filter(queryParameters)
-            .Search(queryParameters)
+            .ApplyQueryParametersForCount(queryParameters)
             .CountAsync();
 
         return new PagedList<Shift>
@@ -36,14 +32,11 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
     public async Task<PagedList<Shift>> GetShiftsForLocation(Guid locationId, ShiftParameters queryParameters, bool trackChanges)
     {
         var shifts = await FindByCondition(s => s.LocationId.Equals(locationId), trackChanges)
-            .Filter(queryParameters)
-            .Sort(queryParameters)
-            .Page(queryParameters)
+            .ApplyQueryParametersForRetrieve(queryParameters)
             .ToListAsync();
         
         var count = await FindByCondition(s => s.LocationId.Equals(locationId), trackChanges)
-            .Filter(queryParameters)
-            .Search(queryParameters)
+            .ApplyQueryParametersForRetrieve(queryParameters)
             .CountAsync();
 
         return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
@@ -52,14 +45,11 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
     public async Task<PagedList<Shift>> GetShiftsForShiftType(Guid shiftTypeId, ShiftParameters queryParameters, bool trackChanges)
     {
         var shifts = await FindByCondition(s => s.ShiftTypeId.Equals(shiftTypeId), trackChanges)
-            .Filter(queryParameters)
-            .Sort(queryParameters)
-            .Page(queryParameters)
+            .ApplyQueryParametersForRetrieve(queryParameters)
             .ToListAsync();
-        
+
         var count = await FindByCondition(s => s.ShiftTypeId.Equals(shiftTypeId), trackChanges)
-            .Filter(queryParameters)
-            .Search(queryParameters)
+            .ApplyQueryParametersForCount(queryParameters)
             .CountAsync();
 
         return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
@@ -68,14 +58,11 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
     public async Task<PagedList<Shift>> GetShiftsForUser(Guid userId, ShiftParameters queryParameters, bool trackChanges)
     {
         var shifts = await FindByCondition(s => s.UserId.Equals(userId), trackChanges)
-            .Filter(queryParameters)
-            .Sort(queryParameters)
-            .Page(queryParameters)
+            .ApplyQueryParametersForRetrieve(queryParameters)
             .ToListAsync();
-        
+
         var count = await FindByCondition(s => s.UserId.Equals(userId), trackChanges)
-            .Filter(queryParameters)
-            .Search(queryParameters)
+            .ApplyQueryParametersForCount(queryParameters)
             .CountAsync();
 
         return new PagedList<Shift>(count, queryParameters.PageNumber, queryParameters.PageSize, shifts);
@@ -83,6 +70,9 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
 
     public async Task<Shift?> GetShiftByIdAsync(Guid shiftId, bool trackChanges) =>
         await FindByCondition(s => s.Id.Equals(shiftId), trackChanges)
+            .IncludeUser()
+            .IncludeShiftType()
+            .IncludeLocation()
             .SingleOrDefaultAsync();
 
     public void CreateShift(Shift shift) =>
@@ -94,9 +84,6 @@ public class ShiftRepository : RepositoryBase<Shift>, IShiftRepository
 
     public void DeleteShift(Shift shift) =>
         Delete(shift);
-    
-    public void UpdateShift(Shift shift) =>
-        Update(shift);
 
     public bool ShiftExists(Guid shiftId) => 
         Exists(s => s.Id.Equals(shiftId));
