@@ -43,7 +43,7 @@ public class ShiftTypesController : ControllerBase
         return CreatedAtRoute
         (
             "GetShiftTypeById",
-            new { id = createdShiftType.Id },
+            new { shiftTypeId = createdShiftType.Id },
             createdShiftType
         );
     }
