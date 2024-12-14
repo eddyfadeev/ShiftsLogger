@@ -21,7 +21,8 @@ public class LocationsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetLocations([FromQuery] LocationParameters locationParameters)
     {
-        var pagedResult = await _service.LocationService.GetAllLocationsAsync(locationParameters, trackChanges: false);
+        var pagedResult = await _service.LocationService
+            .GetAllLocationsAsync(locationParameters, trackChanges: false);
 
         this.SetPaginationMetadata(pagedResult.metaData);
 
@@ -38,9 +39,9 @@ public class LocationsController : ControllerBase
 
     [HttpPost]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> CreateLocation([FromBody] LocationForCreationDto? location)
+    public async Task<IActionResult> CreateLocation([FromBody] LocationForCreationDto location)
     {
-        var createdLocation = await _service.LocationService.CreateLocationAsync(location!);
+        var createdLocation = await _service.LocationService.CreateLocationAsync(location);
 
         return CreatedAtRoute
         (
@@ -54,16 +55,14 @@ public class LocationsController : ControllerBase
     public async Task<IActionResult> DeleteLocation(Guid locationId)
     {
         await _service.LocationService.DeleteLocationAsync(locationId, trackChanges: false);
-
         return NoContent();
     }
 
     [HttpPut("{locationId:guid}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> UpdateLocation(Guid locationId, LocationForUpdateDto location)
+    public async Task<IActionResult> UpdateLocation(Guid locationId, [FromBody] LocationForUpdateDto location)
     {
         await _service.LocationService.UpdateLocationAsync(locationId, location, trackChanges: true);
-
         return NoContent();
     }
 }
