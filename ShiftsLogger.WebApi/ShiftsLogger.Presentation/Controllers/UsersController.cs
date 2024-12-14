@@ -21,7 +21,8 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters)
     {
-        var pagedResult = await _service.UserService.GetAllUsersAsync(userParameters, trackChanges: false);
+        var pagedResult = await _service.UserService
+            .GetAllUsersAsync(userParameters, trackChanges: false);
 
         this.SetPaginationMetadata(pagedResult.metaData);
 
@@ -38,9 +39,9 @@ public class UsersController : ControllerBase
 
     [HttpPost]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto? user)
+    public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto user)
     {
-        var createdUser = await _service.UserService.CreateUserAsync(user!);
+        var createdUser = await _service.UserService.CreateUserAsync(user);
 
         return CreatedAtRoute
         (
@@ -60,9 +61,9 @@ public class UsersController : ControllerBase
     
     [HttpPut("{userId:guid}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> UpdateUser(Guid userId, UserForUpdateDto? user)
+    public async Task<IActionResult> UpdateUser(Guid userId, [FromBody] UserForUpdateDto user)
     {
-        await _service.UserService.UpdateUserAsync(userId, user!, trackChanges: true);  
+        await _service.UserService.UpdateUserAsync(userId, user, trackChanges: true);  
         
         return NoContent();
     }
