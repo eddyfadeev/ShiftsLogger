@@ -24,5 +24,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Run Repository Tests
+        run: dotnet test /mnt/f/CsharpProjects/ShiftsLogger/ShiftsLogger.WebApi/Tests/Repository.Tests
+
+      - name: Run Service Tests
+        run: dotnet test /mnt/f/CsharpProjects/ShiftsLogger/ShiftsLogger.WebApi/Tests/Service.Tests
