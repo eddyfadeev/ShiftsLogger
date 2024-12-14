@@ -10,5 +10,5 @@ public interface IShiftTypeService
     Task<ShiftTypeDto> GetShiftTypeByIdAsync(Guid shiftTypeId, bool trackChanges);
     Task<ShiftTypeDto> CreateShiftTypeAsync(ShiftTypeForCreationDto shiftType);
     Task DeleteShiftTypeAsync(Guid shiftTypeId, bool trackChanges);
-    Task UpdateShiftTypeAsync(Guid shiftTypeId, ShiftTypeForUpdateDto shiftTypeForUpdate, bool trackChanges);
+    Task UpdateShiftTypeAsync(Guid shiftTypeId, ShiftTypeForUpdateDto updateDto, bool trackChanges);
 }
