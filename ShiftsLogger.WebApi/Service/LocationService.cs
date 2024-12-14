@@ -27,11 +27,7 @@ internal sealed class LocationService : ILocationService
 
     public async Task<LocationDto> GetLocationByIdAsync(Guid locationId, bool trackChanges)
     {
-        var location = await _repository.Location.GetLocationByIdAsync(locationId, trackChanges);
-        if (location is null)
-        {
-            throw new LocationNotFoundException(locationId);
-        }
+        var location = await TryGetLocationEntity(locationId, trackChanges);
 
         return location.MapToDto();
     }
