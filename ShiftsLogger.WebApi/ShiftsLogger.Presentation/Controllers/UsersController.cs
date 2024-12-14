@@ -46,7 +46,7 @@ public class UsersController : ControllerBase
         return CreatedAtRoute
         (
             "GetUserById",
-            new { id = createdUser.Id },
+            new { userId = createdUser.Id },
             createdUser
         );
     }
