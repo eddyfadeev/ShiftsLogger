@@ -29,7 +29,7 @@ internal sealed class LocationService : ILocationService
     {
         var location = await TryGetLocationEntity(locationId, trackChanges);
 
-        return location!.MapToDto();
+        return location.MapToDto();
     }
 
     public async Task<LocationDto> CreateLocationAsync(LocationForCreationDto location)
@@ -46,7 +46,7 @@ internal sealed class LocationService : ILocationService
     {
         var entity = await TryGetLocationEntity(locationId, trackChanges);
         
-        _repository.Location.DeleteLocation(entity!);
+        _repository.Location.DeleteLocation(entity);
         await _repository.SaveAsync();
     }
 
@@ -54,12 +54,12 @@ internal sealed class LocationService : ILocationService
     {
         var location = await TryGetLocationEntity(locationId, trackChanges);
 
-        location?.UpdateEntity(updateDto);
+        location.UpdateEntity(updateDto);
         await _repository.SaveAsync();
     }
 
-    private async Task<Location?> TryGetLocationEntity(Guid locationId, bool trackChanges) =>
-        _repository.Location.LocationExists(locationId)
+    private async Task<Location> TryGetLocationEntity(Guid locationId, bool trackChanges) =>
+        (_repository.Location.LocationExists(locationId)
             ? await _repository.Location.GetLocationByIdAsync(locationId, trackChanges)
-            : throw new LocationNotFoundException(locationId);
+            : throw new LocationNotFoundException(locationId))!;
 }
