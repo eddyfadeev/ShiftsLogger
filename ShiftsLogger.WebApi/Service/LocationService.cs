@@ -15,7 +15,6 @@ internal sealed class LocationService : ILocationService
     public LocationService(IRepositoryManager repository) =>
         _repository = repository;
     
-
     public async Task<(List<LocationDto> locations, PaginationMetaData metaData)> 
         GetAllLocationsAsync(LocationParameters queryParameters, bool trackChanges)
     {

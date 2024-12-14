@@ -3,7 +3,7 @@ using Contracts.Repository;
 
 namespace Repository;
 
-public sealed class RepositoryManger : IRepositoryManager
+public sealed class RepositoryManager : IRepositoryManager
 {
     private readonly RepositoryContext _repositoryContext;
     
@@ -12,7 +12,7 @@ public sealed class RepositoryManger : IRepositoryManager
     private readonly Lazy<IShiftTypeRepository> _shiftTypeRepository;
     private readonly Lazy<IShiftRepository> _shiftRepository;
 
-    public RepositoryManger(RepositoryContext repositoryContext)
+    public RepositoryManager(RepositoryContext repositoryContext)
     {
         _repositoryContext = repositoryContext;
         _locationRepository = new Lazy<ILocationRepository>(() => 
@@ -24,8 +24,7 @@ public sealed class RepositoryManger : IRepositoryManager
         _shiftRepository = new Lazy<IShiftRepository>(() =>
             new ShiftRepository(repositoryContext));
     }
-
-
+    
     public ILocationRepository Location => 
         _locationRepository.Value;
 
