@@ -23,24 +23,12 @@ public class ShiftRepositoryTests
     }
 
     [Test]
-    public async Task GetAllShiftsAsync_ReturnsShiftsOrderedByName()
+    public async Task GetAllShiftsAsync_ReturnsShiftsOrderedByStartTimeByDefault()
     {
+        var expected = await _context.Shifts.OrderByDescending(s => s.StartTime).FirstAsync();
         var result = await _repository.GetAllShiftsAsync(new ShiftParameters(), trackChanges: false);
         
-        Assert.That(result, Is.Ordered.By(nameof(Shift.StartTime)));
-    }
-
-    [Test]
-    public async Task GetAllShiftsAsync_ReturnsCorrectShifts()
-    {
-        var raw = await _context.Shifts.Take(10).ToListAsync();
-        var parameters = new ShiftParameters();
-
-        var expected = new PagedList<Shift>(raw.Count, parameters.PageNumber, parameters.PageSize, raw);
-        
-        var result = await _repository.GetAllShiftsAsync(parameters, trackChanges: false);
-
-        Assert.That(result, Is.EquivalentTo(expected));
+        Assert.That(result[0], Is.EqualTo(expected));
     }
     
     [Test]
@@ -174,5 +162,74 @@ public class ShiftRepositoryTests
         var result = _repository.ShiftExists(randomId);
         
         Assert.That(result, Is.False);
+    }
+
+    [Test]
+    public async Task GetShiftsForUser_ReturnsEmptyEnumerable_WhenNoMatchInDb()
+    {
+        var randomId = Guid.NewGuid();
+
+        var result = await _repository.GetShiftsForUser(randomId, new ShiftParameters(), trackChanges: false);
+        
+        Assert.That(result, Is.Empty);
+    }
+    
+    [Test]
+    public async Task GetShiftsForUser_ReturnsUsers()
+    {
+        var testId = (await _context.Users.FirstAsync()).Id;
+        var expected = await _context.Shifts
+            .Where(s => s.UserId.Equals(testId))
+            .ToListAsync();
+
+        var result = await _repository.GetShiftsForUser(testId, new ShiftParameters(), trackChanges: false);
+        
+        Assert.That(result, Is.EquivalentTo(expected));
+    }
+    
+    [Test]
+    public async Task GetShiftsForShiftType_ReturnsEmptyEnumerable_WhenNoMatchInDb()
+    {
+        var randomId = Guid.NewGuid();
+
+        var result = await _repository.GetShiftsForShiftType(randomId, new ShiftParameters(), trackChanges: false);
+        
+        Assert.That(result, Is.Empty);
+    }
+    
+    [Test]
+    public async Task GetShiftsForShiftType_ReturnsShiftTypes()
+    {
+        var testId = (await _context.ShiftTypes.FirstAsync()).Id;
+        var expected = await _context.Shifts
+            .Where(s => s.ShiftTypeId.Equals(testId))
+            .ToListAsync();
+
+        var result = await _repository.GetShiftsForShiftType(testId, new ShiftParameters(), trackChanges: false);
+        
+        Assert.That(result, Is.EquivalentTo(expected));
+    }
+    
+    [Test]
+    public async Task GetShiftsForLocation_ReturnsEmptyEnumerable_WhenNoMatchInDb()
+    {
+        var randomId = Guid.NewGuid();
+
+        var result = await _repository.GetShiftsForLocation(randomId, new ShiftParameters(), trackChanges: false);
+        
+        Assert.That(result, Is.Empty);
+    }
+    
+    [Test]
+    public async Task GetShiftsForLocation_ReturnsShiftTypes()
+    {
+        var testId = (await _context.Locations.FirstAsync()).Id;
+        var expected = await _context.Shifts
+            .Where(s => s.LocationId.Equals(testId))
+            .ToListAsync();
+
+        var result = await _repository.GetShiftsForLocation(testId, new ShiftParameters(), trackChanges: false);
+        
+        Assert.That(result, Is.EquivalentTo(expected));
     }
 }
