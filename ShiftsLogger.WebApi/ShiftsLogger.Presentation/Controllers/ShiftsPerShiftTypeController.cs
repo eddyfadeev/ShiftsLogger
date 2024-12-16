@@ -19,7 +19,7 @@ public class ShiftsPerShiftTypeController : ControllerBase
         [FromQuery] ShiftParameters requestParameters)
     {
         var pagedResult =
-            await _service.ShiftService.GetShiftsForShiftType(shiftTypeId, requestParameters, trackChanges: false);
+            await _service.ShiftService.GetShiftsForShiftTypeAsync(shiftTypeId, requestParameters, trackChanges: false);
         
         this.SetPaginationMetadata(pagedResult.metaData);
         

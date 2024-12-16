@@ -19,7 +19,7 @@ public class ShiftsPerLocationController : ControllerBase
         [FromQuery] ShiftParameters requestParameters)
     {
         var pagedResult =
-            await _service.ShiftService.GetShiftsForLocation(locationId, requestParameters, trackChanges: false);
+            await _service.ShiftService.GetShiftsForLocationAsync(locationId, requestParameters, trackChanges: false);
         
         this.SetPaginationMetadata(pagedResult.metaData);
         
