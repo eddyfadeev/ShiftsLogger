@@ -9,16 +9,16 @@ public interface IShiftService
         GetAllShiftsAsync(ShiftParameters requestParameters, bool trackChanges);
     
     Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
-        GetShiftsForLocation(Guid locationId, ShiftParameters requestParameters, bool trackChanges);
+        GetShiftsForLocationAsync(Guid locationId, ShiftParameters requestParameters, bool trackChanges);
     
     Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
-        GetShiftsForShiftType(Guid shiftTypeId, ShiftParameters requestParameters, bool trackChanges);
+        GetShiftsForShiftTypeAsync(Guid shiftTypeId, ShiftParameters requestParameters, bool trackChanges);
     
     Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
-        GetShiftsForUser(Guid userId, ShiftParameters requestParameters, bool trackChanges);
+        GetShiftsForUserAsync(Guid userId, ShiftParameters requestParameters, bool trackChanges);
     
     Task<ShiftDto> GetShiftByIdAsync(Guid shiftId, bool trackChanges);
-    Task<ShiftDto> CreateShift(Guid shiftId, ShiftForCreationDto shift);
-    Task DeleteShift(Guid shiftId, bool trackChanges);
-    Task<ShiftDto> UpdateShift(Guid shiftId, ShiftForUpdateDto updateDto, bool trackChanges);
+    Task<ShiftDto> CreateShiftAsync(ShiftForCreationDto shift);
+    Task DeleteShiftAsync(Guid shiftId, bool trackChanges);
+    Task<ShiftDto> UpdateShiftAsync(Guid shiftId, ShiftForUpdateDto updateDto, bool trackChanges);
 }
