@@ -1,4 +1,6 @@
-﻿namespace Shared.RequestFeatures;
+﻿using System.Globalization;
+
+namespace Shared.RequestFeatures;
 
 public abstract class RequestParameters
 {
@@ -70,27 +72,16 @@ public abstract class RequestParameters
             return string.Empty;
         }
 
-        var orderDirection = ExtractOrderDirection(orderBy);
-
-        var filteredArray = orderBy.Where(char.IsLetter).ToArray();
-        
-        var filteredQueryString = string.Join("", filteredArray).ToLower();
+        string[] parts = orderBy.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
     
-        return $"{filteredQueryString} {orderDirection}";
-    }
-
-    private static string ExtractOrderDirection(string orderBy)
-    {
-        if (string.IsNullOrWhiteSpace(orderBy))
-        {
-            return string.Empty;
-        }
-        
-        string[] parts = orderBy.Split([' '], StringSplitOptions.RemoveEmptyEntries);
         string orderDirection = parts.Length > 1 ? parts[^1].ToLower() : "asc";
-        
         orderDirection = (orderDirection == "desc") ? "desc" : "asc";
-        
-        return orderDirection;
+    
+        string columnName = string.Join("", 
+            parts.Take(parts.Length - (parts.Length > 1 ? 1 : 0))
+                .SelectMany(p => p.Where(char.IsLetterOrDigit))
+        ).ToLower(CultureInfo.InvariantCulture);
+
+        return $"{columnName} {orderDirection}";
     }
 }

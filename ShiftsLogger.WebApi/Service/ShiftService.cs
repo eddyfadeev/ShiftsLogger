@@ -21,7 +21,7 @@ internal sealed class ShiftService : IShiftService
     {
         if (!requestParameters.ValidWorkedHoursRange)
         {
-            throw new MaxWorkedHoursRangeBadRequestException();
+            throw new IncorrectMaxWorkedHoursBadRequestException();
         }
         
         var shifts = await _repository.Shift.GetAllShiftsAsync(requestParameters, trackChanges);
@@ -32,7 +32,7 @@ internal sealed class ShiftService : IShiftService
     }
 
     public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
-        GetShiftsForLocation(Guid locationId, ShiftParameters requestParameters, bool trackChanges)
+        GetShiftsForLocationAsync(Guid locationId, ShiftParameters requestParameters, bool trackChanges)
     {
         if (!_repository.Location.LocationExists(locationId))
         {
@@ -47,7 +47,7 @@ internal sealed class ShiftService : IShiftService
     }
     
     public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
-        GetShiftsForShiftType(Guid shiftTypeId, ShiftParameters requestParameters, bool trackChanges)
+        GetShiftsForShiftTypeAsync(Guid shiftTypeId, ShiftParameters requestParameters, bool trackChanges)
     {
         if (!_repository.ShiftType.ShiftTypeExists(shiftTypeId))
         {
@@ -62,7 +62,7 @@ internal sealed class ShiftService : IShiftService
     }
     
     public async Task<(List<ShiftDto> shifts, PaginationMetaData metaData)> 
-        GetShiftsForUser(Guid userId, ShiftParameters requestParameters, bool trackChanges)
+        GetShiftsForUserAsync(Guid userId, ShiftParameters requestParameters, bool trackChanges)
     {
         if (!_repository.User.UserExists(userId))
         {
@@ -83,7 +83,7 @@ internal sealed class ShiftService : IShiftService
         return shift.MapToDto();
     }
 
-    public async Task<ShiftDto> CreateShift(Guid shiftId, ShiftForCreationDto shift)
+    public async Task<ShiftDto> CreateShiftAsync(ShiftForCreationDto shift)
     {
         VerifyLocationId(shift.LocationId);
         VerifyUserId(shift.UserId);
@@ -97,7 +97,7 @@ internal sealed class ShiftService : IShiftService
         return shiftEntity.MapToDto();
     }
 
-    public async Task DeleteShift(Guid shiftId, bool trackChanges)
+    public async Task DeleteShiftAsync(Guid shiftId, bool trackChanges)
     {
         var shift = await TryGetShiftAsync(shiftId, trackChanges);
 
@@ -105,7 +105,7 @@ internal sealed class ShiftService : IShiftService
         await _repository.SaveAsync();
     }
 
-    public async Task<ShiftDto> UpdateShift(Guid shiftId, ShiftForUpdateDto updateDto, bool trackChanges)
+    public async Task<ShiftDto> UpdateShiftAsync(Guid shiftId, ShiftForUpdateDto updateDto, bool trackChanges)
     {
         VerifyLocationId(updateDto.LocationId);
         VerifyUserId(updateDto.UserId);

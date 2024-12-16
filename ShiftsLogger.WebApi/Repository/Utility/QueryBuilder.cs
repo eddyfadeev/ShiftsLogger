@@ -5,8 +5,13 @@ namespace Repository.Utility;
 
 public static class QueryBuilder
 {
-    public static string CreateOrderQuery<T>(string orderByQuery)
+    public static string CreateOrderQuery<T>(string? orderByQuery)
     {
+        if (orderByQuery is null)
+        {
+            return string.Empty;
+        }
+        
         string[] orderParameters = orderByQuery.Trim().Split(',');
         var propertyInfos = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
         var queryBuilder = new StringBuilder();
