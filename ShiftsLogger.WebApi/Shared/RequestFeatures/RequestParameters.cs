@@ -1,4 +1,6 @@
-﻿namespace Shared.RequestFeatures;
+﻿using System.Globalization;
+
+namespace Shared.RequestFeatures;
 
 public abstract class RequestParameters
 {
@@ -78,7 +80,7 @@ public abstract class RequestParameters
         string columnName = string.Join("", 
             parts.Take(parts.Length - (parts.Length > 1 ? 1 : 0))
                 .SelectMany(p => p.Where(char.IsLetterOrDigit))
-        ).ToLower();
+        ).ToLower(CultureInfo.InvariantCulture);
 
         return $"{columnName} {orderDirection}";
     }
