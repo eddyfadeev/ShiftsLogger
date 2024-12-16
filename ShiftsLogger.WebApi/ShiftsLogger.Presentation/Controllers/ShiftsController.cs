@@ -38,7 +38,7 @@ public class ShiftsController : ControllerBase
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateShift([FromBody] ShiftForCreationDto shift)
     {
-        var createdShift = await _service.ShiftService.CreateShift(Guid.NewGuid(), shift);
+        var createdShift = await _service.ShiftService.CreateShiftAsync(shift);
 
         return CreatedAtRoute
         (
@@ -51,7 +51,7 @@ public class ShiftsController : ControllerBase
     [HttpDelete("{shiftId:guid}")]
     public async Task<IActionResult> DeleteShift(Guid shiftId)
     {
-        await _service.ShiftService.DeleteShift(shiftId, trackChanges: false);
+        await _service.ShiftService.DeleteShiftAsync(shiftId, trackChanges: false);
         return NoContent();
     }
 
@@ -59,7 +59,7 @@ public class ShiftsController : ControllerBase
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateShift(Guid shiftId, [FromBody] ShiftForUpdateDto shift)
     {
-        await _service.ShiftService.UpdateShift(shiftId, shift, trackChanges: true);
+        await _service.ShiftService.UpdateShiftAsync(shiftId, shift, trackChanges: true);
         return NoContent();
     }
 }
