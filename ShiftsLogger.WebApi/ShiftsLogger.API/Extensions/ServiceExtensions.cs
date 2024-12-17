@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Asp.Versioning;
 using Contracts;
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Repository;
 using Service;
 using Service.Contracts;
+using ShiftsLogger.Presentation.Controllers;
 
 namespace ShiftsLogger.API.Extensions;
 
@@ -59,5 +61,16 @@ public static class ServiceExtensions
         services.AddOutputCache(options =>
         {
             options.AddPolicy("60Seconds", p => p.Expire(TimeSpan.FromSeconds(60)));
+        });
+
+    public static void ConfigureVersioning(this IServiceCollection services) =>
+        services.AddApiVersioning(opt =>
+        {
+            opt.ReportApiVersions = true;
+            opt.AssumeDefaultVersionWhenUnspecified = true;
+            opt.DefaultApiVersion = new ApiVersion(1, 0);
+        }).AddMvc(opt =>
+        {
+            opt.Conventions.Controller<ShiftsController>();
         });
 }

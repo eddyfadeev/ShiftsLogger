@@ -15,4 +15,8 @@
       <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+    </ItemGroup>
+
 </Project>

@@ -5,7 +5,7 @@ using ShiftsLogger.Presentation.Extensions;
 
 namespace ShiftsLogger.Presentation.Controllers;
 
-[Route("api/locations/{locationId:guid}/shifts")]
+[Route("api/v{version:apiVersion}/locations/{locationId:guid}/shifts")]
 [ApiController]
 public class ShiftsPerLocationController : ControllerBase
 {
