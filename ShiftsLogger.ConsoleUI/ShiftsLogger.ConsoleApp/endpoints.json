@@ -1,6 +1,6 @@
 ﻿{
   "ApiEndpoints": {
-    "BaseUrl": "http://localhost:5000/api/v1",
+    "BaseUrl": "http://localhost:5000/api/v1/",
     
     "Shifts": "shifts",
     "Users": "users",
