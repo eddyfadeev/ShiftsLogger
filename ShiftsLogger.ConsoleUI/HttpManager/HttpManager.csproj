@@ -9,6 +9,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Contracts\Contracts.csproj" />
       <ProjectReference Include="..\Entity\Entity.csproj" />
+      <ProjectReference Include="..\LoggerService.Extensions\LoggerService.Extensions.csproj" />
+      <ProjectReference Include="..\UriExtensions\UriExtensions.csproj" />
     </ItemGroup>
 
     <ItemGroup>
