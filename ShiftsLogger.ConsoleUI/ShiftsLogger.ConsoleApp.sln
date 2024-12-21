@@ -18,6 +18,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Cont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpManager", "HttpManager\HttpManager.csproj", "{C2F2ED31-6234-40D4-9F0D-20ABF170A18F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "..\ShiftsLogger.WebApi\LoggerService\LoggerService.csproj", "{25ABFC25-E794-4123-B90E-9A0A97046E36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService.Extensions", "LoggerService.Extensions\LoggerService.Extensions.csproj", "{341FD46D-6372-457E-ACC9-DAD0F22E6091}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UriExtensions", "UriExtensions\UriExtensions.csproj", "{695F65BE-81D4-4AD8-906E-C122D00DBD70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +66,19 @@ Global
 		{C2F2ED31-6234-40D4-9F0D-20ABF170A18F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2F2ED31-6234-40D4-9F0D-20ABF170A18F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2F2ED31-6234-40D4-9F0D-20ABF170A18F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25ABFC25-E794-4123-B90E-9A0A97046E36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25ABFC25-E794-4123-B90E-9A0A97046E36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25ABFC25-E794-4123-B90E-9A0A97046E36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25ABFC25-E794-4123-B90E-9A0A97046E36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{341FD46D-6372-457E-ACC9-DAD0F22E6091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{341FD46D-6372-457E-ACC9-DAD0F22E6091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{341FD46D-6372-457E-ACC9-DAD0F22E6091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{341FD46D-6372-457E-ACC9-DAD0F22E6091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{695F65BE-81D4-4AD8-906E-C122D00DBD70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{695F65BE-81D4-4AD8-906E-C122D00DBD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{695F65BE-81D4-4AD8-906E-C122D00DBD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{695F65BE-81D4-4AD8-906E-C122D00DBD70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal
