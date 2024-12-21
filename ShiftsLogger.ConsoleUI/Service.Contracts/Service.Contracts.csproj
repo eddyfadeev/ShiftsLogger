@@ -4,11 +4,10 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>ApiClient</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Contracts\Contracts.csproj" />
+      <ProjectReference Include="..\..\ShiftsLogger.WebApi\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>
