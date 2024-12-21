@@ -5,19 +5,28 @@ namespace Shared.Dto.Shift;
 [DataContract]
 public abstract record ShiftForManipulationDto
 {
-    private readonly string _description;
-    private readonly  string _location;
-    private readonly string _shiftType;
+    private string _user;
+    private string _description;
+    private string _location;
+    private string _shiftType;
 
     [DataMember(Order = 3)]
-    public virtual string? Location
+    public string? User
+    {
+        get => _user;
+        init => _user = string.IsNullOrWhiteSpace(value) ? string.Empty : value;
+    }
+
+    [DataMember(Order = 3)]
+    public string? Location
     {
         get => _location; 
-        init => _location = value ?? string.Empty;
+        init => _location = string.IsNullOrWhiteSpace(value) ? string.Empty : value;
     }
     
     [DataMember(Order = 4)] 
     public DateTime StartTime { get; init; }
+    
     [DataMember(Order = 5)] 
     public DateTime EndTime { get; init; }
 
@@ -25,7 +34,7 @@ public abstract record ShiftForManipulationDto
     public string? ShiftType
     {
         get => _shiftType; 
-        init => _shiftType = value ?? string.Empty;
+        init => _shiftType = string.IsNullOrWhiteSpace(value) ? string.Empty : value;
     }
     
     [DataMember(Order = 7)] 
@@ -35,6 +44,6 @@ public abstract record ShiftForManipulationDto
     public string? Description 
     { 
         get => _description;
-        init => _description = value ?? string.Empty;
+        init => _description = string.IsNullOrWhiteSpace(value) ? string.Empty : value;
     }
 }
