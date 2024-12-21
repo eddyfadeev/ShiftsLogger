@@ -2,17 +2,19 @@
 using Entity;
 using LoggerService.Extensions;
 using Microsoft.Extensions.Options;
+using Service.Contracts.Clients;
 using Shared.Dto.User;
 using Shared.RequestFeatures;
 using UriExtensions;
 
-namespace HttpManager;
+namespace Service.Clients;
 
-public class UserClient : HttpClientBase<UserDto>
+internal sealed class UserClient : HttpClientBase<UserDto>, IUserService
 {
     private readonly Uri _defaultEndpoint;
-    public UserClient(IHttpClientFactory factory, IOptions<ApiEndpointsOptions> endpointOptions, ILoggerManager logger)
-        : base(factory, endpointOptions, logger)
+    
+    public UserClient(HttpClient httpClient, IOptions<ApiEndpointsOptions> endpointOptions, ILoggerManager logger)
+        : base(httpClient, endpointOptions, logger)
     {
         _defaultEndpoint = new Uri(Endpoints.Value.Users, UriKind.Relative);
 
@@ -31,7 +33,7 @@ public class UserClient : HttpClientBase<UserDto>
         return result;
     }
 
-    public async Task<List<UserDto>> GetAllUsersAsync(UserParameters? requestParameters = null)
+    public async Task<PagedList<UserDto>> GetAllUsersAsync(UserParameters? requestParameters = null)
     {
         Logger.LogPassedObject(nameof(GetAllUsersAsync), requestParameters);
         var uri = _defaultEndpoint.AddQueryParameters(requestParameters);
@@ -40,7 +42,7 @@ public class UserClient : HttpClientBase<UserDto>
         var result = await GetAllAsync(uri);
 
         Logger.LogApiTransactionEnd(nameof(GetAllUsersAsync));
-        return result.Select(u => u).ToList();
+        return result;
     }
 
     public async Task<UserDto?> CreateUserAsync(UserDto user)
