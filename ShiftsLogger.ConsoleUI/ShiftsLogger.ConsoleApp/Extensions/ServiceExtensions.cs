@@ -1,4 +1,6 @@
-﻿using Entity;
+﻿using Contracts;
+using Entity;
+using LoggerService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,4 +10,7 @@ public static class ServiceExtensions
 {
     public static void ConfigureApiEndpoints(this IServiceCollection services, IConfiguration configuration) =>
         services.Configure<ApiEndpointsOptions>(configuration.GetSection(ApiEndpointsOptions.ApiEndpoints));
+
+    public static void ConfigureLogger(this IServiceCollection services) =>
+        services.AddSingleton<ILoggerManager, LoggerManager>();
 }
