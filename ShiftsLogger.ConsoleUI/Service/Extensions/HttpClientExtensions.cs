@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using Entity;
 using Microsoft.Extensions.Options;
 
-namespace HttpManager.Extensions;
+namespace Service.Extensions;
 
 public static class HttpClientExtensions
 {
