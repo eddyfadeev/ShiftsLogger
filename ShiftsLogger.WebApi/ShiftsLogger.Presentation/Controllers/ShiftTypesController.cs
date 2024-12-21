@@ -7,7 +7,7 @@ using ShiftsLogger.Presentation.Extensions;
 
 namespace ShiftsLogger.Presentation.Controllers;
 
-[Route("api/shift-types")]
+[Route("api/v{version:apiVersion}/shift-types")]
 public class ShiftTypesController : ControllerBase
 {
     private readonly IServiceManager _service;

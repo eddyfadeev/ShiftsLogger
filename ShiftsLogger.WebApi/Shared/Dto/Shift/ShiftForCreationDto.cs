@@ -2,7 +2,7 @@
 
 public record ShiftForCreationDto : ShiftForManipulationDto
 {
-    public required Guid UserId { get; set; }
-    public required Guid LocationId { get; set; }
-    public required Guid ShiftTypeId { get; set; }
+    public required Guid UserId { get; init; }
+    public required Guid LocationId { get; init; }
+    public required Guid ShiftTypeId { get; init; }
 }

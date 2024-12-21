@@ -25,6 +25,7 @@ public class Startup
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.ConfigureOutputCaching();
         services.AddScoped<ValidationFilterAttribute>();
+        services.ConfigureVersioning();
         
         services.AddControllers(config =>
             {

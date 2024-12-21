@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.Tests", "Tests\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Tests", "Tests\Service.Tests\Service.Tests.csproj", "{79D05CA2-E895-4915-8201-44793ACC66A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mappers", "Mappers\Mappers.csproj", "{D72ED3B0-A6C5-4AC5-AEE9-E3CE62CCFFD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{79D05CA2-E895-4915-8201-44793ACC66A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79D05CA2-E895-4915-8201-44793ACC66A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79D05CA2-E895-4915-8201-44793ACC66A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72ED3B0-A6C5-4AC5-AEE9-E3CE62CCFFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72ED3B0-A6C5-4AC5-AEE9-E3CE62CCFFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72ED3B0-A6C5-4AC5-AEE9-E3CE62CCFFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72ED3B0-A6C5-4AC5-AEE9-E3CE62CCFFD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

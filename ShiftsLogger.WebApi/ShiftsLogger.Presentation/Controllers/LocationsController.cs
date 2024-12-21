@@ -7,7 +7,7 @@ using ShiftsLogger.Presentation.Extensions;
 
 namespace ShiftsLogger.Presentation.Controllers;
 
-[Route("api/locations")]
+[Route("api/v{version:apiVersion}/locations")]
 [ApiController]
 public class LocationsController : ControllerBase
 {

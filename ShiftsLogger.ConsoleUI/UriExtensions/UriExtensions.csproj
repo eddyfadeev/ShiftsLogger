@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Contracts\Contracts.csproj" />
-      <ProjectReference Include="..\Mappers\Mappers.csproj" />
-      <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
+      <ProjectReference Include="..\..\ShiftsLogger.WebApi\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>
