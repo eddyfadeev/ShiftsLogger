@@ -4,12 +4,12 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Contracts;
 using Entity;
-using HttpManager.Extensions;
 using LoggerService.Extensions;
 using Microsoft.Extensions.Options;
+using Service.Extensions;
 using Shared.RequestFeatures;
 
-namespace HttpManager;
+namespace Service.Clients;
 
 public abstract class HttpClientBase<TEntity> : IHttpClientBase<TEntity>, IAsyncDisposable
 {
@@ -19,11 +19,11 @@ public abstract class HttpClientBase<TEntity> : IHttpClientBase<TEntity>, IAsync
     protected readonly ILoggerManager Logger;
     protected readonly HttpClient Client;
     
-    protected HttpClientBase(IHttpClientFactory factory, IOptions<ApiEndpointsOptions> endpointOptions, ILoggerManager logger)
+    protected HttpClientBase(HttpClient httpClient, IOptions<ApiEndpointsOptions> endpointOptions, ILoggerManager logger)
     {
         Logger = logger;
         Endpoints = endpointOptions;
-        Client = factory.CreateClient();
+        Client = httpClient;
         Client.ConfigureHttpClient(endpointOptions);
         
         _jsonSerializerOptions = new JsonSerializerOptions
