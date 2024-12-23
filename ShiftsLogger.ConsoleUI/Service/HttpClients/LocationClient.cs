@@ -7,7 +7,7 @@ using Shared.Dto.Location;
 using Shared.RequestFeatures;
 using UriExtensions;
 
-namespace Service.Clients;
+namespace Service.HttpClients;
 
 internal sealed class LocationClient : HttpClientBase<LocationDto>, ILocationService
 {

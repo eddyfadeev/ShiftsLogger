@@ -6,10 +6,11 @@ using Contracts;
 using Entity;
 using LoggerService.Extensions;
 using Microsoft.Extensions.Options;
+using Service.Contracts.Clients;
 using Service.Extensions;
 using Shared.RequestFeatures;
 
-namespace Service.Clients;
+namespace Service.HttpClients;
 
 public abstract class HttpClientBase<TEntity> : IHttpClientBase<TEntity>, IAsyncDisposable
 {
@@ -29,7 +30,7 @@ public abstract class HttpClientBase<TEntity> : IHttpClientBase<TEntity>, IAsync
         _jsonSerializerOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
         };
         
         Logger.LogInfo($"[{nameof(HttpClientBase<TEntity>)}] Base url: {Client.BaseAddress}");

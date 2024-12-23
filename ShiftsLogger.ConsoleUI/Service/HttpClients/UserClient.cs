@@ -7,7 +7,7 @@ using Shared.Dto.User;
 using Shared.RequestFeatures;
 using UriExtensions;
 
-namespace Service.Clients;
+namespace Service.HttpClients;
 
 internal sealed class UserClient : HttpClientBase<UserDto>, IUserService
 {

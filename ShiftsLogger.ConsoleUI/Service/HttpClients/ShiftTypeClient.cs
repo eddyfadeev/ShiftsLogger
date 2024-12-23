@@ -7,7 +7,7 @@ using Shared.Dto.ShiftType;
 using Shared.RequestFeatures;
 using UriExtensions;
 
-namespace Service.Clients;
+namespace Service.HttpClients;
 
 internal sealed class ShiftTypeClient : HttpClientBase<ShiftTypeDto>, IShiftTypeService
 {
