@@ -1,6 +1,6 @@
 ﻿using Shared.RequestFeatures;
 
-namespace Contracts;
+namespace Service.Contracts.Clients;
 
 public interface IHttpClientBase<TEntity>
 {
