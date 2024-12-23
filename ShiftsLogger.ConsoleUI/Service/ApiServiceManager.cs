@@ -1,9 +1,9 @@
 ﻿using Contracts;
 using Entity;
 using Microsoft.Extensions.Options;
-using Service.Clients;
 using Service.Contracts;
 using Service.Contracts.Clients;
+using Service.HttpClients;
 
 namespace Service;
 
