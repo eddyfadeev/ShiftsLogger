@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using Spectre.Console;
+using View.Entity;
 
-namespace Utility.Extensions;
+namespace View.Utility.Extensions;
 
 public static class StringExtensions
 {
@@ -24,15 +26,9 @@ public static class StringExtensions
         return builder.ToString().Trim();
     }
     
-    public static string[] ColorizeSelectedOption(this string[] strings) =>
-        strings.Select(str => str.ColorizeSelectedOption()).ToArray();
+    public static StyledString[] ApplyStyle(this string[] strings, Style? textStyle) =>
+        strings.Select(str => str.ApplyStyle(textStyle)).ToArray();
 
-    public static string ColorizeSelectedOption(this string str) =>
-        $"[gold3_1]{str}[/]";
-    
-    public static string[] DecolorizeSelectedOption(this string[] strings) =>
-        strings.Select(str => str.DecolorizeSelectedOption()).ToArray();
-    
-    public static string DecolorizeSelectedOption(this string str) =>
-        str.Replace("[gold3_1]", "").Replace("[/]", "");
+    public static StyledString ApplyStyle(this string str, Style? textStyle) =>
+        new (str, textStyle);
 }
