@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\View.Entity\View.Entity.csproj" />
+      <ProjectReference Include="..\View.ViewModel\View.ViewModel.csproj" />
     </ItemGroup>
 
 </Project>
