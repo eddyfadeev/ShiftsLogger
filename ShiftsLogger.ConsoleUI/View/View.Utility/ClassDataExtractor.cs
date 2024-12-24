@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Utility;
+namespace View.Utility;
 
 public static class ClassDataExtractor
 {
@@ -9,14 +9,18 @@ public static class ClassDataExtractor
     public static IEnumerable<string> GetPropertyNames<T>(T obj) =>
         obj is null 
             ? Array.Empty<string>() 
-            : GetTypeProperties(obj).Select(prop => prop.Name);
+            : GetTypeProperties(obj)
+                .Select(prop => prop.Name);
 
-    public static IEnumerable<string> GetPropertyValuesAsString<T>(T obj, params string[] columnsToIgnore) =>
+    public static IEnumerable<string> GetPropertyValuesAsString<T>(T obj, params string[] propertiesToIgnore) =>
         obj is null 
             ? Array.Empty<string>() 
             : GetTypeProperties(obj)
-                .Where(prop => !columnsToIgnore.Contains(prop.Name))
-                .Select(prop => prop.GetValue(obj)?.ToString() ?? string.Empty);
+                .Where(prop => 
+                    !propertiesToIgnore.Contains(prop.Name))
+                .Select(prop => 
+                    prop.GetValue(obj)?.ToString() 
+                    ?? string.Empty);
     
     private static PropertyInfo[] GetTypeProperties<T>(T obj)
     {
