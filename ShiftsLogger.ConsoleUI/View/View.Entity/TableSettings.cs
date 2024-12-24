@@ -6,23 +6,26 @@ public class TableSettings
 {
     private int _separatorRow = 5;
     
+    public bool ShowColumnHeaders { get; set; } = false;
     public bool ShowFooter { get; set; } = false;
-    public TableBorder Border { get; set; } = TableBorder.Rounded;
     public bool Expand { get; set; } = false;
-    public bool ShowTitle { get; set; } = false;
+    public bool RowSeparatorIsActive => 
+        _separatorRow > 0 ;
+    public TableBorder BorderStyle { get; set; } = TableBorder.Rounded;
+    public Style? TitleStyle { get; set; } = null;
+    public Style? HeadersStyle { get; set; } = null;
+    public Style? ContentStyle { get; set; } = null;
+    public Style? SelectionStyle { get; set; } = null;
 
     public int SeparatorRow
     {
         get => _separatorRow;
         set
         {
-            const int minSeparatorRow  = 1;
-            const int maxSeparatorRow  = 10;
-            const int defaultSeparatorRow = 5;
-            
-            _separatorRow = value is 
-                > minSeparatorRow and < maxSeparatorRow 
-                ? value : defaultSeparatorRow;
+            const int minSeparatorRow  = 0;
+            const int maxSeparatorRow  = 9;
+
+            _separatorRow = Math.Clamp(value, minSeparatorRow, maxSeparatorRow);
         }
     }
 }
