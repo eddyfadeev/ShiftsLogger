@@ -7,14 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\ShiftsLogger.WebApi\Shared\Shared.csproj" />
-      <ProjectReference Include="..\Utility\Utility.csproj" />
+      <ProjectReference Include="..\View.Utility\View.Utility.csproj" />
       <ProjectReference Include="..\View.Contracts\View.Contracts.csproj" />
       <ProjectReference Include="..\View.Entity\View.Entity.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Spectre.Console" Version="0.49.1" />
+      <ProjectReference Include="..\View.ViewModel\View.ViewModel.csproj" />
     </ItemGroup>
 
 </Project>
