@@ -26,9 +26,9 @@ public static class StringExtensions
         return builder.ToString().Trim();
     }
     
-    public static StyledString[] ApplyStyle(this string[] strings, Style? textStyle) =>
-        strings.Select(str => str.ApplyStyle(textStyle)).ToArray();
+    public static StyledString[] ApplyStyle(this string[] strings, Style? textStyle, HorizontalAlignment alignment = HorizontalAlignment.Left) =>
+        strings.Select(str => str.ApplyStyle(textStyle, alignment)).ToArray();
 
-    public static StyledString ApplyStyle(this string str, Style? textStyle) =>
-        new (str, textStyle);
+    public static StyledString ApplyStyle(this string str, Style? textStyle, HorizontalAlignment alignment = HorizontalAlignment.Left) =>
+        new (str, textStyle, alignment);
 }
