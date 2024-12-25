@@ -23,8 +23,8 @@ public sealed class MenuTable : TableData<string>
         return preparedEntries.Select(
                 (entry, index) =>
                     index == SelectedIndex
-                        ? entry.ApplyStyle(Settings.SelectionStyle)
-                        : entry.ApplyStyle(Settings.ContentStyle))
+                        ? entry.ApplyStyle(Settings.SelectionStyle, Settings.ContentAlignment)
+                        : entry.ApplyStyle(Settings.ContentStyle, Settings.ContentAlignment))
             .ToArray();
     }
 }
