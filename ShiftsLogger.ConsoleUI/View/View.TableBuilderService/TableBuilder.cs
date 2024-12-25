@@ -1,5 +1,5 @@
 ﻿using Spectre.Console;
-using View.Contracts;
+using View.Contracts.Services;
 using View.ViewModel;
 
 namespace View.TableBuilderService;
@@ -19,7 +19,7 @@ public class TableBuilder : ITableBuilder
             ShowFooters = tableData.Settings.ShowFooter,
             Expand = tableData.Settings.Expand,
             Title = tableData.Title,
-            Caption = tableData.Footer
+            Caption = tableData.Footer,
         };
         
         table.Border(tableData.Settings.BorderStyle);
