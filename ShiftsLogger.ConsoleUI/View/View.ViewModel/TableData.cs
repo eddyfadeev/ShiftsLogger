@@ -8,6 +8,17 @@ public abstract class TableData<T>
 {
     private int _selectedIndex;
     
+    protected TableData(List<T> objectsList, TableSettings tableSettings) 
+    {
+        if (objectsList.Count <= 0)
+        {
+            throw new ArgumentException("No data provided to create a table data", nameof(objectsList));
+        }
+        
+        Settings = tableSettings ?? throw new ArgumentNullException(nameof(tableSettings), "Table settings cannot be null");
+        ObjectsList = objectsList ?? throw new ArgumentNullException(nameof(objectsList), "Object list cannot be null");
+    }
+    
     public abstract StyledString[] TableColumnHeaders { get; protected set; }
     public abstract StyledString[][] TableDataRows { get; protected set; }
     
@@ -44,15 +55,4 @@ public abstract class TableData<T>
     
     public TableTitle Title { get; set; } = new (string.Empty);
     public TableTitle Footer { get; set; } = new (string.Empty);
-    
-    protected TableData(List<T> objectsList, TableSettings tableSettings) 
-    {
-        if (objectsList.Count <= 0)
-        {
-            throw new ArgumentException("No data provided to create a table data", nameof(objectsList));
-        }
-        
-        Settings = tableSettings;
-        ObjectsList = objectsList;
-    }
 }
