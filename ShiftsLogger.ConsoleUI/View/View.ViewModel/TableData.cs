@@ -45,11 +45,11 @@ public abstract class TableData<T>
 
             TableDataRows[previousIndex] = 
                 TableDataRows[previousIndex]
-                    .RemoveStyle(Settings.ContentStyle);
+                    .RemoveStyle(Settings.ContentStyle, Settings.ContentAlignment);
             
             TableDataRows[_selectedIndex] = 
                 TableDataRows[_selectedIndex]
-                    .ApplyStyle(Settings.SelectionStyle);
+                    .ApplyStyle(Settings.SelectionStyle, Settings.ContentAlignment);
         }
     }
     
