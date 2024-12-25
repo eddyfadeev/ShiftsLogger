@@ -1,7 +1,7 @@
 ﻿using Spectre.Console;
-using View.Entity;
+using View.ViewModel;
 
-namespace View.Contracts;
+namespace View.Contracts.Services;
 
 public interface ITableBuilder
 {
