@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
 using View.Entity;
+using View.Entity.Structures;
 using View.Utility.Extensions;
 
 namespace View.ViewModel;
@@ -24,6 +25,9 @@ public abstract class TableData<T>
     
     public List<T> ObjectsList { get; }
     public TableSettings Settings { get; set; }
+    
+    public TableTitle Title { get; set; } = new (string.Empty);
+    public TableTitle Footer { get; set; } = new (string.Empty);
 
     public int SelectedIndex 
     {
@@ -45,14 +49,11 @@ public abstract class TableData<T>
 
             TableDataRows[previousIndex] = 
                 TableDataRows[previousIndex]
-                    .RemoveStyle(Settings.ContentStyle, Settings.ContentAlignment);
+                    .RemoveStyle(Settings.ContentStyle);
             
             TableDataRows[_selectedIndex] = 
                 TableDataRows[_selectedIndex]
-                    .ApplyStyle(Settings.SelectionStyle, Settings.ContentAlignment);
+                    .ApplyStyle(Settings.SelectionStyle);
         }
     }
-    
-    public TableTitle Title { get; set; } = new (string.Empty);
-    public TableTitle Footer { get; set; } = new (string.Empty);
 }
