@@ -1,4 +1,5 @@
 ﻿using Spectre.Console;
+using View.Entity.Structures;
 
 namespace View.Entity;
 
@@ -13,16 +14,10 @@ public abstract class TableSettings
         _separatorRow > 0 ;
     public TableBorder BorderStyle { get; set; } = TableBorder.Rounded;
     
-    // TODO: Extract to style struct 
-    public Style? TitleStyle { get; set; } = null;
-    public HorizontalAlignment TitleAlignment { get; set; } = HorizontalAlignment.Left;
-    public Style? HeadersStyle { get; set; } = null;
-    public HorizontalAlignment HeadersAlignment { get; set; } = HorizontalAlignment.Left;
-    public Style? ContentStyle { get; set; } = null;
-    public HorizontalAlignment ContentAlignment { get; set; } = HorizontalAlignment.Left;
-    public Style? SelectionStyle { get; set; } = null;
-    public HorizontalAlignment SelectionAlignment { get; set; } = HorizontalAlignment.Left;
-    // End of extraction
+    public StringStyling? TitleStyle { get; set; } = null;
+    public StringStyling? HeadersStyle { get; set; } = null;
+    public StringStyling? ContentStyle { get; set; } = null;
+    public StringStyling? SelectionStyle { get; set; } = null;
 
     public int SeparatorRow
     {
