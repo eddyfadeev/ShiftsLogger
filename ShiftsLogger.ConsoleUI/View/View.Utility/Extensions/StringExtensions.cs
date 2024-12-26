@@ -1,6 +1,5 @@
 ﻿using System.Text;
-using Spectre.Console;
-using View.Entity;
+using View.Entity.Structures;
 
 namespace View.Utility.Extensions;
 
@@ -26,9 +25,9 @@ public static class StringExtensions
         return builder.ToString().Trim();
     }
     
-    public static StyledString[] ApplyStyle(this string[] strings, Style? textStyle, HorizontalAlignment alignment = HorizontalAlignment.Left) =>
-        strings.Select(str => str.ApplyStyle(textStyle, alignment)).ToArray();
+    public static StyledString[] ApplyStyle(this string[] strings, StringStyling? textStyle) =>
+        strings.Select(str => str.ApplyStyle(textStyle)).ToArray();
 
-    public static StyledString ApplyStyle(this string str, Style? textStyle, HorizontalAlignment alignment = HorizontalAlignment.Left) =>
-        new (str, textStyle, alignment);
+    public static StyledString ApplyStyle(this string str, StringStyling? textStyle) =>
+        new (str, textStyle);
 }
