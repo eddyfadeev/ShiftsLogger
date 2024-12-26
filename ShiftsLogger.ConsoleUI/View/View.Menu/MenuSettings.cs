@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
 using View.Entity;
+using View.Entity.Structures;
 
 namespace View.Menu;
 
@@ -11,12 +12,10 @@ public sealed class MenuSettings : TableSettings
         ShowFooter = true;
         Expand = true;
         BorderStyle = TableBorder.Rounded;
-        TitleStyle = new Style(foreground: Color.Olive);
-        TitleAlignment = HorizontalAlignment.Center;
+        TitleStyle = new StringStyling(Color.Olive, HorizontalAlignment.Center);
         HeadersStyle = null;
-        ContentStyle = new Style(foreground: Color.White);
-        ContentAlignment = HorizontalAlignment.Center;
-        SelectionStyle = new Style(foreground: Color.Gold3_1);
+        ContentStyle = new StringStyling(Color.White, HorizontalAlignment.Center);
+        SelectionStyle = new StringStyling(Color.Gold3_1, HorizontalAlignment.Center);
         SeparatorRow = 0;
     }
 }
