@@ -9,10 +9,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\ShiftsLogger.WebApi\LoggerService\LoggerService.csproj" />
+      <ProjectReference Include="..\Contracts\Contracts.csproj" />
       <ProjectReference Include="..\Entity\Entity.csproj" />
-      <ProjectReference Include="..\HttpManager\HttpManager.csproj" />
-      <ProjectReference Include="..\ShiftsLogger.Application\ShiftsLogger.Application.csproj" />
-      <ProjectReference Include="..\ShiftsLogger.View\ShiftsLogger.View.csproj" />
+      <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
+      <ProjectReference Include="..\Service\Service.csproj" />
+      <ProjectReference Include="..\View\View.Contracts\View.Contracts.csproj" />
+      <ProjectReference Include="..\View\View.Menu\View.Menu.csproj" />
+      <ProjectReference Include="..\View\View.TableBuilderService\View.TableBuilderService.csproj" />
     </ItemGroup>
 
     <ItemGroup>
