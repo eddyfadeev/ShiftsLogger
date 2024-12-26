@@ -1,4 +1,5 @@
 ﻿using View.Entity;
+using View.Entity.Structures;
 using View.Utility;
 using View.Utility.Extensions;
 
@@ -49,7 +50,7 @@ public sealed class EntitiesTable<T> : TableData<T>
                     .ToArray();
 
             return index == SelectedIndex
-                ? dataRow.ApplyStyle(textStyle: Settings.SelectionStyle, alignment: Settings.ContentAlignment)
-                : dataRow.ApplyStyle(textStyle: Settings.ContentStyle, Settings.ContentAlignment);
+                ? dataRow.ApplyStyle(Settings.SelectionStyle)
+                : dataRow.ApplyStyle(Settings.ContentStyle);
         }).ToArray();
 }
