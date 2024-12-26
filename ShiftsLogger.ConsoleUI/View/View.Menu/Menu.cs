@@ -1,48 +1,28 @@
 ﻿using Spectre.Console;
 using View.Contracts;
 using View.Contracts.Services;
-using View.Entity;
+using View.Entity.Structures;
 using View.ViewModel;
 
 namespace View.Menu;
 
-public abstract class Menu : IMenu
+public abstract class Menu<T> : IMenu, ISelectable, IActionable
 {
-    protected ITableBuilder TableBuilder;
+    protected readonly ITableBuilder TableBuilder;
+    protected abstract List<MenuEntry> MenuEntries { get; init; }
     
-    public abstract MenuTable MenuTable { get; protected set; }
+    public abstract TableData<T> MenuTable { get; protected set; }
     public abstract MenuSettings Settings { get; protected set; }
 
     protected Menu(ITableBuilder tableBuilder)
     {
         TableBuilder = tableBuilder;
     }
-    
-    public abstract void DisplayMenu();
-}
 
-public sealed class NavigableMenu : Menu, ISelectable
-{
-    private List<MenuEntry> _menuEntries;
-    
-    public NavigableMenu(ITableBuilder tableBuilder, MenuSettings settings, List<MenuEntry> menuEntries) 
-        : base(tableBuilder)
-    {
-        _menuEntries = menuEntries;
-        Settings = settings;
-        MenuTable = new MenuTable(
-            menuEntries.Select(e => 
-                e.Name).ToList()
-            , settings);
-    }
-
-    public override MenuTable MenuTable { get; protected set; }
-    public override MenuSettings Settings { get; protected set; }
-
-    public override void DisplayMenu()
+    public virtual void DisplayMenu()
     {
         var table = TableBuilder.Build(MenuTable);
-        
+
         AnsiConsole.Write(table);
     }
     
@@ -54,4 +34,7 @@ public sealed class NavigableMenu : Menu, ISelectable
 
     public void ResetSelection() =>
         MenuTable.SelectedIndex = 0;
+    
+    public void InvokeAction() =>
+        MenuEntries[MenuTable.SelectedIndex].Action?.Invoke();
 }
