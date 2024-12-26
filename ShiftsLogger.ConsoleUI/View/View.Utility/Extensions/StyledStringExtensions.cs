@@ -1,23 +1,22 @@
-﻿using Spectre.Console;
-using View.Entity;
+﻿using View.Entity.Structures;
 
 namespace View.Utility.Extensions;
 
 public static class StyledStringExtensions
 {
-    public static StyledString[] ApplyStyle(this StyledString[] strings, Style? textStyle, HorizontalAlignment alignment = HorizontalAlignment.Left) =>
+    public static StyledString[] ApplyStyle(this StyledString[] strings, StringStyling? textStyle) =>
         strings
-            .Select(str => str.ApplyStyle(textStyle, alignment))
+            .Select(str => str.ApplyStyle(textStyle))
             .ToArray();
 
-    public static StyledString ApplyStyle(this StyledString str, Style? textStyle, HorizontalAlignment alignment) =>
-        new (str, textStyle, alignment);
+    public static StyledString ApplyStyle(this StyledString str, StringStyling? textStyle) =>
+        new (str, textStyle);
 
-    public static StyledString[] RemoveStyle(this StyledString[] strings, Style? style = null, HorizontalAlignment alignment = HorizontalAlignment.Left) =>
+    public static StyledString[] RemoveStyle(this StyledString[] strings, StringStyling? style = null) =>
         strings
-            .Select(str => str.RemoveStyle(style, alignment))
+            .Select(str => str.RemoveStyle(style))
             .ToArray();
 
-    public static StyledString RemoveStyle(this StyledString text, Style? style = null, HorizontalAlignment alignment = HorizontalAlignment.Left) =>
-        new(text.OriginString, style, alignment);
+    public static StyledString RemoveStyle(this StyledString text, StringStyling? style = null) =>
+        new(text.OriginString, style);
 }
