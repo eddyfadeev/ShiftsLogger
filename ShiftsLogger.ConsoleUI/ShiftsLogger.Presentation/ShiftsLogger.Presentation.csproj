@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
+      <ProjectReference Include="..\View\View.Contracts\View.Contracts.csproj" />
+      <ProjectReference Include="..\View\View.Entity\View.Entity.csproj" />
+      <ProjectReference Include="..\View\View.Menu\View.Menu.csproj" />
+      <ProjectReference Include="..\View\ViewConfigurator\ViewConfigurator.csproj" />
+    </ItemGroup>
+
+</Project>
