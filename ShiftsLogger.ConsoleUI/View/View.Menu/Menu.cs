@@ -25,7 +25,13 @@ public abstract class Menu<T> : IMenu, ISelectable, IActionable
 
         AnsiConsole.Write(table);
     }
-    
+
+    public void SetFooter(string footer) =>
+        MenuTable.Footer = new TableTitle(footer, Settings.TitleStyle?.AppliedStyle);
+
+    public void SetTitle(string title) =>
+        MenuTable.Title = new TableTitle(title, Settings.TitleStyle?.AppliedStyle);
+
     public void SelectNext() =>
         MenuTable.SelectedIndex++;
 
