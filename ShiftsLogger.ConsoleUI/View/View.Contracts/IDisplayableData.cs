@@ -1,8 +1,7 @@
 ﻿namespace View.Contracts;
 
-public interface IMenu
+public interface IDisplayableData
 {
-    void DisplayMenu();
     void SetFooter(string footer);
     void SetTitle(string title);
 }
