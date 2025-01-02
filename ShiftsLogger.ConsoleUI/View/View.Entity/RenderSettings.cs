@@ -1,23 +1,21 @@
 ﻿using Spectre.Console;
-using View.Entity.Structures;
 
 namespace View.Entity;
 
-public abstract class TableSettings
+public abstract class RenderSettings
 {
     private int _separatorRow = 5;
     
-    public bool ShowColumnHeaders { get; set; } = false;
     public bool ShowFooter { get; set; } = false;
     public bool Expand { get; set; } = false;
     public bool RowSeparatorIsActive => 
         _separatorRow > 0 ;
     public TableBorder BorderStyle { get; set; } = TableBorder.Rounded;
     
-    public StringStyling? TitleStyle { get; set; } = null;
-    public StringStyling? HeadersStyle { get; set; } = null;
-    public StringStyling? ContentStyle { get; set; } = null;
-    public StringStyling? SelectionStyle { get; set; } = null;
+    public Style? TitleStyle { get; set; } = null;
+    public Style? FooterStyle { get; set; } = null;
+    public Style? ContentStyle { get; set; } = null;
+    public Style? SelectionStyle { get; set; } = null;
 
     public int SeparatorRow
     {
