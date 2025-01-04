@@ -9,6 +9,8 @@
     <ItemGroup>
       <ProjectReference Include="..\View.Contracts\View.Contracts.csproj" />
       <ProjectReference Include="..\View.Entity\View.Entity.csproj" />
+      <ProjectReference Include="..\View.Services.Contracts\View.Services.Contracts.csproj" />
+      <ProjectReference Include="..\View.Services\View.Services.csproj" />
       <ProjectReference Include="..\View.ViewModel\View.ViewModel.csproj" />
     </ItemGroup>
 
