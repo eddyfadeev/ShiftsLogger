@@ -1,12 +1,12 @@
 ﻿using Spectre.Console;
-using View.Entity;
 
-namespace View.Menu;
+namespace View.Entity;
 
-public sealed class MenuSettings : RenderSettings
+public sealed class MenuSettings : TableSettings
 {
     public MenuSettings()
     {
+        ShowHeaders = false;
         ShowFooter = true;
         Expand = true;
         BorderStyle = TableBorder.Rounded;
