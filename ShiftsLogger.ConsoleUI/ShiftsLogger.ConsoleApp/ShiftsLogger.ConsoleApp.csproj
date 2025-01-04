@@ -10,19 +10,14 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\ShiftsLogger.WebApi\LoggerService\LoggerService.csproj" />
-      <ProjectReference Include="..\Contracts\Contracts.csproj" />
-      <ProjectReference Include="..\Entity\Entity.csproj" />
-      <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
       <ProjectReference Include="..\Service\Service.csproj" />
-      <ProjectReference Include="..\View\View.Contracts\View.Contracts.csproj" />
-      <ProjectReference Include="..\View\View.Menu\View.Menu.csproj" />
-      <ProjectReference Include="..\View\View.TableBuilderService\View.TableBuilderService.csproj" />
+      <ProjectReference Include="..\ShiftsLogger.Presentation\ShiftsLogger.Presentation.csproj" />
+      <ProjectReference Include="..\View\ViewConfigurator\ViewConfigurator.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
