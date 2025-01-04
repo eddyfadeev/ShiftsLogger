@@ -2,17 +2,19 @@
 
 namespace View.Entity;
 
-public abstract class RenderSettings
+public abstract class TableSettings
 {
     private int _separatorRow = 5;
     
     public bool ShowFooter { get; set; } = false;
+    public bool ShowHeaders { get; set; }
     public bool Expand { get; set; } = false;
     public bool RowSeparatorIsActive => 
         _separatorRow > 0 ;
     public TableBorder BorderStyle { get; set; } = TableBorder.Rounded;
     
     public Style? TitleStyle { get; set; } = null;
+    public Style? HeadersStyle { get; set; } = null;
     public Style? FooterStyle { get; set; } = null;
     public Style? ContentStyle { get; set; } = null;
     public Style? SelectionStyle { get; set; } = null;
