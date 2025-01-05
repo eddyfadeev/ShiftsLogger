@@ -1,46 +1,28 @@
-﻿using Spectre.Console;
-using View.Contracts;
-using View.Contracts.Services;
-using View.Entity.Structures;
-using View.ViewModel;
+﻿using View.Entity;
+using View.Services;
+using View.Services.Contracts;
+using View.Utility.Extensions;
 
 namespace View.Menu;
 
-public abstract class Menu<T> : IMenu, ISelectable, IActionable
+public class Menu : MenuBase<MenuEntry>
 {
-    protected readonly ITableBuilder TableBuilder;
-    protected abstract List<MenuEntry> MenuEntries { get; init; }
-    
-    public abstract TableData<T> MenuTable { get; protected set; }
-    public abstract MenuSettings Settings { get; protected set; }
-
-    protected Menu(ITableBuilder tableBuilder)
+    public Menu(ITableBuilder tableBuilder, MenuSettings menuSettings, params IEnumerable<MenuEntry> tableEntries) 
+        : base(tableBuilder, new MenuBuilderStrategy(), menuSettings, tableEntries)
     {
-        TableBuilder = tableBuilder;
+        MenuData[SelectedIndex] = 
+            MenuData[SelectedIndex]
+                .WithStyle(MenuData.Settings.SelectionStyle);
     }
 
-    public virtual void DisplayMenu()
+    protected override void MoveCursor(int previousIndex, int newIndex)
     {
-        var table = TableBuilder.Build(MenuTable);
-
-        AnsiConsole.Write(table);
+        MenuData[previousIndex] = 
+            MenuData[previousIndex]
+                .WithStyle(MenuData.Settings.ContentStyle);
+        
+        MenuData[newIndex] = 
+            MenuData[newIndex]
+                .WithStyle(MenuData.Settings.SelectionStyle);
     }
-
-    public void SetFooter(string footer) =>
-        MenuTable.Footer = new TableTitle(footer, Settings.TitleStyle?.AppliedStyle);
-
-    public void SetTitle(string title) =>
-        MenuTable.Title = new TableTitle(title, Settings.TitleStyle?.AppliedStyle);
-
-    public void SelectNext() =>
-        MenuTable.SelectedIndex++;
-
-    public void SelectPrevious() =>
-        MenuTable.SelectedIndex--;
-
-    public void ResetSelection() =>
-        MenuTable.SelectedIndex = 0;
-    
-    public void InvokeAction() =>
-        MenuEntries[MenuTable.SelectedIndex].Action?.Invoke();
 }
