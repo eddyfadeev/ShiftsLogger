@@ -6,10 +6,12 @@ public static class ClassDataExtractor
 {
     private static readonly Dictionary<Type, PropertyInfo[]> PropertyCache = new();
 
-    public static IEnumerable<string> GetPropertyNames<T>(T obj) =>
+    public static IEnumerable<string> GetPropertyNames<T>(T obj, params string[] propertiesToIgnore) =>
         obj is null 
             ? Array.Empty<string>() 
             : GetTypeProperties(obj)
+                .Where(prop => 
+                    !propertiesToIgnore.Contains(prop.Name, StringComparer.InvariantCultureIgnoreCase))
                 .Select(prop => prop.Name);
 
     public static IEnumerable<string> GetPropertyValuesAsString<T>(T obj, params string[] propertiesToIgnore) =>
@@ -17,7 +19,7 @@ public static class ClassDataExtractor
             ? Array.Empty<string>() 
             : GetTypeProperties(obj)
                 .Where(prop => 
-                    !propertiesToIgnore.Contains(prop.Name))
+                    !propertiesToIgnore.Contains(prop.Name, StringComparer.InvariantCultureIgnoreCase))
                 .Select(prop => 
                     prop.GetValue(obj)?.ToString() 
                     ?? string.Empty);
