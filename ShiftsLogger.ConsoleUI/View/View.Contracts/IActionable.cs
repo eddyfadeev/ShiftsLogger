@@ -2,5 +2,5 @@
 
 public interface IActionable
 {
-    void InvokeAction();
+    Action? Action { get; }
 }
