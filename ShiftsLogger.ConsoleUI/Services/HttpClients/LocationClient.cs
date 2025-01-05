@@ -2,12 +2,12 @@
 using Entity;
 using LoggerService.Extensions;
 using Microsoft.Extensions.Options;
-using Service.Contracts.Clients;
+using Services.Contracts.Clients;
 using Shared.Dto.Location;
 using Shared.RequestFeatures;
 using UriExtensions;
 
-namespace Service.HttpClients;
+namespace Services.HttpClients;
 
 internal sealed class LocationClient : HttpClientBase<LocationDto>, ILocationService
 {

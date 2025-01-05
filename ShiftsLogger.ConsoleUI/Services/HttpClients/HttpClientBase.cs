@@ -6,11 +6,11 @@ using Contracts;
 using Entity;
 using LoggerService.Extensions;
 using Microsoft.Extensions.Options;
-using Service.Contracts.Clients;
-using Service.Extensions;
+using Services.Contracts.Clients;
+using Services.Extensions;
 using Shared.RequestFeatures;
 
-namespace Service.HttpClients;
+namespace Services.HttpClients;
 
 public abstract class HttpClientBase<TEntity> : IHttpClientBase<TEntity>, IAsyncDisposable
 {

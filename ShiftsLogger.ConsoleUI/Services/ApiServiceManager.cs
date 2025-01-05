@@ -1,11 +1,11 @@
 ﻿using Contracts;
 using Entity;
 using Microsoft.Extensions.Options;
-using Service.Contracts;
-using Service.Contracts.Clients;
-using Service.HttpClients;
+using Services.Contracts;
+using Services.Contracts.Clients;
+using Services.HttpClients;
 
-namespace Service;
+namespace Services;
 
 public class ApiServiceManager : IApiServiceManager
 {
