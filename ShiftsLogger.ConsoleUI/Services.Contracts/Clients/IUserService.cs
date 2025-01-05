@@ -1,7 +1,7 @@
 ﻿using Shared.Dto.User;
 using Shared.RequestFeatures;
 
-namespace Service.Contracts.Clients;
+namespace Services.Contracts.Clients;
 
 public interface IUserService
 {

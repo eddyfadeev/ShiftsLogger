@@ -1,7 +1,7 @@
 ﻿using Shared.Dto.Location;
 using Shared.RequestFeatures;
 
-namespace Service.Contracts.Clients;
+namespace Services.Contracts.Clients;
 
 public interface ILocationService
 {

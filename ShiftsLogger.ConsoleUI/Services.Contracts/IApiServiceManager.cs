@@ -1,6 +1,6 @@
-﻿using Service.Contracts.Clients;
+﻿using Services.Contracts.Clients;
 
-namespace Service.Contracts;
+namespace Services.Contracts;
 
 public interface IApiServiceManager
 {
