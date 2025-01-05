@@ -11,7 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\View.Menu\View.Menu.csproj" />
       <ProjectReference Include="..\View.Services.Contracts\View.Services.Contracts.csproj" />
       <ProjectReference Include="..\View.Services\View.Services.csproj" />
     </ItemGroup>
