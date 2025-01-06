@@ -3,13 +3,12 @@ using LoggerService.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
-using Service.Contracts;
+using Services;
+using Services.Contracts;
 using ShiftsLogger.ConsoleApp.Extensions;
+using ShiftsLogger.Presentation;
 using Spectre.Console;
-using View.Contracts.Services;
-using View.Entity.Structures;
-using View.Menu;
-using View.TableBuilderService;
+using ViewConfigurator;
 
 namespace ShiftsLogger.ConsoleApp;
 
@@ -27,56 +26,24 @@ public static class Program
         services.ConfigureLogger();
         services.AddHttpClient();
         services.ConfigureApiManager();
-        services.AddTransient<ITableBuilder, TableBuilder>();
+        services.AddView();
+        services.AddSingleton<IMenuHandler, MenuHandler>();
 
         var serviceProvider = services.BuildServiceProvider();
-
-        var tableBuilder = serviceProvider.GetRequiredService<ITableBuilder>();
-        var logger = serviceProvider.GetRequiredService<ILoggerManager>();
-        var apiService = serviceProvider.GetRequiredService<IApiServiceManager>();
-
-        var shifts = await apiService.Shift.GetAllShiftsAsync();
         
+        Console.CursorVisible = false;
 
+        var logger = serviceProvider.GetRequiredService<ILoggerManager>();
+        var menuHandler = serviceProvider.GetRequiredService<IMenuHandler>();
+        
         try
         {
-            Console.CursorVisible = false;
-            
-            List<string> menuStrings = ["Mange Shifts", "Manage Locations", "Manage Users", "Manage Shift Types"];
-            var menuEntries = menuStrings.Select(str => new MenuEntry(str)).ToList();
-            var menuSettings = new MenuSettings();
-            var mainMenu = new NavigableMenu(tableBuilder, menuSettings, menuEntries);
+            var mainMenu = new MainMenu(serviceProvider);
+            menuHandler.PushMenu(mainMenu);
 
-            while (true)
-            {
-                mainMenu.DisplayMenu();
+            await menuHandler.RunAsync();
 
-                var pressedKey = Console.ReadKey(true);
-                
-                if (pressedKey.Key == ConsoleKey.Escape)
-                    break;
-                
-                switch (pressedKey.Key)
-                {
-                    case ConsoleKey.UpArrow:
-                        mainMenu.SelectPrevious();
-                        break;
-                    case ConsoleKey.DownArrow:
-                        mainMenu.SelectNext();
-                        break;
-                    case ConsoleKey.Enter:
-                    {
-                        var selectedEntry = menuEntries[mainMenu.MenuTable.SelectedIndex];
-                        selectedEntry.Action?.Invoke();
-                        break;
-                    }
-                }
-                
-                Console.Clear();
-            }
-
-
-//             var sortKeys = tableData.TableColumnHeaders.Select((name, index) => $"({index + 1}) - {name.OriginString}");
+//             var sortKeys = renderData.TableColumnHeaders.Select((name, index) => $"({index + 1}) - {name.OriginString}");
 //
 //             var footer = $"""
 //                           [white]
@@ -92,6 +59,8 @@ public static class Program
             logger.LogException(ex);
             AnsiConsole.WriteException(ex);
         }
+        
+        
     }
 
 private static IConfiguration BuildConfiguration() =>
