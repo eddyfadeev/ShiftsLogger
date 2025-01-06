@@ -12,6 +12,7 @@
       <ProjectReference Include="..\LoggerService.Extensions\LoggerService.Extensions.csproj" />
       <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />
       <ProjectReference Include="..\UriExtensions\UriExtensions.csproj" />
+      <ProjectReference Include="..\View\View.Entity\View.Entity.csproj" />
     </ItemGroup>
 
     <ItemGroup>
