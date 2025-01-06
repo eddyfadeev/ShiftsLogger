@@ -1,10 +1,10 @@
-﻿using View.Contracts;
+﻿using Contracts;
 
 namespace Services.Contracts;
 
 public interface IMenuHandler
 {
     Task RunAsync();
-    void PushMenu(ISelectable menu);
+    void PushMenu(IMenu menu);
     void PopMenu();
 }
