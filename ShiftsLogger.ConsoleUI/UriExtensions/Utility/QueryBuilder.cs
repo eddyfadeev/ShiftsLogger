@@ -4,7 +4,7 @@ using Shared.RequestFeatures;
 
 namespace UriExtensions.Utility;
 
-public static class QueryBuilder
+internal static class QueryBuilder
 {
     public static string BuildParametersQuery<T>(T? entity)
         where T : RequestParameters
