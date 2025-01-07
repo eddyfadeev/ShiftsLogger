@@ -1,42 +1,23 @@
 ﻿using Spectre.Console;
 using View.Contracts;
-using View.Entity;
-using View.Services.Contracts;
+using View.Entity.Models;
 
-namespace View.Menu;
+namespace View.Entity.ViewModels;
 
-public abstract class MenuBase<T> : ISelectable, IDisplayable, IDisplayableData
+public abstract class MenuViewModelBase<T> : ISelectable, IDisplayableData
     where T : IActionable
 {
     private int _selectedIndex;
     
-    protected readonly ITableBuilder TableBuilder;
-    protected readonly ITableBuilderStrategy<T> TableBuilderStrategy;
-    
-    public MenuBase(
-        ITableBuilder tableBuilder,
-        ITableBuilderStrategy<T> tableBuilderStrategy,
+    public MenuViewModelBase(
         TableSettings tableSettings, 
         params IEnumerable<T> menuEntries)
     {
         MenuData = new TableData<T>(tableSettings, menuEntries);
-        TableBuilder = tableBuilder;
-        TableBuilderStrategy = tableBuilderStrategy; 
     }
-    
-    protected TableData<T> MenuData { get; }
+
+    public TableData<T> MenuData { get; }
     protected abstract void MoveCursor(int previousIndex, int newIndex);
-
-    #region IDisplayable
-    
-    public virtual void DisplayMenu()
-    {
-        var table = TableBuilder.Build(MenuData, TableBuilderStrategy);
-
-        AnsiConsole.Write(table);
-    }
-
-    #endregion
     
     #region IDisplayableData
 
