@@ -1,14 +1,13 @@
-﻿using View.Entity;
-using View.Services;
-using View.Services.Contracts;
-using View.Utility.Extensions;
+﻿using View.Entity.Extensions;
+using View.Entity.Models;
+using View.Entity.Structures;
 
-namespace View.Menu;
+namespace View.Entity.ViewModels;
 
-public class Menu : MenuBase<MenuEntry>
+public class MenuViewModel : MenuViewModelBase<MenuEntry>
 {
-    public Menu(ITableBuilder tableBuilder, MenuSettings menuSettings, params IEnumerable<MenuEntry> tableEntries) 
-        : base(tableBuilder, new MenuBuilderStrategy(), menuSettings, tableEntries)
+    public MenuViewModel(MenuSettings menuSettings, params IEnumerable<MenuEntry> tableEntries) 
+        : base(menuSettings, tableEntries)
     {
         MenuData[SelectedIndex] = 
             MenuData[SelectedIndex]
