@@ -1,7 +1,8 @@
 ﻿using Spectre.Console;
-using View.Entity;
+using View.Entity.Structures;
+using View.Utility.Extensions;
 
-namespace View.Utility.Extensions;
+namespace View.Entity.Extensions;
 
 public static class EntityEntryDataExtensions
 {
