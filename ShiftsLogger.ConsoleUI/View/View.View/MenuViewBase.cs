@@ -11,6 +11,9 @@ public abstract class MenuViewBase<TMenu, TMenuEntry> : IMenu
     where TMenu : MenuViewModelBase<TMenuEntry>
     where TMenuEntry : IActionable
 {
+    private readonly string _title;
+    private readonly string _footer;
+    
     protected TMenu? MenuViewModel;
     
     protected readonly IServiceProvider ServiceProvider;
@@ -20,8 +23,11 @@ public abstract class MenuViewBase<TMenu, TMenuEntry> : IMenu
     protected IReadOnlyCollection<TMenuEntry>? MenuEntries;
     protected ITableBuilderStrategy<TMenuEntry>? BuilderStrategy;
 
-    protected MenuViewBase(IServiceProvider serviceProvider)
+    protected MenuViewBase(IServiceProvider serviceProvider, string title, string footer)
     {
+        _title = title;
+        _footer = footer;
+        
         ServiceProvider = serviceProvider;
         MenuHandler = serviceProvider.GetRequiredService<IMenuHandler>();
         
@@ -70,6 +76,10 @@ public abstract class MenuViewBase<TMenu, TMenuEntry> : IMenu
         MenuEntries = GetMenuEntries();
         MenuViewModel = CreateMenu();
         BuilderStrategy = CreateStrategy();
+        
+        MenuViewModel.SetTitle(_title);
+        MenuViewModel.SetFooter(_footer);
+        
         OnMenuCreated();
     }
 }
