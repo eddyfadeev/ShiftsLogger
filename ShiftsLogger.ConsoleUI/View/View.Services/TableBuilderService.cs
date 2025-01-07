@@ -1,5 +1,5 @@
 ﻿using Spectre.Console;
-using View.Entity;
+using View.Entity.Models;
 using View.Services.Contracts;
 
 namespace View.Services;
