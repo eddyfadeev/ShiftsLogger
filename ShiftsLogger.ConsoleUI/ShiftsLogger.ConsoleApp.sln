@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View.Utility", "View\View.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View.Entity", "View\View.Entity\View.Entity.csproj", "{46A0750A-FF3C-4194-A173-CAEE22A43FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View.Menu", "View\View.Menu\View.Menu.csproj", "{0FDEB6D3-7473-4727-B10B-8B41527E89EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View.View", "View\View.View\View.View.csproj", "{0FDEB6D3-7473-4727-B10B-8B41527E89EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiftsLogger.Presentation", "ShiftsLogger.Presentation\ShiftsLogger.Presentation.csproj", "{5B3F503B-D3B0-4AC7-9691-6A30B97D4F75}"
 EndProject
