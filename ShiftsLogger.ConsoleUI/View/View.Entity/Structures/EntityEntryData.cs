@@ -1,7 +1,7 @@
 ﻿using Spectre.Console;
 using View.Contracts;
 
-namespace View.Entity;
+namespace View.Entity.Structures;
 
 public readonly record struct EntityEntryData : IActionable
 {
