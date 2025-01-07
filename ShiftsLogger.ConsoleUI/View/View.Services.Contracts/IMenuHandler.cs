@@ -1,6 +1,6 @@
-﻿using Contracts;
+﻿using View.Contracts;
 
-namespace Services.Contracts;
+namespace View.Services.Contracts;
 
 public interface IMenuHandler
 {
