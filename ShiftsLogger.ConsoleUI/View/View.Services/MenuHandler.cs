@@ -1,10 +1,8 @@
-﻿using Contracts;
-using Services.Contracts;
-using Spectre.Console;
-using View.Contracts;
-using View.Entity;
+﻿using View.Contracts;
+using View.Entity.Structures;
+using View.Services.Contracts;
 
-namespace Services;
+namespace View.Services;
 
 public class MenuHandler : IMenuHandler
 {
@@ -21,12 +19,8 @@ public class MenuHandler : IMenuHandler
                 return;
             }
             
-            var menuToHandle = currentMenu.GetMenuView();
-            ArgumentNullException.ThrowIfNull(menuToHandle, nameof(menuToHandle));
-            
-            Display(menuToHandle);
-            
-            await HandleKeyPressAsync(menuToHandle);
+            currentMenu.DisplayMenu();
+            await HandleKeyPressAsync(currentMenu);
         }
     }
 
@@ -44,39 +38,28 @@ public class MenuHandler : IMenuHandler
             _isRunning = false;
         }
     }
-
-    private static void Display(object? menu)
-    {
-        if (menu is not IDisplayable displayable)
-        {
-            throw new ArgumentException(
-                message: "Argument is not IDisplayable", 
-                paramName: nameof(menu));
-        }
-        
-        AnsiConsole.Clear();
-        displayable.DisplayMenu();
-    }
     
-    private async Task HandleKeyPressAsync(ISelectable menu)
+    private async Task HandleKeyPressAsync(IMenu menu)
     {
         if (!Console.KeyAvailable)
         {
             await Task.Delay(100);
         }
-        
+
+        var selectable = menu.GetViewModel();
+
         var keyPress = Console.ReadKey(true);
 
         switch (keyPress.Key)
         {
             case ConsoleKey.UpArrow:
-                menu.SelectPrevious();
+                selectable.SelectPrevious();
                 break;
             case ConsoleKey.DownArrow:
-                menu.SelectNext();
+                selectable.SelectNext();
                 break;
             case ConsoleKey.Enter:
-                menu.InvokeAction();
+                selectable.InvokeAction();
                 break;
             case ConsoleKey.Escape:
                 PopMenu();
@@ -91,7 +74,6 @@ public class MenuHandler : IMenuHandler
                 // TODO: Fetch data and pass it
                 pageable.NextPage();
                 break;
-            
         }
     }
 }
