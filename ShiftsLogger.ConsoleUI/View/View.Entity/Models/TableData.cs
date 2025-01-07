@@ -1,6 +1,6 @@
 ﻿using Spectre.Console;
 
-namespace View.Entity;
+namespace View.Entity.Models;
 
 public class TableData<T> : List<T>
 {
