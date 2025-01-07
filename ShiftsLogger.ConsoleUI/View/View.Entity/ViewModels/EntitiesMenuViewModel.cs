@@ -1,21 +1,19 @@
 ﻿using View.Contracts;
-using View.Entity;
-using View.Services.Contracts;
-using View.Utility.Extensions;
+using View.Entity.Extensions;
+using View.Entity.Models;
+using View.Entity.Structures;
 
-namespace View.Menu;
+namespace View.Entity.ViewModels;
 
-public class EntitiesMenu : MenuBase<EntityEntryData>, IPageable<EntityEntryData>
+public class EntitiesMenuViewModel : MenuViewModelBase<EntityEntryData>, IPageable<EntityEntryData>
 {
     private int _currentPage = 1;
     private int _totalPages = 1;
     
-    public EntitiesMenu(
-        ITableBuilder tableBuilder, 
-        ITableBuilderStrategy<EntityEntryData> tableBuilderStrategy, 
+    public EntitiesMenuViewModel(
         TableSettings tableSettings, 
         params IEnumerable<EntityEntryData> menuEntries
-    ) : base(tableBuilder, tableBuilderStrategy, tableSettings, menuEntries)
+    ) : base(tableSettings, menuEntries)
     {
         MenuData[SelectedIndex] = 
             MenuData[SelectedIndex]
