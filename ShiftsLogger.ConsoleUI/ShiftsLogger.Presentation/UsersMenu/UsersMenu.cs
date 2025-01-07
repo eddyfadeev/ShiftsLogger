@@ -1,25 +1,30 @@
-﻿using View.Entity;
-using View.Menu;
+﻿using View.Entity.Structures;
+using View.View;
 
 namespace ShiftsLogger.Presentation.UsersMenu;
 
-public sealed class UsersMenu : MenuViewBase<Menu, MenuEntry>
+public sealed class UsersMenu : MenuView
 {
-    public UsersMenu(IServiceProvider serviceProvider) 
-        : base(serviceProvider)
-    {
-    }
+    private const string Title = "Users";
     
-    protected override Menu CreateMenu()
+    public UsersMenu(IServiceProvider serviceProvider) 
+        : base(serviceProvider, Title)
     {
-        throw new NotImplementedException();
     }
 
-    protected override IReadOnlyCollection<MenuEntry> GetMenuEntries()
-    {
-        throw new NotImplementedException();
-    }
-    
-    protected override TableSettings CreateSettings() =>
-        new MenuSettings();
+    protected override IReadOnlyCollection<MenuEntry> GetMenuEntries() =>
+    [
+        new
+        (
+            entryText: "Add User",
+            entryAction: null,
+            entryStyle: Settings?.ContentStyle
+        ),
+        new
+        (
+            entryText: "Manage Users",
+            entryAction: null,
+            entryStyle: Settings?.ContentStyle
+        )
+    ];
 }

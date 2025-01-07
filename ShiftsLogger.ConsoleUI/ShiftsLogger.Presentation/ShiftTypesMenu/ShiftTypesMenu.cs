@@ -1,24 +1,29 @@
-﻿using View.Entity;
-using View.Menu;
+﻿using View.Entity.Structures;
+using View.View;
 
 namespace ShiftsLogger.Presentation.ShiftTypesMenu;
 
-public sealed class ShiftTypesMenu : MenuViewBase<Menu, MenuEntry>
+public sealed class ShiftTypesMenu : MenuView
 {
+    private const string Title = "Shift Types";
     public ShiftTypesMenu(IServiceProvider serviceProvider) 
-        : base(serviceProvider)
+        : base(serviceProvider, Title)
     {
-    }
-    protected override Menu CreateMenu()
-    {
-        throw new NotImplementedException();
     }
 
-    protected override IReadOnlyCollection<MenuEntry> GetMenuEntries()
-    {
-        throw new NotImplementedException();
-    }
-    
-    protected override TableSettings CreateSettings() =>
-        new MenuSettings();
+    protected override IReadOnlyCollection<MenuEntry> GetMenuEntries() =>
+    [
+        new
+        (
+            entryText: "Add Shift Type",
+            entryAction: null,
+            entryStyle: Settings?.ContentStyle
+        ),
+        new
+        (
+            entryText: "Manage Shift Types",
+            entryAction: null,
+            entryStyle: Settings?.ContentStyle
+        )
+    ];
 }

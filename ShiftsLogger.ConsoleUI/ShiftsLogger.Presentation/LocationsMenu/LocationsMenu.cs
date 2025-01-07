@@ -1,24 +1,30 @@
-﻿using View.Entity;
-using View.Menu;
+﻿using View.Entity.Structures;
+using View.View;
 
 namespace ShiftsLogger.Presentation.LocationsMenu;
 
-public sealed class LocationsMenu : MenuViewBase<Menu, MenuEntry>
+public sealed class LocationsMenu : MenuView
 {
+    private const string Title = "Locations";
+    
     public LocationsMenu(IServiceProvider serviceProvider) 
-        : base(serviceProvider)
+        : base(serviceProvider, Title)
     {
-    }
-    protected override Menu CreateMenu()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override IReadOnlyCollection<MenuEntry> GetMenuEntries()
-    {
-        throw new NotImplementedException();
     }
     
-    protected override TableSettings CreateSettings() =>
-        new MenuSettings();
+    protected override IReadOnlyCollection<MenuEntry> GetMenuEntries() =>
+    [
+        new
+        (
+            entryText: "Add Location",
+            entryAction: null,
+            entryStyle: Settings?.ContentStyle
+        ),
+        new
+        (
+            entryText: "Manage Locations",
+            entryAction: null,
+            entryStyle: Settings?.ContentStyle
+        )
+    ];
 }
