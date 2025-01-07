@@ -10,14 +10,16 @@ namespace View.View;
 
 public abstract class MenuView : MenuViewBase<MenuViewModel, MenuEntry>
 {
-    private readonly string _title;
-    private readonly string _footer;
+    private const string DefaultFooter = 
+        """
+        Press ESC to return/exit
+        Press up/down arrow keys to select
+        Press Enter to confirm selection
+        """;
     
-    protected MenuView(IServiceProvider serviceProvider, string title, string footer) 
-        : base(serviceProvider)
+    protected MenuView(IServiceProvider serviceProvider, string title, string? footer = null) 
+        : base(serviceProvider, title, footer ?? DefaultFooter)
     {
-        _title = title;
-        _footer = footer;
     }
     
     protected override MenuViewModel CreateMenu()
@@ -36,12 +38,6 @@ public abstract class MenuView : MenuViewBase<MenuViewModel, MenuEntry>
     
     protected override ITableBuilderStrategy<MenuEntry> CreateStrategy() =>
         new MenuBuilderStrategy();
-    
-    protected override void OnMenuCreated()
-    {
-        MenuViewModel?.SetTitle(_title);
-        MenuViewModel?.SetFooter(_footer);
-    }
     
     protected virtual Action CreateSubmenu<T>()
         where T : IMenu =>
