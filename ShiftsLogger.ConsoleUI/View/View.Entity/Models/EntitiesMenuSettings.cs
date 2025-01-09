@@ -2,9 +2,9 @@
 
 namespace View.Entity.Models;
 
-public sealed class EntitiesTableSettings : TableSettings
+public sealed class EntitiesMenuSettings : TableSettings
 {
-    public EntitiesTableSettings(int totalPages)
+    public EntitiesMenuSettings()
     {
         ShowHeaders = true;
         ShowFooter = true;
@@ -16,8 +16,5 @@ public sealed class EntitiesTableSettings : TableSettings
         ContentStyle = new Style(foreground: Color.White);
         SelectionStyle = new Style(foreground: Color.Gold3_1);
         SeparatorRow = 5;
-        TotalPages = totalPages;
     }
-    
-    public int TotalPages { get; set; }
 }
