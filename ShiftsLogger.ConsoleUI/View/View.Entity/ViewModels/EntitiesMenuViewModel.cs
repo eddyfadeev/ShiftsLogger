@@ -18,8 +18,6 @@ public class EntitiesMenuViewModel : MenuViewModelBase<EntityEntryData>, IPageab
         MenuData[SelectedIndex] = 
             MenuData[SelectedIndex]
                 .WithStyle(MenuData.Settings.SelectionStyle);
-        
-        TotalPages = ((EntitiesTableSettings)tableSettings).TotalPages;
     }
 
     protected override void MoveCursor(int previousIndex, int newIndex)
@@ -35,18 +33,13 @@ public class EntitiesMenuViewModel : MenuViewModelBase<EntityEntryData>, IPageab
 
     private void SubstituteData(IEnumerable<EntityEntryData> data)
     {
-        var entityEntryData = data.ToList();
-        if (TotalPages != entityEntryData.Count)
-        {
-            throw new ArgumentException("Data count mismatch", nameof(data));
-        }
-        
+        ArgumentNullException.ThrowIfNull(data, nameof(data));
         MenuData.Clear();
-        MenuData.AddRange(entityEntryData);
+        MenuData.AddRange(data);
     }
 
     #region IPageable
-
+    
     public int CurrentPage
     {
         get => _currentPage;
@@ -84,29 +77,29 @@ public class EntitiesMenuViewModel : MenuViewModelBase<EntityEntryData>, IPageab
         }
     }
 
-    public void NextPage(params IEnumerable<EntityEntryData> items)
+    public void NextPage(IEnumerable<EntityEntryData> items)
     {
         SubstituteData(items);
         CurrentPage++;
     }
 
-    public void PreviousPage(params IEnumerable<EntityEntryData> items)
+    public void PreviousPage(IEnumerable<EntityEntryData> items)
     {
         SubstituteData(items);
         CurrentPage--;
     }
 
-    public void SetCurrentPage(int page, params IEnumerable<EntityEntryData> items)
+    public void SetCurrentPage(IEnumerable<EntityEntryData> items, int page)
     {
         SubstituteData(items);
         CurrentPage = page;
     }
 
-    public void ResetPage(params IEnumerable<EntityEntryData> items)
+    public void ResetPage(IEnumerable<EntityEntryData> items)
     {
         SubstituteData(items);
         CurrentPage = 1;
     }
-
+    
     #endregion
 }
