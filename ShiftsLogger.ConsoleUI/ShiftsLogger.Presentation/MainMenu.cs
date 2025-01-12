@@ -18,31 +18,31 @@ public sealed class MainMenu : MenuView
         (
             entryText: "Shifts",
             entryAction: CreateSubmenu<ShiftsMenu.ShiftsMenu>(),
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
         new
         (
             entryText: "Users",
             entryAction: CreateSubmenu<UsersMenu.UsersMenu>(),
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
         new
         (
             entryText: "Locations",
             entryAction: CreateSubmenu<LocationsMenu.LocationsMenu>(),
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
         new
         (
             entryText: "Shift Types",
             entryAction: CreateSubmenu<ShiftTypesMenu.ShiftTypesMenu>(),
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
         new
         (
             entryText: "Exit",
             entryAction: MenuHandler.PopMenu,
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
     ];
 }
