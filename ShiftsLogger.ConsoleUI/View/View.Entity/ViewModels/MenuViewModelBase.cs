@@ -22,10 +22,10 @@ public abstract class MenuViewModelBase<T> : ISelectable, IDisplayableData
     #region IDisplayableData
 
     public void SetTitle(string title) =>
-        MenuData.Title = new TableTitle(title, MenuData.Settings.TitleStyle);
+        MenuData.Title = new TableTitle(title, MenuData.Settings.Styles.Title);
     
     public void SetFooter(string footer) =>
-        MenuData.Footer = new TableTitle(footer, MenuData.Settings.FooterStyle);
+        MenuData.Footer = new TableTitle(footer, MenuData.Settings.Styles.Footer);
 
     #endregion
     
@@ -37,7 +37,7 @@ public abstract class MenuViewModelBase<T> : ISelectable, IDisplayableData
         private set
         {
             const int minIndex = 0;
-            int maxIndex = MenuData.Count - 1;
+            int maxIndex = MenuData.Count - 1 > 0 ? MenuData.Count - 1 : minIndex;
             int previousIndex = _selectedIndex;
 
             int newIndex = Math.Clamp(value, minIndex, maxIndex);
