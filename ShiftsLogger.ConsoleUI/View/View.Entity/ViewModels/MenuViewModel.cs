@@ -11,17 +11,17 @@ public class MenuViewModel : MenuViewModelBase<MenuEntry>
     {
         MenuData[SelectedIndex] = 
             MenuData[SelectedIndex]
-                .WithStyle(MenuData.Settings.SelectionStyle);
+                .WithStyle(MenuData.Settings.Styles.Selection);
     }
 
     protected override void MoveCursor(int previousIndex, int newIndex)
     {
         MenuData[previousIndex] = 
             MenuData[previousIndex]
-                .WithStyle(MenuData.Settings.ContentStyle);
+                .WithStyle(MenuData.Settings.Styles.Content);
         
         MenuData[newIndex] = 
             MenuData[newIndex]
-                .WithStyle(MenuData.Settings.SelectionStyle);
+                .WithStyle(MenuData.Settings.Styles.Selection);
     }
 }
