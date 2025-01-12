@@ -18,13 +18,13 @@ public sealed class LocationsMenu : MenuView
         (
             entryText: "Add Location",
             entryAction: null,
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
         new
         (
             entryText: "Manage Locations",
             entryAction: null,
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         )
     ];
 }
