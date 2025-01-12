@@ -18,13 +18,13 @@ public sealed class ShiftsMenu : MenuView
         (
             entryText: "Add Shift",
             entryAction: null,
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
         new
         (
             entryText: "Manage Shifts",
-            entryAction: null,
-            entryStyle: Settings?.ContentStyle
+            entryAction: CreateSubmenu<ManageShifts>(),
+            entryStyle: Settings?.Styles.Content
         )
     ];
 }
