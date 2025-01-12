@@ -2,6 +2,7 @@
 using View.Entity.Models;
 using View.Entity.Structures;
 using View.Entity.ViewModels;
+using View.Events;
 using View.Services;
 using View.Services.Contracts;
 
@@ -34,10 +35,13 @@ public abstract class EntitiesMenuView : MenuViewBase<EntitiesMenuViewModel, Ent
         ArgumentNullException.ThrowIfNull(MenuEntries, nameof(MenuEntries));
         
         var menuView = new EntitiesMenuViewModel((EntitiesMenuSettings)Settings, MenuEntries);
+        menuView.OnPageChanged += HandlePageChanged;
 
         return menuView;
     }
 
     protected override ITableBuilderStrategy<EntityEntryData> CreateStrategy() =>
         new EntitiesMenuBuilderStrategy();
+
+    protected abstract void HandlePageChanged(object sender, ChangePageEventArgs args);
 }
