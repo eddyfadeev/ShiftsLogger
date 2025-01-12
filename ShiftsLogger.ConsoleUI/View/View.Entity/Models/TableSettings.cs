@@ -1,6 +1,4 @@
-﻿using Spectre.Console;
-
-namespace View.Entity.Models;
+﻿namespace View.Entity.Models;
 
 public abstract class TableSettings
 {
@@ -11,13 +9,8 @@ public abstract class TableSettings
     public bool Expand { get; set; } = false;
     public bool RowSeparatorIsActive => 
         _separatorRow > 0 ;
-    public TableBorder BorderStyle { get; set; } = TableBorder.Rounded;
     
-    public Style? TitleStyle { get; set; } = null;
-    public Style? HeadersStyle { get; set; } = null;
-    public Style? FooterStyle { get; set; } = null;
-    public Style? ContentStyle { get; set; } = null;
-    public Style? SelectionStyle { get; set; } = null;
+    public TableMenuStyles Styles { get; set; } = new ();
 
     public int SeparatorRow
     {
