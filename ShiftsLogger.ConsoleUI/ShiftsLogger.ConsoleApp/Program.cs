@@ -3,11 +3,11 @@ using LoggerService.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
-using Services;
-using Services.Contracts;
 using ShiftsLogger.ConsoleApp.Extensions;
 using ShiftsLogger.Presentation;
 using Spectre.Console;
+using View.Services;
+using View.Services.Contracts;
 using ViewConfigurator;
 
 namespace ShiftsLogger.ConsoleApp;
@@ -42,17 +42,6 @@ public static class Program
             menuHandler.PushMenu(mainMenu);
 
             await menuHandler.RunAsync();
-
-//             var sortKeys = renderData.TableColumnHeaders.Select((name, index) => $"({index + 1}) - {name.OriginString}");
-//
-//             var footer = $"""
-//                           [white]
-//                           Press ESC to return to previous menu
-//                           Press right arrow to view next page or left arrow to return to the previous page
-//                           Press (key) to toggle sorting
-//                           {string.Join(" | ", sortKeys)}
-//                           [/]
-//                           """;
         }
         catch (Exception ex)
         {
