@@ -17,13 +17,13 @@ public sealed class ShiftTypesMenu : MenuView
         (
             entryText: "Add Shift Type",
             entryAction: null,
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
         new
         (
             entryText: "Manage Shift Types",
             entryAction: null,
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         )
     ];
 }
