@@ -6,6 +6,9 @@ namespace ViewConfigurator;
 
 public static class ViewConfigurator
 {
-    public static void AddView(this IServiceCollection services) =>
+    public static void AddView(this IServiceCollection services)
+    {
         services.AddTransient<ITableBuilder, TableBuilderService>();
+        services.AddTransient<INavigationHandler, NavigationHandler>();
+    }
 }
