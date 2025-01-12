@@ -18,13 +18,13 @@ public sealed class UsersMenu : MenuView
         (
             entryText: "Add User",
             entryAction: null,
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         ),
         new
         (
             entryText: "Manage Users",
             entryAction: null,
-            entryStyle: Settings?.ContentStyle
+            entryStyle: Settings?.Styles.Content
         )
     ];
 }
