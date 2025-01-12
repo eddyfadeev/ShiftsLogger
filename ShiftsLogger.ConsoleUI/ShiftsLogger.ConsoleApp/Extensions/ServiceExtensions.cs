@@ -3,8 +3,8 @@ using Entity;
 using LoggerService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Service;
-using Service.Contracts;
+using Services;
+using Services.Contracts;
 
 namespace ShiftsLogger.ConsoleApp.Extensions;
 

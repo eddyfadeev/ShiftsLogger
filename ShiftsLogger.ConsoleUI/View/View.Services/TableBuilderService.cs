@@ -1,5 +1,5 @@
 ﻿using Spectre.Console;
-using View.Entity;
+using View.Entity.Models;
 using View.Services.Contracts;
 
 namespace View.Services;
@@ -7,5 +7,5 @@ namespace View.Services;
 public class TableBuilderService : ITableBuilder
 {
     public Table Build<T>(TableData<T> tableData, ITableBuilderStrategy<T> strategy) =>
-        strategy.Build(tableData);
+        strategy.Build(tableData).Width(120);
 }

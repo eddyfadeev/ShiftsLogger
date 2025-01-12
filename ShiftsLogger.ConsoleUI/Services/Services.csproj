@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Contracts\Contracts.csproj" />
+      <ProjectReference Include="..\Entity\Entity.csproj" />
+      <ProjectReference Include="..\LoggerService.Extensions\LoggerService.Extensions.csproj" />
+      <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />
+      <ProjectReference Include="..\UriExtensions\UriExtensions.csproj" />
+      <ProjectReference Include="..\View\View.Entity\View.Entity.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
+    </ItemGroup>
+
+</Project>

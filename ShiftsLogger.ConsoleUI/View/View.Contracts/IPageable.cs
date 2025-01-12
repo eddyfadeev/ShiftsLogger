@@ -1,11 +1,13 @@
-﻿namespace View.Contracts;
+﻿using View.Events;
 
-public interface IPageable<in T>
+namespace View.Contracts;
+
+public interface IPageable
 {
+    event ChangePageEvent? OnPageChanged;
     int CurrentPage { get; }
-    int TotalPages { get; }
-    void NextPage(params IEnumerable<T> items);
-    void PreviousPage(params IEnumerable<T> items);
-    void SetCurrentPage(int page, params IEnumerable<T> items);
-    void ResetPage(params IEnumerable<T> items);
+    void NextPage();
+    void PreviousPage();
+    void SubstituteData<T>(IEnumerable<T> data)
+        where T : IActionable;
 }

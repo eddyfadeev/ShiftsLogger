@@ -1,5 +1,5 @@
 ﻿using Spectre.Console;
-using View.Entity;
+using View.Entity.Models;
 using View.Services.Contracts;
 
 namespace View.Services;
@@ -11,7 +11,7 @@ public abstract class TableBuilderStrategyBase<T> : ITableBuilderStrategy<T>
     protected Table InitializeTable(TableData<T> tableData) =>
         new ()
         {
-            Border = tableData.Settings.BorderStyle,
+            Border = tableData.Settings.Styles.BorderStyle,
             ShowHeaders = tableData.Settings.ShowHeaders,
             ShowFooters = tableData.Settings.ShowFooter,
             Expand = tableData.Settings.Expand,

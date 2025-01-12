@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
-using View.Entity;
+using View.Entity.Models;
+using View.Entity.Structures;
 
 namespace View.Services;
 
