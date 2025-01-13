@@ -23,8 +23,8 @@ public sealed class UsersMenu : MenuView
         new
         (
             entryText: "Manage Users",
-            entryAction: null,
+            entryAction: CreateSubmenu<ManageUsersMenu>(),
             entryStyle: Settings?.Styles.Content
         )
     ];
-}
+}   

@@ -23,7 +23,7 @@ public sealed class ShiftsMenu : MenuView
         new
         (
             entryText: "Manage Shifts",
-            entryAction: CreateSubmenu<ManageShifts>(),
+            entryAction: CreateSubmenu<ManageShiftsMenu>(),
             entryStyle: Settings?.Styles.Content
         )
     ];

@@ -22,7 +22,7 @@ public sealed class ShiftTypesMenu : MenuView
         new
         (
             entryText: "Manage Shift Types",
-            entryAction: null,
+            entryAction: CreateSubmenu<ManageShiftTypesMenu>(),
             entryStyle: Settings?.Styles.Content
         )
     ];
