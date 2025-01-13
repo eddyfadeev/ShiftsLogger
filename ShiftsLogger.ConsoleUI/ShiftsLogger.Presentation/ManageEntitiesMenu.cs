@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Contracts;
-using Shared.Dto.Shift;
 using Shared.RequestFeatures;
 using Spectre.Console;
 using View.Entity.Structures;
@@ -11,18 +10,18 @@ using View.Utility;
 using View.Utility.Extensions;
 using View.View;
 
-namespace ShiftsLogger.Presentation.ShiftsMenu;
+namespace ShiftsLogger.Presentation;
 
-public sealed class ManageShifts : EntitiesMenuView
+public abstract class ManageEntitiesMenu<T> : EntitiesMenuView
 {
-    private const string Title = "Manage Shifts";
-    private readonly IApiServiceManager _apiService;
+    private protected IApiServiceManager? ApiService;
 
-    private PagedList<ShiftDto>? _shifts;
-    public ManageShifts(IServiceProvider serviceProvider) 
-        : base(serviceProvider, Title)
+    private protected PagedList<T>? Entities;
+    
+    public ManageEntitiesMenu(IServiceProvider serviceProvider, string title, string? footer = null) 
+        : base(serviceProvider, title, footer)
     {
-        _apiService = serviceProvider.GetRequiredService<IApiServiceManager>();
+        
     }
 
     public override void DisplayMenu()
@@ -39,8 +38,8 @@ public sealed class ManageShifts : EntitiesMenuView
 
     protected override IReadOnlyCollection<EntityEntryData> GetMenuEntries()
     {
-        ArgumentNullException.ThrowIfNull(_shifts, nameof(_shifts));
-        var shifts = _shifts.Select(shift =>
+        ArgumentNullException.ThrowIfNull(Entities, nameof(Entities));
+        var shifts = Entities.Select(shift =>
         {
             var entryHeaders =
                 ClassDataExtractor
@@ -65,14 +64,11 @@ public sealed class ManageShifts : EntitiesMenuView
 
     protected override void OnMenuCreation()
     {
-        _shifts = FetchShifts().GetAwaiter().GetResult();
+        ApiService = ServiceProvider.GetRequiredService<IApiServiceManager>();
+        Entities = FetchEntities().GetAwaiter().GetResult();
     }
 
-    private async Task<PagedList<ShiftDto>> FetchShifts(ShiftParameters? requestParameters = null)
-    {
-        var apiManager = ServiceProvider.GetRequiredService<IApiServiceManager>();
-        return await apiManager.Shift.GetAllShiftsAsync(requestParameters);
-    }
+    private protected abstract Task<PagedList<T>> FetchEntities(RequestParameters? requestParameters = null);
 
     protected override void HandlePageChanged(object sender, ChangePageEventArgs args)
     {
@@ -81,7 +77,7 @@ public sealed class ManageShifts : EntitiesMenuView
             return;
         }
         
-        _shifts = FetchShifts(
+        Entities = FetchEntities(
             new ShiftParameters
             {
                 PageNumber = args.CurrentPage.Value
@@ -90,20 +86,5 @@ public sealed class ManageShifts : EntitiesMenuView
 
         var substitutes = GetMenuEntries();
         MenuViewModel?.SubstituteData(substitutes);
-    }
-}
-
-
-
-public class EditEntityMenuView<T> : MenuView
-{
-    public EditEntityMenuView(IServiceProvider serviceProvider, string title, string? footer = null) 
-        : base(serviceProvider, title, footer)
-    {
-    }
-
-    protected override IReadOnlyCollection<MenuEntry> GetMenuEntries()
-    {
-        throw new NotImplementedException();
     }
 }
