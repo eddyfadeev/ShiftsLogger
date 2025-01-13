@@ -25,7 +25,11 @@ public abstract class HttpClientBase<TEntity> : IHttpClientBase<TEntity>, IAsync
         Logger = logger;
         Endpoints = endpointOptions;
         Client = httpClient;
-        Client.ConfigureHttpClient(endpointOptions);
+        
+        if (Client.BaseAddress is null)
+        {
+            Client.ConfigureHttpClient(endpointOptions);
+        }
         
         _jsonSerializerOptions = new JsonSerializerOptions
         {

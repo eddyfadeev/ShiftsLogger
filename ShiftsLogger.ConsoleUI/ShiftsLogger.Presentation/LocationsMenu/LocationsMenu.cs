@@ -23,7 +23,7 @@ public sealed class LocationsMenu : MenuView
         new
         (
             entryText: "Manage Locations",
-            entryAction: null,
+            entryAction: CreateSubmenu<ManageLocationsMenu>(),
             entryStyle: Settings?.Styles.Content
         )
     ];
